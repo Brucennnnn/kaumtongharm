@@ -10,5 +10,5 @@ const libsql = createClient({
 
 const adapter = new PrismaLibSQL(libsql);
 export const prisma = new PrismaClient(
-  process.env.NODE_ENV === "development" ? { adapter } : undefined,
+  process.env.NODE_ENV === "production" ? { adapter } : undefined,
 );
