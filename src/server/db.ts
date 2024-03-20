@@ -12,7 +12,7 @@ const createPrismaClient = () =>
   new PrismaClient({
     log:
       env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-    adapter: process.env.NODE_ENV === "production" ? adapter : undefined,
+    adapter: process.env.NODE_ENV === "production" ? adapter : null,
   });
 
 export const db = createPrismaClient();
