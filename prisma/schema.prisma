@@ -1,6 +1,3 @@
-// This is your Prisma schema file,
-// learn more about it in the docs: https://pris.ly/d/prisma-schema
-
 generator client {
   provider        = "prisma-client-js"
   previewFeatures = ["driverAdapters"]
@@ -18,4 +15,69 @@ model Post {
   updatedAt DateTime @updatedAt
 
   @@index([name])
+}
+
+model Chat {
+  id           Int            @id @default(autoincrement())
+  Message      Message[]
+  UsersOnChats UsersOnChats[]
+  Games        Game[]
+  UserResult   UserResult[]
+}
+
+model User {
+  id           String         @id @default(cuid())
+  name         String         @unique
+  messages     Message[]
+  usersOnChats UsersOnChats[]
+  UserResult   UserResult[]
+}
+
+model UsersOnChats {
+  user   User   @relation(fields: [userId], references: [id])
+  userId String
+  chat   Chat   @relation(fields: [chatId], references: [id])
+  chatId Int
+
+  @@id([userId, chatId])
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  message   String
+  sender    String
+  chatId    Int
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  user      User     @relation(fields: [sender], references: [name])
+  createdAt DateTime @default(now())
+}
+
+model Game {
+  id         Int          @id @default(autoincrement())
+  chatId     Int
+  chat       Chat         @relation(fields: [chatId], references: [id])
+  isBegin    Boolean
+  startAt    DateTime     @default(now())
+  Round      Round[]
+  UserResult UserResult[]
+}
+
+model Round {
+  id         Int          @id @default(autoincrement())
+  gameId     Int
+  game       Game         @relation(fields: [gameId], references: [id])
+  UserResult UserResult[]
+}
+
+model UserResult {
+  id      Int    @id @default(autoincrement())
+  userId  String
+  user    User   @relation(fields: [userId], references: [id])
+  chatId  Int
+  chat    Chat   @relation(fields: [chatId], references: [id])
+  gameId  Int
+  game    Game   @relation(fields: [gameId], references: [id])
+  roundId Int
+  round   Round  @relation(fields: [roundId], references: [id])
+  point   Int
 }
