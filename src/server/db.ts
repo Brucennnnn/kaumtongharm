@@ -7,12 +7,9 @@ const libsql = createClient({
   url: `${env.DATABASE_URL}`,
   authToken: `${env.DATABASE_AUTH}`,
 });
-const adapter = new PrismaLibSQL(libsql);
-const createPrismaClient = () =>
-  new PrismaClient({
-    log:
-      env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
-    adapter: process.env.NODE_ENV === "production" ? adapter : null,
-  });
 
-export const db = createPrismaClient();
+const adapter = new PrismaLibSQL(libsql);
+export const db = new PrismaClient({
+  log: env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+  adapter: process.env.NODE_ENV === "production" ? adapter : null,
+});

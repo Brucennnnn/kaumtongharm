@@ -26,11 +26,20 @@ model Chat {
 }
 
 model User {
-  id           String         @id @default(cuid())
-  name         String         @unique
-  messages     Message[]
-  usersOnChats UsersOnChats[]
-  UserResult   UserResult[]
+  id             String         @id
+  username       String         @unique
+  hashedPassword String
+  messages       Message[]
+  usersOnChats   UsersOnChats[]
+  UserResult     UserResult[]
+  Session        Session[]
+}
+
+model Session {
+  id        String   @id
+  userId    String
+  expiresAt DateTime
+  user      User     @relation(references: [id], fields: [userId], onDelete: Cascade)
 }
 
 model UsersOnChats {
@@ -48,7 +57,7 @@ model Message {
   sender    String
   chatId    Int
   chat      Chat     @relation(fields: [chatId], references: [id])
-  user      User     @relation(fields: [sender], references: [name])
+  user      User     @relation(fields: [sender], references: [id])
   createdAt DateTime @default(now())
 }
 
