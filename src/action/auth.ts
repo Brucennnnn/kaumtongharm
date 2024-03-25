@@ -1,3 +1,4 @@
+"use server";
 import { db } from "@ktm/server/db";
 import { Argon2id } from "oslo/password";
 import { cookies } from "next/headers";
@@ -5,35 +6,11 @@ import { lucia } from "@ktm/server/api/auth";
 import { redirect } from "next/navigation";
 import { generateId } from "lucia";
 
-export async function signup(formData: FormData): Promise<ActionResult> {
-  "use server";
-  const username = formData.get("username");
-  if (
-    typeof username !== "string" ||
-    username.length < 3 ||
-    username.length > 31 ||
-    !/^[a-z0-9_-]+$/.test(username)
-  ) {
-    console.log("a");
-    return {
-      error: "Invalid username",
-    };
-  }
-  const password = formData.get("password");
-  if (
-    typeof password !== "string" ||
-    password.length < 6 ||
-    password.length > 255
-  ) {
-    console.log("b");
-    return {
-      error: "Invalid password",
-    };
-  }
-  console.log("c");
-
+export async function signup(
+  username: string,
+  password: string,
+): Promise<ActionResult> {
   const hashedPassword = await new Argon2id().hash(password);
-  console.log("d");
   const userId = generateId(15);
 
   await db.user.create({
@@ -57,4 +34,43 @@ export async function signup(formData: FormData): Promise<ActionResult> {
 
 interface ActionResult {
   error: string;
+}
+
+export async function login(
+  username: string,
+  password: string,
+): Promise<ActionResult> {
+  const existingUser = await db.user.findUnique({
+    where: {
+      username: username,
+    },
+    select: {
+      hashedPassword: true,
+      id: true,
+    },
+  });
+  if (!existingUser) {
+    return {
+      error: "Incorrect username or password",
+    };
+  }
+
+  const validPassword = await new Argon2id().verify(
+    existingUser.hashedPassword,
+    password,
+  );
+  if (!validPassword) {
+    return {
+      error: "Incorrect username or password",
+    };
+  }
+
+  const session = await lucia.createSession(existingUser.id, {});
+  const sessionCookie = lucia.createSessionCookie(session.id);
+  cookies().set(
+    sessionCookie.name,
+    sessionCookie.value,
+    sessionCookie.attributes,
+  );
+  return redirect("/");
 }

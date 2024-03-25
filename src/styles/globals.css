@@ -1,3 +1,42 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer base {
+  .h1 {
+    @apply text-3xl  lg:text-5xl;
+  }
+  .h2 {
+    @apply text-3xl;
+  }
+  .h3 {
+    @apply text-2xl;
+  }
+  .h4 {
+    @apply text-xl;
+  }
+  .h5 {
+    @apply text-base;
+  }
+  .h6 {
+    @apply text-sm;
+  }
+  .small {
+    @apply text-xs;
+  }
+  .p {
+    @apply text-base;
+  }
+  .blockquote {
+    @apply text-base  italic;
+  }
+  .placeholder {
+    @apply text-sm;
+  }
+}
+input:-webkit-autofill,
+input:-webkit-autofill:hover,
+input:-webkit-autofill:focus,
+input:-webkit-autofill:active {
+  -webkit-box-shadow: 0 0 0 30px #fff6e4 inset !important;
+}

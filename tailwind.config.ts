@@ -10,7 +10,7 @@ const config = {
   ],
   prefix: "",
   theme: {
-    color: {
+    colors: {
       background: "#FFF6E4",
       stroke: "#001858",
       secondary: "#8BD3DD",
@@ -21,7 +21,7 @@ const config = {
       pending: "#FFC164",
       error: "#E14C4C",
       roombg: "#F4C1C1",
-      Highlight: "#FF8906",
+      highlight: "#FF8906",
       orange: "#F25F4C",
     },
     screens: {
