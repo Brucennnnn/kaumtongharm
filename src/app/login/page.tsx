@@ -8,11 +8,15 @@ import LoginTab from "./_components/LoginTab";
 import SignUpTab from "./_components/SignUpTab";
 export default function Page() {
   return (
-    <div>
-      <Tabs defaultValue="login" className="w-[400px]">
-        <TabsList>
-          <TabsTrigger value="login">Login</TabsTrigger>
-          <TabsTrigger value="signup">Sign up</TabsTrigger>
+    <div className="flex min-h-screen w-screen items-center justify-center bg-background">
+      <Tabs defaultValue="login" className="flex w-fit flex-col pb-10">
+        <TabsList className="justify-end">
+          <TabsTrigger className="data-[state=active]:bg-main" value="login">
+            Login
+          </TabsTrigger>
+          <TabsTrigger className="data-[state=active]:bg-main" value="signup">
+            Sign up
+          </TabsTrigger>
         </TabsList>
         <TabsContent value="login">
           <LoginTab />

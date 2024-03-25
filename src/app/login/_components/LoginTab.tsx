@@ -31,7 +31,7 @@ export default function LoginTab() {
     await login(values.username, values.password);
   }
   return (
-    <div>
+    <div className="h-fit w-fit">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
