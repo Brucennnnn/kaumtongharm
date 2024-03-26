@@ -23,6 +23,7 @@ const config = {
       roombg: "#F4C1C1",
       highlight: "#FF8906",
       orange: "#F25F4C",
+      hardpink: "#FF9C9C",
     },
     screens: {
       sm: "376px",
