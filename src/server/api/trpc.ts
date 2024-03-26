@@ -10,6 +10,7 @@ import { TRPCError, initTRPC } from "@trpc/server";
 import superjson from "superjson";
 import { ZodError } from "zod";
 import { type Session } from "lucia";
+import { pusher } from "../pusher/pusher";
 
 import { db } from "@ktm/server/db";
 
@@ -31,6 +32,8 @@ export const createTRPCContext = async (opts: {
 }) => {
   return {
     db,
+
+    pusher,
     ...opts,
   };
 };

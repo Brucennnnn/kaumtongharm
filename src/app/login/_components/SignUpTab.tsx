@@ -82,7 +82,7 @@ export default function SignUpTab() {
           />
           <Button
             type="submit"
-            className="w-full rounded-md border border-stroke bg-secondary p-2 text-xl font-bold text-stroke"
+            className=" w-full rounded-md border border-stroke bg-secondary p-2 text-xl font-bold text-stroke"
           >
             SignUp
           </Button>
