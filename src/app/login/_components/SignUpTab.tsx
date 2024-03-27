@@ -13,6 +13,7 @@ import {
 } from "@ktm/components/ui/form";
 import { Input } from "@ktm/components/ui/input";
 import { signup } from "@ktm/action/auth";
+import { redirect } from "next/navigation";
 
 const formSchema = z.object({
   username: z.string().min(4).max(12),

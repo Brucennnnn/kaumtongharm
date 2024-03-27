@@ -62,13 +62,17 @@ model Message {
 }
 
 model Game {
-  id         Int          @id @default(autoincrement())
-  chatId     Int
-  chat       Chat         @relation(fields: [chatId], references: [id])
-  isBegin    Boolean
-  startAt    DateTime     @default(now())
-  Round      Round[]
-  UserResult UserResult[]
+  id          Int          @id @default(autoincrement())
+  gameTitle   String
+  maxPlayers  Int
+  rounds      Int
+  description String
+  chatId      Int
+  chat        Chat         @relation(fields: [chatId], references: [id])
+  isBegin     Boolean      @default(false)
+  startAt     DateTime     @default(now())
+  Round       Round[]
+  UserResult  UserResult[]
 }
 
 model Round {
