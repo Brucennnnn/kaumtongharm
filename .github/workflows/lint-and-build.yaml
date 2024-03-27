@@ -21,8 +21,7 @@ jobs:
       - name: Install npm
         uses: npm/actions-setup@v4
         with:
-          version:
-            version: 10
+          version: 10
 
       - name: Install dependencies
         run: npm install
