@@ -10,7 +10,7 @@ export default function RoomCard() {
         isSelect ? "bg-hardpink" : "bg-roombg",
       )}
     >
-      <div className="flex">
+      <div className="flex flex-col">
         <div className="h4 font-bold text-stroke">This is Room Name</div>
         <div
           className={cn(
