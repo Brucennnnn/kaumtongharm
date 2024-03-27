@@ -1,4 +1,10 @@
+<<<<<<<< HEAD:src/app/gameroom/_components/GameWrapper.tsx
 export default function GameWrapper({
+|||||||| parent of 0b3b725 (fix: folder name):src/app/chat/_components/ChatWrapper.tsx
+export default function ChatWrapper({
+========
+export default function CardWrapper({
+>>>>>>>> 0b3b725 (fix: folder name):src/app/game-room-list/_components/CardWrapper.tsx
   leftside,
   rightside,
 }: {
