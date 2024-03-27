@@ -38,12 +38,12 @@ export default function GameRoomList(props: gameRoomListProps) {
           }}
         />
       </div>
-      <div className="flex h-full w-full flex-col gap-y-3 rounded-lg bg-background p-3">
+      <div className="flex h-full w-full flex-col gap-y-3 overflow-y-scroll rounded-lg bg-background p-3">
         {allRooms ? (
           allRooms.map((item: gameRoom, _index) => {
             return (
               <div
-                className="h-fit w-full"
+                className="h-fit w-full hover:cursor-pointer"
                 key={_index}
                 onClick={() => {
                   setSelectedRoomId(_index);
