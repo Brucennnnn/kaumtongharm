@@ -40,7 +40,6 @@ const room2: gameRoom = {
 };
 
 export default async function Page() {
-  // const [selectedRoom, setSelectedRoom];
   const { user } = await validateRequest();
   if (user) {
     console.log("this user", user);
@@ -57,7 +56,6 @@ export default async function Page() {
       {/*   <br /> */}
       {/*   <button>Continue</button> */}
       {/* </form> */}
-      <GameRoomList allRooms={[room1, room2]} />
     </>
   );
 }

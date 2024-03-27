@@ -1,15 +1,16 @@
 "use client";
 import { type gameRoom } from "../interfaces";
 import GameRoomBox from "./GameRoomBox";
-import { useState } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 
 interface gameRoomListProps {
+  setSelectedRoom: Dispatch<SetStateAction<gameRoom | null>>;
   allRooms: gameRoom[];
 }
 
 export default function GameRoomList(props: gameRoomListProps) {
   const [selectesRoomId, setSelectedRoomId] = useState<number | null>(null);
-  const { allRooms } = props;
+  const { allRooms, setSelectedRoom } = props;
   return (
     <div className="flex h-full w-full flex-col gap-y-3 rounded-lg bg-background p-3">
       {allRooms ? (
@@ -19,8 +20,8 @@ export default function GameRoomList(props: gameRoomListProps) {
               className="h-fit w-full"
               key={_index}
               onClick={() => {
-                console.log(_index);
                 setSelectedRoomId(_index);
+                setSelectedRoom(item);
               }}
             >
               <GameRoomBox
