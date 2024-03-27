@@ -24,6 +24,7 @@ export default function Page() {
       {/*   <br /> */}
       {/*   <button>Continue</button> */}
       {/* </form> */}
+      <GameRoomList allRooms={[room1, room2]} />
     </>
   );
 }
