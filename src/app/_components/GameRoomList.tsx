@@ -1,7 +1,7 @@
 "use client";
 import { type gameRoom } from "../interfaces";
 import GameRoomBox from "./GameRoomBox";
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction, useState, useEffect } from "react";
 
 import { Button } from "@ktm/components/ui/button";
 import { Input } from "@ktm/components/ui/input";
@@ -15,12 +15,33 @@ interface gameRoomListProps {
 
 export default function GameRoomList(props: gameRoomListProps) {
   const [searchString, setSearchString] = useState("");
-  const [selectesRoomId, setSelectedRoomId] = useState<number | null>(null);
+  const [selectesRoomId, setSelectedRoomId] = useState<string | null>(null);
   const { allRooms, setSelectedRoom } = props;
+  const [filteredRooms, setFilteredRooms] = useState<gameRoom[]>(allRooms);
+
+  useEffect(() => {
+    if (searchString != "") {
+      const tempFilteredRooms: gameRoom[] = [];
+      allRooms.map((room: gameRoom) => {
+        if (room.name.includes(searchString)) {
+          tempFilteredRooms.push(room);
+        }
+      });
+      setFilteredRooms(tempFilteredRooms);
+    } else {
+      setFilteredRooms(allRooms);
+    }
+  }, [allRooms, searchString]);
   return (
-    <div className="flex h-full w-full flex-col gap-3">
+    <div className="flex h-full w-full flex-1 flex-col gap-3">
       <div className="flex w-full justify-end">
-        <Button className="text-md rounded-md border border-stroke bg-pending font-bold">
+        <Button
+          className="text-md rounded-md border border-stroke bg-pending font-bold"
+          onClick={() => {
+            setSelectedRoom(null);
+            setSelectedRoomId(null);
+          }}
+        >
           Create Game
         </Button>
       </div>
@@ -38,15 +59,15 @@ export default function GameRoomList(props: gameRoomListProps) {
           }}
         />
       </div>
-      <div className="flex h-full w-full flex-col gap-y-3 overflow-y-scroll rounded-lg bg-background p-3">
-        {allRooms ? (
-          allRooms.map((item: gameRoom, _index) => {
+      <div className="flex w-full grow flex-col gap-y-3 overflow-y-scroll rounded-lg bg-background p-3">
+        {filteredRooms ? (
+          filteredRooms.map((item: gameRoom, _index) => {
             return (
               <div
-                className="h-fit w-full hover:cursor-pointer"
+                className="h-fit w-full hover:cursor-pointer hover:opacity-90"
                 key={_index}
                 onClick={() => {
-                  setSelectedRoomId(_index);
+                  setSelectedRoomId(item._id);
                   setSelectedRoom(item);
                 }}
               >
@@ -55,7 +76,7 @@ export default function GameRoomList(props: gameRoomListProps) {
                   name={item.name}
                   players={item.players}
                   status={item.status}
-                  isSelected={_index == selectesRoomId}
+                  isSelected={item._id == selectesRoomId}
                 />
               </div>
             );
