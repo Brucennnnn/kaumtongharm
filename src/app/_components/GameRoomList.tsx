@@ -33,7 +33,7 @@ export default function GameRoomList(props: gameRoomListProps) {
     }
   }, [allRooms, searchString]);
   return (
-    <div className="flex h-full w-full flex-1 flex-col gap-3">
+    <div className="flex w-full grow flex-col gap-3">
       <div className="flex w-full justify-end">
         <Button
           className="text-md rounded-md border border-stroke bg-pending font-bold"
@@ -59,8 +59,8 @@ export default function GameRoomList(props: gameRoomListProps) {
           }}
         />
       </div>
-      <div className="flex w-full grow flex-col gap-y-3 overflow-y-scroll rounded-lg bg-background p-3">
-        {filteredRooms ? (
+      <div className="scrollbar-hide flex w-full grow flex-col gap-y-3 overflow-scroll rounded-lg bg-background p-3">
+        {filteredRooms && filteredRooms.length != 0 ? (
           filteredRooms.map((item: gameRoom, _index) => {
             return (
               <div
@@ -82,7 +82,9 @@ export default function GameRoomList(props: gameRoomListProps) {
             );
           })
         ) : (
-          <div></div>
+          <div className="flex h-full w-full items-center justify-center font-semibold text-main">
+            no results
+          </div>
         )}
       </div>
     </div>

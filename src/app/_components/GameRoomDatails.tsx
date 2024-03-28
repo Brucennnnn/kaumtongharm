@@ -14,7 +14,7 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
     }
   };
   return (
-    <div className="flex h-80 w-full flex-col gap-y-3 rounded-2xl bg-main p-3">
+    <div className="flex h-80 min-h-fit w-full flex-col gap-y-3 rounded-2xl bg-main p-3">
       <div className="flex h-fit w-full flex-col gap-y-2">
         <div className="flex h-[45px] w-fit max-w-full items-center rounded-md bg-background px-2">
           <div className="line-clamp-1 text-3xl font-bold text-stroke">
