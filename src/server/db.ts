@@ -4,7 +4,7 @@ import { createClient } from "@libsql/client";
 import { env } from "@ktm/env";
 
 let libsql: ReturnType<typeof createClient> | undefined;
-if (env.NODE_ENV === "production") {
+if (env.IS_PROD) {
   libsql = createClient({
     url: `${env.DATABASE_URL}`,
     authToken: `${env.DATABASE_AUTH}`,
@@ -17,6 +17,6 @@ if (env.NODE_ENV === "production") {
 
 const adapter = new PrismaLibSQL(libsql);
 export const db = new PrismaClient({
-  log: env.NODE_ENV === "development" ? ["query", "error", "warn"] : ["error"],
+  log: env.IS_PROD ? ["error"] : ["query", "error", "warn"],
   adapter: adapter,
 });

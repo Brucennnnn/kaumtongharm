@@ -8,9 +8,11 @@ export const env = createEnv({
    */
   server: {
     DATABASE_URL: z.string(),
-    NODE_ENV: z
-      .enum(["development", "test", "production"])
-      .default("development"),
+    IS_PROD: z
+      .string()
+      .toLowerCase()
+      .transform((x) => x === "true")
+      .pipe(z.boolean()),
     DATABASE_AUTH: z.string(),
     PUSHER_SECRET: z.string(),
     PUSHER_APP_ID: z.string(),
@@ -33,7 +35,7 @@ export const env = createEnv({
   runtimeEnv: {
     PUSHER_APP_ID: process.env.PUSHER_APP_ID,
     DATABASE_URL: process.env.DATABASE_URL,
-    NODE_ENV: process.env.NODE_ENV,
+    IS_PROD: process.env.IS_PROD,
     DATABASE_AUTH: process.env.DATABASE_AUTH,
     NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
     PUSHER_SECRET: process.env.PUSHER_SECRET,
