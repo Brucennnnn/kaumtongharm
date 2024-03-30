@@ -69,8 +69,9 @@ model Game {
   description String
   chatId      Int
   chat        Chat         @relation(fields: [chatId], references: [id])
+  roundTime   Int          @default(240)
   isBegin     Boolean      @default(false)
-  startAt     DateTime     @default(now())
+  createdAt   DateTime     @default(now())
   Round       Round[]
   UserResult  UserResult[]
 }
@@ -78,6 +79,7 @@ model Game {
 model Round {
   id         Int          @id @default(autoincrement())
   gameId     Int
+  startedAt  DateTime     @default(now())
   game       Game         @relation(fields: [gameId], references: [id])
   UserResult UserResult[]
 }

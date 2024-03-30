@@ -1,4 +1,4 @@
-export default function ChatWrapper({
+export default function GameWrapper({
   leftside,
   rightside,
 }: {

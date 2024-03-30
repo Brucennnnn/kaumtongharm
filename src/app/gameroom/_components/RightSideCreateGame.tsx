@@ -2,6 +2,7 @@
 
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
+import { api } from "@ktm/trpc/react";
 import { z } from "zod";
 
 import { Button } from "@ktm/components/ui/button";
@@ -18,9 +19,9 @@ import { Input } from "@ktm/components/ui/input";
 
 const formSchema = z.object({
   title: z.string().min(1),
-  maxPlayers: z.number().min(1),
-  round: z.number().min(1),
-  description: z.string().min(1),
+  maxPlayers: z.coerce.number().min(1),
+  rounds: z.coerce.number().min(1),
+  description: z.string().min(1).max(128),
 });
 
 export default function RightSideCreateGame() {
@@ -29,13 +30,20 @@ export default function RightSideCreateGame() {
     defaultValues: {
       title: "Default",
       maxPlayers: 1,
-      round: 1,
+      rounds: 1,
       description: "Hello",
     },
   });
 
+  const createGameRoom = api.game.createGameRoom.useMutation();
+
   function onSubmit(values: z.infer<typeof formSchema>) {
-    console.log(values);
+    createGameRoom.mutate({
+      description: values.description,
+      title: values.title,
+      maxPlayers: values.maxPlayers,
+      rounds: values.rounds,
+    });
   }
 
   return (
@@ -69,7 +77,7 @@ export default function RightSideCreateGame() {
 
         <FormField
           control={form.control}
-          name="round"
+          name="rounds"
           render={({ field }) => (
             <FormItem>
               <FormLabel>Username</FormLabel>

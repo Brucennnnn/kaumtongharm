@@ -5,7 +5,7 @@ import { api } from "@ktm/trpc/react";
 import { redirect } from "next/navigation";
 import { Button } from "@ktm/components/ui/button";
 import { useEffect } from "react";
-export default function Chat({ params }: { params: { chatID: string } }) {
+export default function Chat({ params }: { params: { roomID: string } }) {
   const { isSuccess, data } = api.auth.me.useQuery(undefined, {});
 
   if (isSuccess && !data) {
@@ -15,7 +15,7 @@ export default function Chat({ params }: { params: { chatID: string } }) {
   let chatChannel: Channel | null = null;
   const pusher = usePusher();
 
-  chatChannel = pusher.subscribe(`chat-${params.chatID}`);
+  chatChannel = pusher.subscribe(`chat-${params.roomID}`);
   useEffect(() => {
     if (isSuccess) {
       chatChannel.bind("test", (data: string) => {

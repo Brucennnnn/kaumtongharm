@@ -2,6 +2,7 @@ import { postRouter } from "@ktm/server/api/routers/post";
 import { authRouter } from "@ktm/server/api/routers/auth";
 import { createCallerFactory, createTRPCRouter } from "@ktm/server/api/trpc";
 import { chatRouter } from "./routers/chat";
+import { gameRouter } from "./routers/game";
 
 /**
  * This is the primary router for your server.
@@ -12,6 +13,7 @@ export const appRouter = createTRPCRouter({
   post: postRouter,
   auth: authRouter,
   chat: chatRouter,
+  game: gameRouter,
 });
 
 // export type definition of API
