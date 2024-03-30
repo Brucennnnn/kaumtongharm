@@ -21,6 +21,7 @@ export async function POST(req: NextRequest) {
       },
     );
   }
+
   const userID = session.userId;
 
   const formdata = await req.formData();
@@ -28,6 +29,7 @@ export async function POST(req: NextRequest) {
     channel_name: formdata.get("channel_name"),
     socket_id: formdata.get("socket_id"),
   });
+
   if (channel_name === `private-user-${userID}`) {
     const authorizedResponse = pusher.authorizeChannel(socket_id, channel_name);
     return NextResponse.json(authorizedResponse);
