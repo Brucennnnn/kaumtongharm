@@ -1,8 +1,3 @@
-import { Button } from "@ktm/components/ui/button";
-import { Input } from "@ktm/components/ui/input";
-import { useState } from "react";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import Timer from "./Timer";
 interface LeftSidePagePlayingRoom {
   id: number;
@@ -12,7 +7,7 @@ interface LeftSidePagePlayingRoom {
   description: string;
   chatId: number;
   isBegin: boolean;
-  startAt: Date;
+  createdAt: Date;
 }
 export default function LeftSidePlayingRoom(props: LeftSidePagePlayingRoom) {
   return (

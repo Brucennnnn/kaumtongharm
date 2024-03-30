@@ -79,7 +79,7 @@ model Game {
 model Round {
   id         Int          @id @default(autoincrement())
   gameId     Int
-  startAt    DateTime     @default(now())
+  startedAt  DateTime     @default(now())
   game       Game         @relation(fields: [gameId], references: [id])
   UserResult UserResult[]
 }
