@@ -24,6 +24,12 @@ const config = {
       highlight: "#FF8906",
       orange: "#F25F4C",
       hardpink: "#FF9C9C",
+      lightpink: "#F8EDED",
+    },
+    boxShadow: {
+      none: "none",
+      button: "2px 2px 0px 0px #001858",
+      card: "4px 4px 0px 0px #001858",
     },
     screens: {
       sm: "376px",
