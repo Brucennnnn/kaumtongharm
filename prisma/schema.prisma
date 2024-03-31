@@ -21,8 +21,10 @@ model Chat {
   id           Int            @id @default(autoincrement())
   Message      Message[]
   UsersOnChats UsersOnChats[]
-  Games        Game[]
+  gameId       Int            @unique
+  game         Game           @relation(fields: [gameId], references: [id])
   UserResult   UserResult[]
+  chatId       Int?
 }
 
 model User {
@@ -67,32 +69,32 @@ model Game {
   maxPlayers  Int
   rounds      Int
   description String
-  chatId      Int
-  chat        Chat         @relation(fields: [chatId], references: [id])
   roundTime   Int          @default(240)
   isBegin     Boolean      @default(false)
   createdAt   DateTime     @default(now())
   Round       Round[]
   UserResult  UserResult[]
+  chat        Chat?
 }
 
 model Round {
   id         Int          @id @default(autoincrement())
-  gameId     Int
   startedAt  DateTime     @default(now())
+  gameId     Int
   game       Game         @relation(fields: [gameId], references: [id])
   UserResult UserResult[]
 }
 
 model UserResult {
-  id      Int    @id @default(autoincrement())
-  userId  String
-  user    User   @relation(fields: [userId], references: [id])
-  chatId  Int
-  chat    Chat   @relation(fields: [chatId], references: [id])
-  gameId  Int
-  game    Game   @relation(fields: [gameId], references: [id])
-  roundId Int
-  round   Round  @relation(fields: [roundId], references: [id])
-  point   Int
+  id           Int    @id @default(autoincrement())
+  userId       String
+  kuamTongHarm String
+  user         User   @relation(fields: [userId], references: [id])
+  chatId       Int
+  chat         Chat   @relation(fields: [chatId], references: [id])
+  gameId       Int
+  game         Game   @relation(fields: [gameId], references: [id])
+  roundId      Int
+  round        Round  @relation(fields: [roundId], references: [id])
+  point        Int    @default(0)
 }

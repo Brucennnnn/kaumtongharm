@@ -1,4 +1,5 @@
 import Timer from "./Timer";
+import type { RouterOutputs } from "@ktm/trpc/react";
 interface LeftSidePagePlayingRoom {
   id: number;
   gameTitle: string;
@@ -9,7 +10,18 @@ interface LeftSidePagePlayingRoom {
   isBegin: boolean;
   createdAt: Date;
 }
-export default function LeftSidePlayingRoom(props: LeftSidePagePlayingRoom) {
+
+type UserResultType =
+  NonNullable<RouterOutputs["game"]["getRecentRound"]> extends {
+    UserResult: infer U;
+  }
+    ? U
+    : never;
+export default function LeftSidePlayingRoom(
+  props: {
+    userResult: UserResultType;
+  } & LeftSidePagePlayingRoom,
+) {
   return (
     <div className="flex h-full w-full flex-col gap-3">
       <div className="flex w-full justify-between  ">
