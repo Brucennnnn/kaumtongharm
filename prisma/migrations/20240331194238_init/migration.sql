@@ -9,8 +9,8 @@ CREATE TABLE "Post" (
 -- CreateTable
 CREATE TABLE "Chat" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "gameId" INTEGER NOT NULL,
-    CONSTRAINT "Chat_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "gameRoomId" INTEGER NOT NULL,
+    CONSTRAINT "Chat_gameRoomId_fkey" FOREIGN KEY ("gameRoomId") REFERENCES "GameRoom" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -42,9 +42,9 @@ CREATE TABLE "Message" (
 );
 
 -- CreateTable
-CREATE TABLE "Game" (
+CREATE TABLE "GameRoom" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "gameTitle" TEXT NOT NULL,
+    "roomName" TEXT NOT NULL,
     "maxPlayers" INTEGER NOT NULL,
     "rounds" INTEGER NOT NULL,
     "description" TEXT NOT NULL,
@@ -57,8 +57,8 @@ CREATE TABLE "Game" (
 CREATE TABLE "Round" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "startedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    "gameId" INTEGER NOT NULL,
-    CONSTRAINT "Round_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "gameRoomId" INTEGER NOT NULL,
+    CONSTRAINT "Round_gameRoomId_fkey" FOREIGN KEY ("gameRoomId") REFERENCES "GameRoom" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -66,13 +66,14 @@ CREATE TABLE "UserResult" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "userId" TEXT NOT NULL,
     "kuamTongHarm" TEXT NOT NULL,
+    "status" TEXT NOT NULL DEFAULT 'alive',
     "chatId" INTEGER NOT NULL,
-    "gameId" INTEGER NOT NULL,
+    "gameRoomId" INTEGER NOT NULL,
     "roundId" INTEGER NOT NULL,
     "point" INTEGER NOT NULL DEFAULT 0,
     CONSTRAINT "UserResult_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "UserResult_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "UserResult_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "UserResult_gameRoomId_fkey" FOREIGN KEY ("gameRoomId") REFERENCES "GameRoom" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "UserResult_roundId_fkey" FOREIGN KEY ("roundId") REFERENCES "Round" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
@@ -87,7 +88,7 @@ CREATE TABLE "KaumTongHarm" (
 CREATE INDEX "Post_name_idx" ON "Post"("name");
 
 -- CreateIndex
-CREATE UNIQUE INDEX "Chat_gameId_key" ON "Chat"("gameId");
+CREATE UNIQUE INDEX "Chat_gameRoomId_key" ON "Chat"("gameRoomId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");

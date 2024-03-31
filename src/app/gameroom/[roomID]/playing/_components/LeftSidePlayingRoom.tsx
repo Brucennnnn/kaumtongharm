@@ -1,6 +1,13 @@
+"use client";
+import NameCard from "./NameCard";
 import PlayerCard from "./PlayerCard";
 import Timer from "./Timer";
 import { type RouterOutputs } from "@ktm/trpc/react";
+import { api } from "@ktm/trpc/react";
+import { usePusher } from "@ktm/app/_context/PusherContext";
+import { type Channel } from "pusher-js";
+import { useEffect } from "react";
+
 interface LeftSidePagePlayingRoom {
   id: number;
   roomName: string;
@@ -17,6 +24,23 @@ export default function LeftSidePlayingRoom(props: {
   recentRound: RecentRound;
   gameRoom: GameRoom;
 }) {
+  let chatChannel: Channel | null = null;
+  const pusher = usePusher();
+
+  const utils = api.useUtils();
+  chatChannel = pusher.subscribe(`gameroom-${props.gameRoom.id}`);
+  useEffect(() => {
+    chatChannel.bind("start-round", async (data: string) => {
+      console.log(data);
+      console.log("bruce");
+      await utils.gameRoom.getRecentRound.invalidate();
+    });
+    return () => {
+      chatChannel.unbind_all();
+    };
+  }, [utils, chatChannel]);
+  const { isSuccess, data } = api.auth.me.useQuery();
+  if (isSuccess && !data) return <></>;
   return (
     <div className="flex h-full w-full flex-col gap-3">
       <div className="flex w-full justify-between  ">
@@ -35,6 +59,9 @@ export default function LeftSidePlayingRoom(props: {
 
       <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2">
         {props.recentRound.UserResult.map((e) => {
+          if (e.user.id === data?.userId) {
+            return <NameCard key={e.id} isMe name={e.user.username} />;
+          }
           return (
             <PlayerCard
               key={e.id}

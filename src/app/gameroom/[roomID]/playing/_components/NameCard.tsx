@@ -8,13 +8,13 @@ export default function NameCard({
   name: string;
 }) {
   return (
-    <Button
+    <div
       className={cn(
-        "flex h-fit w-full min-w-[372px] justify-start shadow-button",
+        "flex h-fit w-full min-w-[200px] justify-start rounded-md px-4 py-2 shadow-button",
         isMe ? "bg-lightpink" : "bg-roombg",
       )}
     >
       <div className="h4 font-bold text-stroke">{name}</div>
-    </Button>
+    </div>
   );
 }

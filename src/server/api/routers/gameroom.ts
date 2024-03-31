@@ -38,12 +38,15 @@ export const gameRoomRouter = createTRPCRouter({
         where: {
           id: input.roomId,
         },
+        include: {
+          chat: true,
+        },
       });
     }),
   startRound: publicProcedure
     .input(z.object({ roomId: z.number() }))
     .mutation(async ({ input, ctx }) => {
-      const gameRound = ctx.db.$transaction(async (tx) => {
+      const gameRound = await ctx.db.$transaction(async (tx) => {
         const updateGameState = await tx.gameRoom.update({
           where: {
             id: input.roomId,
@@ -64,7 +67,7 @@ export const gameRoomRouter = createTRPCRouter({
         }
         const createGameRound = await tx.round.create({
           data: {
-            gameId: updateGameState.id,
+            gameRoomId: updateGameState.id,
           },
         });
         const chatId = updateGameState.chat.id;
@@ -85,7 +88,7 @@ export const gameRoomRouter = createTRPCRouter({
                 userId: e.id,
                 kuamTongHarm: ktm.word,
                 chatId: chatId,
-                gameId: updateGameState.id,
+                gameRoomId: updateGameState.id,
                 roundId: createGameRound.id,
               },
               include: {
@@ -97,6 +100,14 @@ export const gameRoomRouter = createTRPCRouter({
 
         return { createGameRound, userResult };
       });
+
+      await Promise.all([
+        ctx.pusher.trigger(
+          `gameroom-${gameRound.createGameRound.gameRoomId}`,
+          "start-round",
+          "hello",
+        ),
+      ]);
       return gameRound;
     }),
   getRecentRound: publicProcedure
@@ -104,7 +115,7 @@ export const gameRoomRouter = createTRPCRouter({
     .query(async ({ input, ctx }) => {
       const result = await ctx.db.round.findFirst({
         where: {
-          gameId: input.roomId,
+          gameRoomId: input.roomId,
         },
         orderBy: {
           id: "desc",

@@ -20,8 +20,8 @@ model Post {
 model Chat {
   id         Int          @id @default(autoincrement())
   Message    Message[]
-  gameId     Int          @unique
-  game       GameRoom     @relation(fields: [gameId], references: [id])
+  gameRoomId Int          @unique
+  gameRoom   GameRoom     @relation(fields: [gameRoomId], references: [id])
   UserResult UserResult[]
   User       User[]
 }
@@ -71,8 +71,8 @@ model GameRoom {
 model Round {
   id         Int          @id @default(autoincrement())
   startedAt  DateTime     @default(now())
-  gameId     Int
-  game       GameRoom     @relation(fields: [gameId], references: [id])
+  gameRoomId Int
+  game       GameRoom     @relation(fields: [gameRoomId], references: [id])
   UserResult UserResult[]
 }
 
@@ -84,8 +84,8 @@ model UserResult {
   user         User     @relation(fields: [userId], references: [id])
   chatId       Int
   chat         Chat     @relation(fields: [chatId], references: [id])
-  gameId       Int
-  game         GameRoom @relation(fields: [gameId], references: [id])
+  gameRoomId   Int
+  game         GameRoom @relation(fields: [gameRoomId], references: [id])
   roundId      Int
   round        Round    @relation(fields: [roundId], references: [id])
   point        Int      @default(0)
