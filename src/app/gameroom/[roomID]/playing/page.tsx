@@ -28,7 +28,7 @@ export default function Page({ params }: { params: { roomId: string } }) {
       <GameWrapper
         leftside={
           round.data?.UserResult ? (
-            <LeftSidePlayingRoom userResult={round.data.UserResult} {...data} />
+            <LeftSidePlayingRoom recentRound={round.data} gameRoom={data} />
           ) : (
             <div>NoUserResult</div>
           )
