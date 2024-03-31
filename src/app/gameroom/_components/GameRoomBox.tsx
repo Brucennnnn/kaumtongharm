@@ -15,7 +15,9 @@ export default function GameRoomBox(props: gameRoomBoxProps) {
     <div
       className={cn(
         "bg-box flex h-[58px] w-full flex-row items-center rounded-md p-2.5",
-        isSelected ? "border border-solid border-stroke" : "",
+        isSelected
+          ? "border-2 border-b-4 border-r-4 border-solid border-stroke"
+          : "",
       )}
     >
       <div className="flex h-full grow flex-col justify-between">

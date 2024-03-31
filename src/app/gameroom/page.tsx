@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import GameRoomList from "./_components/GameRoomList";
 import { type player, type gameRoom } from "./interfaces";
-import CardWrapper from "./_components/CardWrapper";
+import CardWrapper from "./_components/GameWrapper";
 import RightSideCreateGame from "./_components/RightSideCreateGame";
 import GameRoomDetails from "./_components/GameRoomDatails";
 
@@ -188,7 +188,7 @@ export default function Page() {
             <RightSideCreateGame />
           )
         }
-      ></CardWrapper>
+      />
     </div>
   );
 }

@@ -36,7 +36,7 @@ export default function GameRoomList(props: gameRoomListProps) {
     <div className="flex w-full grow flex-col gap-3">
       <div className="flex w-full justify-end">
         <Button
-          className="text-md rounded-md border border-stroke bg-pending font-bold"
+          className="text-md rounded-md border-2 border-b-4 border-r-4 border-stroke bg-pending font-bold"
           onClick={() => {
             setSelectedRoom(null);
           }}
