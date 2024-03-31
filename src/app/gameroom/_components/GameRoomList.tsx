@@ -9,14 +9,14 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface gameRoomListProps {
+  selectedroom: gameRoom | null;
   setSelectedRoom: Dispatch<SetStateAction<gameRoom | null>>;
   allRooms: gameRoom[];
 }
 
 export default function GameRoomList(props: gameRoomListProps) {
   const [searchString, setSearchString] = useState("");
-  const [selectesRoomId, setSelectedRoomId] = useState<string | null>(null);
-  const { allRooms, setSelectedRoom } = props;
+  const { allRooms, setSelectedRoom, selectedroom } = props;
   const [filteredRooms, setFilteredRooms] = useState<gameRoom[]>(allRooms);
 
   useEffect(() => {
@@ -39,7 +39,6 @@ export default function GameRoomList(props: gameRoomListProps) {
           className="text-md rounded-md border border-stroke bg-pending font-bold"
           onClick={() => {
             setSelectedRoom(null);
-            setSelectedRoomId(null);
           }}
         >
           Create Game
@@ -67,7 +66,6 @@ export default function GameRoomList(props: gameRoomListProps) {
                 className="h-fit w-full hover:cursor-pointer hover:opacity-90"
                 key={_index}
                 onClick={() => {
-                  setSelectedRoomId(item._id);
                   setSelectedRoom(item);
                 }}
               >
@@ -76,7 +74,7 @@ export default function GameRoomList(props: gameRoomListProps) {
                   name={item.name}
                   players={item.players}
                   status={item.status}
-                  isSelected={item._id == selectesRoomId}
+                  isSelected={item._id == selectedroom?._id}
                 />
               </div>
             );

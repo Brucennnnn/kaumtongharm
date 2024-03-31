@@ -158,14 +158,12 @@ const room12: gameRoom = {
 };
 export default function Page() {
   const [selectedRoom, setSelectedRoom] = useState<gameRoom | null>(null);
-  useEffect(() => {
-    console.log(selectedRoom);
-  }, [selectedRoom]);
   return (
     <div className="flex h-screen min-h-fit items-center justify-center p-4">
       <CardWrapper
         leftside={
           <GameRoomList
+            selectedroom={selectedRoom}
             setSelectedRoom={setSelectedRoom}
             allRooms={[
               room1,
