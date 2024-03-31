@@ -1,6 +1,7 @@
 import { Button } from "@ktm/components/ui/button";
 import { type gameRoom } from "../interfaces";
 import { cn } from "@ktm/lib/utils";
+import { useRouter } from "next/navigation";
 
 interface GameRoomDetailsProps {
   room: gameRoom;
@@ -8,10 +9,12 @@ interface GameRoomDetailsProps {
 
 export default function GameRoomDetails(props: GameRoomDetailsProps) {
   const { room } = props;
+  const router = useRouter();
   const handleJoin = () => {
     if (room.players.length >= room.maxPlayer) {
       return;
     }
+    router.push(`gameroom/${room._id}/wating`);
   };
   return (
     <div className="flex h-80 min-h-fit w-full flex-col gap-y-3 rounded-2xl bg-main p-3">

@@ -14,14 +14,14 @@ export default function GameRoomBox(props: gameRoomBoxProps) {
   return (
     <div
       className={cn(
-        "bg-box flex h-[58px] w-full flex-row items-center rounded-md p-2.5",
+        "bg-box flex h-fit w-full flex-row items-center rounded-md p-2.5",
         isSelected
           ? "border-2 border-b-4 border-r-4 border-solid border-stroke"
           : "",
       )}
     >
-      <div className="flex h-full grow flex-col justify-between">
-        <div className="line-clamp-1 text-base font-bold text-stroke">
+      <div className="flex h-fit grow flex-col justify-between">
+        <div className="line-clamp-1 h-fit text-base font-bold text-stroke">
           {name}
         </div>
         <div
@@ -33,7 +33,7 @@ export default function GameRoomBox(props: gameRoomBoxProps) {
           {status == 0 ? "Availble" : "In game"}
         </div>
       </div>
-      <div className="text-base font-bold text-stroke">{`${players.length}/${maxPlayer}`}</div>
+      <div className="h-fit text-base font-bold text-stroke">{`${players.length}/${maxPlayer}`}</div>
     </div>
   );
 }
