@@ -17,7 +17,7 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
     router.push(`gameroom/${room._id}/wating`);
   };
   return (
-    <div className="flex h-80 min-h-fit w-full flex-col gap-y-3 rounded-2xl bg-main p-3">
+    <div className="flex h-80 min-h-fit w-full flex-col gap-y-3 rounded-2xl border-[1.5px] border-b-[3px] border-r-[3px] border-solid border-stroke bg-main p-3">
       <div className="flex h-fit w-full flex-col gap-y-2">
         <div className="line-clamp-1 h-fit w-fit max-w-full items-center rounded-md bg-background p-2 text-3xl font-bold text-stroke">
           {room.name}
@@ -37,7 +37,7 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
       <div className="flex h-10 w-full flex-row-reverse">
         <Button
           className={cn(
-            "h-full w-[120px] rounded-md border-2 border-b-4 border-r-4 border-stroke bg-secondary text-base font-bold",
+            "h-full w-[120px] rounded-md border-[1.5px] border-b-[3px] border-r-[3px] border-stroke bg-secondary text-base font-bold",
             room.players.length >= room.maxPlayer ? "cursor-not-allowed" : "",
           )}
           onClick={() => {
