@@ -12,10 +12,14 @@ export default function Timer({
   const [timeLeft, setTimeLeft] = useState("04:00");
   useEffect(() => {
     const timeDiff = deadline - Date.now();
-    const interval = setInterval(
-      () => setTimeLeft(Dayjs(timeDiff).format("mm:ss")),
-      1000,
-    );
+    const interval = setInterval(() => {
+      if (timeDiff > 0) {
+        setTimeLeft(Dayjs(timeDiff).format("mm:ss"));
+      } else {
+        setTimeLeft("00:00");
+      }
+    }, 1000);
+
     return () => clearInterval(interval);
   });
   return (

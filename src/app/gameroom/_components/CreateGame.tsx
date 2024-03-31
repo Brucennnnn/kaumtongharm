@@ -31,7 +31,7 @@ export default function CreateGame() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="shadow-card h-fit w-full min-w-[400px] space-y-2 rounded-2xl bg-main p-3"
+          className="h-fit w-full min-w-[400px] space-y-2 rounded-2xl bg-main p-3 shadow-card"
         >
           <FormField
             control={form.control}
@@ -115,7 +115,7 @@ export default function CreateGame() {
           <div className="flex w-full justify-end p-1">
             <Button
               type="submit"
-              className="shadow-button w-[102px] rounded-md border-stroke bg-pending p-3 text-base font-bold text-stroke"
+              className="w-[102px] rounded-md border-stroke bg-pending p-3 text-base font-bold text-stroke shadow-button"
             >
               Create
             </Button>

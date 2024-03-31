@@ -1,4 +1,4 @@
-export default function GameWrapper({
+export default function GaeeWrapper({
   leftside,
   rightside,
 }: {

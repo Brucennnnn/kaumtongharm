@@ -4,22 +4,22 @@ import { Button } from "@ktm/components/ui/button";
 import { useState } from "react";
 export default function PlayerCard({
   isAlive,
-  Name,
-  Score,
-  Word,
+  name,
+  point,
+  word,
 }: {
   isAlive: boolean;
-  Name: string;
-  Score: number;
-  Word: string;
+  name: string;
+  point: number;
+  word: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
   return (
     <Button
       className={cn(
-        "flex h-fit w-full min-w-[372px] justify-between",
+        "flex h-fit w-full min-w-[200px] justify-between",
         isAlive
-          ? "shadow-button hover:shodow-none bg-roombg  hover:bg-error hover:shadow-none"
+          ? "hover:shodow-none bg-roombg shadow-button  hover:bg-error hover:shadow-none"
           : "cursor-not-allowed bg-roombg opacity-50",
       )}
       onMouseEnter={() => setIsHovered(true)}
@@ -32,12 +32,12 @@ export default function PlayerCard({
       ) : (
         <>
           <div className="flex flex-row gap-2">
-            <div className="h4 font-bold text-stroke">{Name}</div>
+            <div className="h4 font-bold text-stroke">{name}</div>
             {isAlive && (
-              <div className="h4 font-bold text-error">({Score})</div>
+              <div className="h4 font-bold text-error">({point})</div>
             )}
           </div>
-          <div className="h4 font-bold text-stroke">{Word}</div>
+          <div className="h4 font-bold text-stroke">{word}</div>
         </>
       )}
     </Button>
