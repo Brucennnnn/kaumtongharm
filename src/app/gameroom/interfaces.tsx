@@ -5,11 +5,15 @@ export interface player {
 }
 
 export interface gameRoom {
-  _id: string;
-  name: string;
-  status: number; //round 1-?, 0: not started
-  maxRound: number;
+  id: number;
+  gameTitle: string;
+  maxPlayers: number;
+  rounds: number;
+  description: string;
+  chatId: number;
+  roundTime: number;
+  isBegin: boolean;
+  createdAt: Date;
+
   players: player[];
-  maxPlayer: number;
-  details: string;
 }

@@ -23,7 +23,7 @@ export default function GameRoomList(props: gameRoomListProps) {
     if (searchString != "") {
       const tempFilteredRooms: gameRoom[] = [];
       allRooms.map((room: gameRoom) => {
-        if (room.name.includes(searchString)) {
+        if (room.gameTitle.includes(searchString)) {
           tempFilteredRooms.push(room);
         }
       });
@@ -70,11 +70,11 @@ export default function GameRoomList(props: gameRoomListProps) {
                 }}
               >
                 <GameRoomBox
-                  maxPlayer={item.maxPlayer}
-                  name={item.name}
+                  maxPlayer={item.maxPlayers}
+                  name={item.gameTitle}
                   players={item.players}
-                  status={item.status}
-                  isSelected={item._id == selectedroom?._id}
+                  isBegin={item.isBegin}
+                  isSelected={item.id == selectedroom?.id}
                 />
               </div>
             );

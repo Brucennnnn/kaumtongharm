@@ -31,131 +31,111 @@ const p4: player = {
 };
 
 const room1: gameRoom = {
-  _id: "s4dfaw2gv5bi14gry",
-  name: "This is room1 name",
-  status: 3,
-  maxRound: 10,
+  id: 1,
+  gameTitle: "Room 1 name",
+  maxPlayers: 10,
+  rounds: 5,
+  description: "description",
+  chatId: 0,
+  roundTime: 0,
+  isBegin: false,
+  createdAt: new Date(),
   players: [p1, p2],
-  maxPlayer: 10,
-  details: "for thai people only ka",
 };
 
 const room2: gameRoom = {
-  _id: "d0gbjmgub3grj94muh",
-  name: "This is room2 name long long long long long long long long",
-  status: 0,
-  maxRound: 3,
-  players: [p3],
-  maxPlayer: 4,
-  details: "for thai people",
+  id: 2,
+  gameTitle: "Room 2 name",
+  maxPlayers: 5,
+  rounds: 5,
+  description: "description",
+  chatId: 0,
+  roundTime: 0,
+  isBegin: false,
+  createdAt: new Date(),
+  players: [p1, p2, p3],
 };
 
 const room3: gameRoom = {
-  _id: "ufi4vnhrus7bhsg2sji",
-  name: "This is room3 name",
-  status: 2,
-  maxRound: 7,
-  players: [p1, p4, p3],
-  maxPlayer: 5,
-  details: "for thai people kab",
+  id: 3,
+  gameTitle: "Room 3 name",
+  maxPlayers: 8,
+  rounds: 5,
+  description: "description",
+  chatId: 0,
+  roundTime: 0,
+  isBegin: false,
+  createdAt: new Date(),
+  players: [p1, p2, p3, p4],
 };
+
 const room4: gameRoom = {
-  _id: "grugmjtioibodj5ie4",
-  name: "This is room4 name",
-  status: 2,
-  maxRound: 5,
-  players: [p1, p2, p4, p3],
-  maxPlayer: 4,
-  details:
-    "for thai people kab long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long",
+  id: 4,
+  gameTitle: "Room 4 name",
+  maxPlayers: 4,
+  rounds: 5,
+  description: "description",
+  chatId: 0,
+  roundTime: 0,
+  isBegin: false,
+  createdAt: new Date(),
+  players: [p1],
 };
 
 const room5: gameRoom = {
-  _id: "g80sakrhnjmkbdj5ie4",
-  name: "This is room5 name",
-  status: 2,
-  maxRound: 5,
-  players: [p1, p2, p4, p3],
-  maxPlayer: 4,
-  details:
-    "for thai people kab long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long",
+  id: 5,
+  gameTitle: "Room 5 name",
+  maxPlayers: 10,
+  rounds: 5,
+  description: "description",
+  chatId: 0,
+  roundTime: 0,
+  isBegin: false,
+  createdAt: new Date(),
+  players: [p1, p2],
 };
 
 const room6: gameRoom = {
-  _id: "g8klbjmg;ovih67yn1j5ie4",
-  name: "This is room6 name",
-  status: 0,
-  maxRound: 5,
-  players: [p1, p2, p4, p3],
-  maxPlayer: 4,
-  details:
-    "for thai people kab long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long",
+  id: 6,
+  gameTitle: "Room 6 name",
+  maxPlayers: 10,
+  rounds: 5,
+  description: "description",
+  chatId: 0,
+  roundTime: 0,
+  isBegin: false,
+  createdAt: new Date(),
+  players: [p1, p2],
 };
 
 const room7: gameRoom = {
-  _id: "g80sa2sgvir0bklf7evunr5ie4",
-  name: "This is room7 name",
-  status: 2,
-  maxRound: 5,
-  players: [p1, p2, p4, p3],
-  maxPlayer: 4,
-  details:
-    "for thai people kab long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long",
+  id: 7,
+  gameTitle: "Room 7 name",
+  maxPlayers: 10,
+  rounds: 5,
+  description:
+    "description long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long",
+  chatId: 0,
+  roundTime: 0,
+  isBegin: false,
+  createdAt: new Date(),
+  players: [p1, p2],
 };
 
 const room8: gameRoom = {
-  _id: "gshbnrot9ibrbh4estgvjn",
-  name: "This is room8 name",
-  status: 2,
-  maxRound: 5,
-  players: [p1, p2, p4, p3],
-  maxPlayer: 4,
-  details:
-    "for thai people kab long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long",
+  id: 8,
+  gameTitle:
+    "Room 8 name long long long long long long long long long long long long long long long long",
+  maxPlayers: 10,
+  rounds: 5,
+  description: "description",
+  chatId: 0,
+  roundTime: 0,
+  isBegin: false,
+  createdAt: new Date(),
+  players: [p1, p2],
 };
 
-const room9: gameRoom = {
-  _id: "grojmg4gkbt0t0r5ie4",
-  name: "This is room9 name",
-  status: 2,
-  maxRound: 5,
-  players: [p1, p2, p4, p3],
-  maxPlayer: 4,
-  details:
-    "for thai people kab long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long",
-};
-
-const room10: gameRoom = {
-  _id: "gjkbnfkrhinj5ie4",
-  name: "This is room10 name",
-  status: 2,
-  maxRound: 5,
-  players: [p1, p2, p4, p3],
-  maxPlayer: 4,
-  details:
-    "for thai people kab long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long",
-};
-
-const room11: gameRoom = {
-  _id: "gekjbgoribjmrpbro5ie4",
-  name: "This is room11 name",
-  status: 2,
-  maxRound: 5,
-  players: [p1, p2, p4, p3],
-  maxPlayer: 4,
-  details: "for thai people kab long long long",
-};
-
-const room12: gameRoom = {
-  _id: "gdfugovjteobunmo5ie4",
-  name: "This is room12 name",
-  status: 2,
-  maxRound: 5,
-  players: [p1, p2, p4, p3],
-  maxPlayer: 4,
-  details:
-    "for thai people kab long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long",
-};
 export default function Page() {
   const [selectedRoom, setSelectedRoom] = useState<gameRoom | null>(null);
   return (
@@ -165,20 +145,7 @@ export default function Page() {
           <GameRoomList
             selectedroom={selectedRoom}
             setSelectedRoom={setSelectedRoom}
-            allRooms={[
-              room1,
-              room2,
-              room3,
-              room4,
-              room5,
-              room6,
-              room7,
-              room8,
-              room9,
-              room10,
-              room11,
-              room12,
-            ]}
+            allRooms={[room1, room2, room3, room4, room5, room6, room7, room8]}
           />
         }
         rightside={

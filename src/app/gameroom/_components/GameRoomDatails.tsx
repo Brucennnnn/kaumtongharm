@@ -11,34 +11,34 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
   const { room } = props;
   const router = useRouter();
   const handleJoin = () => {
-    if (room.players.length >= room.maxPlayer) {
+    if (room.players.length >= room.maxPlayers) {
       return;
     }
-    router.push(`gameroom/${room._id}/wating`);
+    router.push(`gameroom/${room.id}/wating`);
   };
   return (
     <div className="flex h-80 min-h-fit w-full flex-col gap-y-3 rounded-2xl border-[1.5px] border-b-[3px] border-r-[3px] border-solid border-stroke bg-main p-3">
       <div className="flex h-fit w-full flex-col gap-y-2">
         <div className="line-clamp-1 h-fit w-fit max-w-full items-center rounded-md bg-background p-2 text-3xl font-bold text-stroke">
-          {room.name}
+          {room.gameTitle}
         </div>
         <div className="flex h-fit w-full flex-row gap-x-2.5">
           <div className="line-clamp-1 items-center rounded-md bg-background p-2 text-xl font-bold text-stroke">
-            {`Player: ${room.players.length}/${room.maxPlayer}`}
+            {`Player: ${room.players.length}/${room.maxPlayers}`}
           </div>
           <div className="line-clamp-1 items-center rounded-md bg-background p-2 text-xl font-bold text-stroke">
-            {`${room.maxRound} Rounds`}
+            {`${room.rounds} Rounds`}
           </div>
         </div>
       </div>
       <div className="line-clamp-4 h-full w-full rounded-[10px] bg-background p-3 text-xl font-bold text-stroke">
-        {room.details}
+        {room.description}
       </div>
       <div className="flex h-10 w-full flex-row-reverse">
         <Button
           className={cn(
             "h-full w-[120px] rounded-md border-[1.5px] border-b-[3px] border-r-[3px] border-stroke bg-secondary text-base font-bold",
-            room.players.length >= room.maxPlayer ? "cursor-not-allowed" : "",
+            room.players.length >= room.maxPlayers ? "cursor-not-allowed" : "",
           )}
           onClick={() => {
             handleJoin();

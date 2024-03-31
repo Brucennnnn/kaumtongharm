@@ -3,18 +3,18 @@ import { type player } from "../interfaces";
 
 interface gameRoomBoxProps {
   name: string;
-  status: number; //round 1-?, 0: not started
+  isBegin: boolean;
   players: player[];
   maxPlayer: number;
   isSelected: boolean;
 }
 
 export default function GameRoomBox(props: gameRoomBoxProps) {
-  const { name, status, players, maxPlayer, isSelected } = props;
+  const { name, isBegin, players, maxPlayer, isSelected } = props;
   return (
     <div
       className={cn(
-        "bg-box flex h-fit w-full flex-row items-center rounded-md p-2.5",
+        "flex h-fit w-full flex-row items-center rounded-md bg-box p-2.5",
         isSelected
           ? "border-[1.5px] border-b-[3px] border-r-[3px] border-solid border-stroke"
           : "",
@@ -27,10 +27,10 @@ export default function GameRoomBox(props: gameRoomBoxProps) {
         <div
           className={cn(
             "line-clamp-1 text-xs font-bold text-stroke",
-            status == 0 ? "text-availble" : "text-error",
+            !isBegin ? "text-availble" : "text-error",
           )}
         >
-          {status == 0 ? "Availble" : "In game"}
+          {!isBegin ? "Availble" : "In game"}
         </div>
       </div>
       <div className="h-fit text-base font-bold text-stroke">{`${players.length}/${maxPlayer}`}</div>
