@@ -24,6 +24,7 @@ const config = {
       highlight: "#FF8906",
       orange: "#F25F4C",
       hardpink: "#FF9C9C",
+      lightpink: "#F8EDED",
     },
     screens: {
       sm: "376px",
