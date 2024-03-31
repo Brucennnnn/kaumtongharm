@@ -17,7 +17,7 @@ export default function PlayerCard({
   return (
     <Button
       className={cn(
-        "flex h-fit w-full min-w-[372px] justify-between",
+        "flex h-fit w-full min-w-[200px] justify-between",
         isAlive
           ? "hover:shodow-none bg-roombg shadow-button  hover:bg-error hover:shadow-none"
           : "cursor-not-allowed bg-roombg opacity-50",

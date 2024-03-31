@@ -33,7 +33,7 @@ export default function LeftSidePlayingRoom(props: {
         kjafl;sjdkfja;sdjfksd;lfjsdakfsa;lsssddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
       </div>
 
-      <div className=" w-full flex-1  flex-col rounded-md bg-background p-2">
+      <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2">
         {props.recentRound.UserResult.map((e) => {
           return (
             <PlayerCard
