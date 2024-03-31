@@ -58,7 +58,7 @@ export default function GameRoomList(props: gameRoomListProps) {
           }}
         />
       </div>
-      <div className="flex w-full grow flex-col gap-y-3 overflow-scroll rounded-lg bg-background p-3 scrollbar-hide">
+      <div className="scroll flex w-full grow flex-col gap-y-3 rounded-lg bg-background p-3">
         {filteredRooms && filteredRooms.length != 0 ? (
           filteredRooms.map((item: gameRoom, _index) => {
             return (
