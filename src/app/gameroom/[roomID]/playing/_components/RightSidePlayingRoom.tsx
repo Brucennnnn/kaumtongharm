@@ -5,6 +5,7 @@ import { api } from "@ktm/trpc/react";
 export default function RightSidePlayingRoom(props: { roomId: string }) {
   const startRound = api.gameRoom.startRound.useMutation();
   const joinChat = api.chat.joinChat.useMutation();
+  const exitChat = api.chat.exitChat.useMutation();
 
   const utils = api.useUtils();
   const handleStartRound = async () => {
@@ -16,6 +17,9 @@ export default function RightSidePlayingRoom(props: { roomId: string }) {
   const handleJoinChat = () => {
     joinChat.mutate({ chatId: 1 });
   };
+  const handleExitChat = () => {
+    exitChat.mutate();
+  };
 
   return (
     <div className="flex h-full w-full flex-col ">
@@ -24,6 +28,10 @@ export default function RightSidePlayingRoom(props: { roomId: string }) {
       </Button>
       <Button onClick={() => handleJoinChat()} className="w-fit bg-success">
         Join Chat
+      </Button>
+
+      <Button onClick={() => handleExitChat()} className="w-fit bg-success">
+        Exit Chat
       </Button>
     </div>
   );

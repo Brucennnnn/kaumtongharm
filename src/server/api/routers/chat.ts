@@ -30,4 +30,14 @@ export const chatRouter = createTRPCRouter({
         },
       });
     }),
+  exitChat: userProcedure.mutation(async ({ ctx }) => {
+    await ctx.db.user.update({
+      data: {
+        chatId: null,
+      },
+      where: {
+        id: ctx.session.userId,
+      },
+    });
+  }),
 });
