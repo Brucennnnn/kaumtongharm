@@ -14,7 +14,7 @@ export default function GameRoomBox(props: gameRoomBoxProps) {
   return (
     <div
       className={cn(
-        "flex h-[58px] w-full flex-row items-center rounded-md bg-[#F4C1C1] p-2.5",
+        "bg-box flex h-[58px] w-full flex-row items-center rounded-md p-2.5",
         isSelected ? "border border-solid border-stroke" : "",
       )}
     >
@@ -25,7 +25,7 @@ export default function GameRoomBox(props: gameRoomBoxProps) {
         <div
           className={cn(
             "line-clamp-1 text-xs font-bold text-stroke",
-            status == 0 ? "text-[#63FF60]" : "text-error",
+            status == 0 ? "text-availble" : "text-error",
           )}
         >
           {status == 0 ? "Availble" : "In game"}

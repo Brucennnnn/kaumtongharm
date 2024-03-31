@@ -30,6 +30,8 @@ const config = {
       none: "none",
       button: "2px 2px 0px 0px #001858",
       card: "4px 4px 0px 0px #001858",
+      box: "#F4C1C1",
+      availble: "#63FF60",
     },
     screens: {
       sm: "376px",
