@@ -24,7 +24,6 @@ export default function LeftSidePlayingRoom(props: {
   recentRound: RecentRound;
   gameRoom: GameRoom;
 }) {
-  const { isSuccess, data } = api.auth.me.useQuery();
   let chatChannel: Channel | null = null;
   const pusher = usePusher();
 
@@ -37,24 +36,29 @@ export default function LeftSidePlayingRoom(props: {
       console.log("bruce");
       await utils.gameRoom.getRecentRound.invalidate();
     });
+    // chatChannel.bind("exit-chat", async (data: string) => {
+    //   await utils.gameRoom.getRecentRound.invalidate();
+    // });
 
     return () => {
       chatChannel.unbind_all();
     };
   }, [utils, chatChannel]);
-
   useEffect(() => {
-    const beforeUnload = (event: BeforeUnloadEvent) => {
+    function beforeUnload(e: BeforeUnloadEvent) {
+      e.preventDefault();
       exitChat.mutate();
-      event.preventDefault();
-    };
+    }
+
     window.addEventListener("beforeunload", beforeUnload);
+
     return () => {
       window.removeEventListener("beforeunload", beforeUnload);
     };
-  });
-
+  }, [exitChat]);
+  const { isSuccess, data } = api.auth.me.useQuery();
   if (isSuccess && !data) return <></>;
+
   return (
     <div className="flex h-full w-full flex-col gap-3">
       <div className="flex w-full justify-between  ">
