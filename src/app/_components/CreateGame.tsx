@@ -14,10 +14,10 @@ import {
 } from "@ktm/components/ui/form";
 
 const formSchema = z.object({
-  roomName: z.string(),
-  maxPlayer: z.number(),
-  round: z.number(),
-  detail: z.string(),
+  roomName: z.string().min(1),
+  maxPlayer: z.coerce.number().min(3),
+  round: z.coerce.number().min(1),
+  detail: z.string().min(10).max(200),
 });
 function onSubmit(data: z.infer<typeof formSchema>) {
   console.log(data);
@@ -27,11 +27,11 @@ export default function CreateGame() {
     resolver: zodResolver(formSchema),
   });
   return (
-    <div className="h-fit w-fit">
+    <div className="h-fit w-full">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="h-[363px] w-[400px] space-y-2 rounded-2xl border-b border-b-4 border-r border-r-4 bg-main p-3"
+          className="shadow-card h-fit w-full min-w-[400px] space-y-2 rounded-2xl bg-main p-3"
         >
           <FormField
             control={form.control}
@@ -103,7 +103,7 @@ export default function CreateGame() {
                     <FormControl>
                       <Textarea
                         placeholder="Detail"
-                        className="h-[125px] w-full rounded-md border-none bg-background p-0  text-base text-stroke focus-visible:ring-0 focus-visible:ring-offset-0"
+                        className="resize-none rounded-md border-none bg-background p-0  text-base text-stroke focus-visible:ring-0 focus-visible:ring-offset-0"
                         {...field}
                       />
                     </FormControl>
@@ -115,7 +115,7 @@ export default function CreateGame() {
           <div className="flex w-full justify-end p-1">
             <Button
               type="submit"
-              className="w-[102px] rounded-md border-b border-b-[3px] border-r border-r-[3px] border-stroke bg-pending p-3 text-base font-bold text-stroke"
+              className="shadow-button w-[102px] rounded-md border-stroke bg-pending p-3 text-base font-bold text-stroke"
             >
               Create
             </Button>

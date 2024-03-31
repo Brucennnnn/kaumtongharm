@@ -2,19 +2,25 @@
 import { cn } from "@ktm/lib/utils";
 import { Button } from "@ktm/components/ui/button";
 import { useState } from "react";
-export default function PlayerCard() {
+export default function PlayerCard({
+  isAlive,
+  Name,
+  Score,
+  Word,
+}: {
+  isAlive: boolean;
+  Name: string;
+  Score: number;
+  Word: string;
+}) {
   const [isHovered, setIsHovered] = useState(false);
-  const isAlive = true;
   return (
     <Button
       className={cn(
-        "flex h-fit w-[372px] justify-between",
+        "flex h-fit w-full min-w-[372px] justify-between",
         isAlive
-          ? "border-b border-b-[3px] border-r border-r-[3px] bg-roombg"
+          ? "shadow-button hover:shodow-none bg-roombg  hover:bg-error hover:shadow-none"
           : "cursor-not-allowed bg-roombg opacity-50",
-        {
-          "border-none hover:bg-error": isAlive && isHovered,
-        },
       )}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
@@ -26,10 +32,12 @@ export default function PlayerCard() {
       ) : (
         <>
           <div className="flex flex-row gap-2">
-            <div className="h4 font-bold text-stroke">Player 1</div>
-            {isAlive && <div className="h4 font-bold text-error">(5)</div>}
+            <div className="h4 font-bold text-stroke">{Name}</div>
+            {isAlive && (
+              <div className="h4 font-bold text-error">({Score})</div>
+            )}
           </div>
-          <div className="h4 font-bold text-stroke">แฟน</div>
+          <div className="h4 font-bold text-stroke">{Word}</div>
         </>
       )}
     </Button>

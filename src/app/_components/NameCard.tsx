@@ -1,15 +1,20 @@
 import { cn } from "@ktm/lib/utils";
 import { Button } from "@ktm/components/ui/button";
-export default function NameCard() {
-  const isMe = true;
+export default function NameCard({
+  isMe,
+  Name,
+}: {
+  isMe: boolean;
+  Name: string;
+}) {
   return (
     <Button
       className={cn(
-        "flex flex h-fit w-[372px] justify-start border-b border-b-[3px] border-r border-r-[3px]",
+        "shadow-button flex flex h-fit w-full min-w-[372px] justify-start",
         isMe ? "bg-lightpink" : "bg-roombg",
       )}
     >
-      <div className="h4 font-bold text-stroke">Mejai</div>
+      <div className="h4 font-bold text-stroke">{Name}</div>
     </Button>
   );
 }
