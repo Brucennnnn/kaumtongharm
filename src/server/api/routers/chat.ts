@@ -21,10 +21,12 @@ export const chatRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.usersOnChats.create({
+      await ctx.db.user.update({
         data: {
           chatId: input.chatId,
-          userId: ctx.session.userId,
+        },
+        where: {
+          id: ctx.session.userId,
         },
       });
     }),

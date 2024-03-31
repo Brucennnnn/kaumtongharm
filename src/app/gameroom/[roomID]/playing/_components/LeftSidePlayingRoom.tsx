@@ -1,34 +1,26 @@
+import PlayerCard from "./PlayerCard";
 import Timer from "./Timer";
-import type { RouterOutputs } from "@ktm/trpc/react";
+import { type RouterOutputs } from "@ktm/trpc/react";
 interface LeftSidePagePlayingRoom {
   id: number;
-  gameTitle: string;
+  roomName: string;
   maxPlayers: number;
   rounds: number;
   description: string;
-  chatId: number;
   isBegin: boolean;
   createdAt: Date;
 }
 
-type UserResultType =
-  NonNullable<RouterOutputs["game"]["getRecentRound"]> extends {
-    UserResult: infer U;
-  }
-    ? U
-    : never;
+type RecentRound = NonNullable<RouterOutputs["gameRoom"]["getRecentRound"]>;
 export default function LeftSidePlayingRoom(
-  props: {
-    userResult: UserResultType;
-  } & LeftSidePagePlayingRoom,
+  props: RecentRound & LeftSidePagePlayingRoom,
 ) {
   return (
     <div className="flex h-full w-full flex-col gap-3">
       <div className="flex w-full justify-between  ">
         <div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
-          {props.gameTitle}
+          {props.roomName}
         </div>
-
         <div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
           Players: {props.maxPlayers}
         </div>
@@ -38,9 +30,21 @@ export default function LeftSidePlayingRoom(
         kjafl;sjdkfja;sdjfksd;lfjsdakfsa;lsssddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
       </div>
 
-      <div className=" w-full flex-1  flex-col rounded-md bg-background p-2"></div>
+      <div className=" w-full flex-1  flex-col rounded-md bg-background p-2">
+        {props.UserResult.map((e) => {
+          return (
+            <PlayerCard
+              key={e.id}
+              name={e.user.username}
+              isAlive={e.status === "alive"}
+              point={e.point}
+              word={e.kuamTongHarm}
+            />
+          );
+        })}
+      </div>
 
-      <Timer deadline={new Date().valueOf() + 240000} />
+      <Timer deadline={props.startedAt.valueOf() + 240000} />
     </div>
   );
 }

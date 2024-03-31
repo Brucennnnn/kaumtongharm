@@ -1,12 +1,25 @@
 -- CreateTable
+CREATE TABLE "Post" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "name" TEXT NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" DATETIME NOT NULL
+);
+
+-- CreateTable
 CREATE TABLE "Chat" (
-    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "gameId" INTEGER NOT NULL,
+    CONSTRAINT "Chat_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "User" (
     "id" TEXT NOT NULL PRIMARY KEY,
-    "name" TEXT NOT NULL
+    "username" TEXT NOT NULL,
+    "hashedPassword" TEXT NOT NULL,
+    "chatId" INTEGER,
+    CONSTRAINT "User_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat" ("id") ON DELETE SET NULL ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -18,16 +31,6 @@ CREATE TABLE "Session" (
 );
 
 -- CreateTable
-CREATE TABLE "UsersOnChats" (
-    "userId" TEXT NOT NULL,
-    "chatId" INTEGER NOT NULL,
-
-    PRIMARY KEY ("userId", "chatId"),
-    CONSTRAINT "UsersOnChats_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "UsersOnChats_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
-);
-
--- CreateTable
 CREATE TABLE "Message" (
     "id" TEXT NOT NULL PRIMARY KEY,
     "message" TEXT NOT NULL,
@@ -35,21 +38,25 @@ CREATE TABLE "Message" (
     "chatId" INTEGER NOT NULL,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     CONSTRAINT "Message_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
-    CONSTRAINT "Message_sender_fkey" FOREIGN KEY ("sender") REFERENCES "User" ("name") ON DELETE RESTRICT ON UPDATE CASCADE
+    CONSTRAINT "Message_sender_fkey" FOREIGN KEY ("sender") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
 CREATE TABLE "Game" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
-    "chatId" INTEGER NOT NULL,
-    "isBegin" BOOLEAN NOT NULL,
-    "startAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
-    CONSTRAINT "Game_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+    "gameTitle" TEXT NOT NULL,
+    "maxPlayers" INTEGER NOT NULL,
+    "rounds" INTEGER NOT NULL,
+    "description" TEXT NOT NULL,
+    "roundTime" INTEGER NOT NULL DEFAULT 240,
+    "isBegin" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
 
 -- CreateTable
 CREATE TABLE "Round" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "startedAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "gameId" INTEGER NOT NULL,
     CONSTRAINT "Round_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
@@ -58,15 +65,29 @@ CREATE TABLE "Round" (
 CREATE TABLE "UserResult" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "userId" TEXT NOT NULL,
+    "kuamTongHarm" TEXT NOT NULL,
     "chatId" INTEGER NOT NULL,
     "gameId" INTEGER NOT NULL,
     "roundId" INTEGER NOT NULL,
-    "point" INTEGER NOT NULL,
+    "point" INTEGER NOT NULL DEFAULT 0,
     CONSTRAINT "UserResult_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "UserResult_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "UserResult_gameId_fkey" FOREIGN KEY ("gameId") REFERENCES "Game" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "UserResult_roundId_fkey" FOREIGN KEY ("roundId") REFERENCES "Round" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
+-- CreateTable
+CREATE TABLE "KaumTongHarm" (
+    "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
+    "word" TEXT NOT NULL,
+    "type" TEXT
+);
+
 -- CreateIndex
-CREATE UNIQUE INDEX "User_name_key" ON "User"("name");
+CREATE INDEX "Post_name_idx" ON "Post"("name");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "Chat_gameId_key" ON "Chat"("gameId");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "User_username_key" ON "User"("username");

@@ -1,11 +1,11 @@
 import { createTRPCRouter, publicProcedure } from "@ktm/server/api/trpc";
 import { z } from "zod";
-import { type Prisma } from "@prisma/client";
-export const gameRouter = createTRPCRouter({
+import { Prisma, type KaumTongHarm } from "@prisma/client";
+export const gameRoomRouter = createTRPCRouter({
   createGameRoom: publicProcedure
     .input(
       z.object({
-        title: z.string().min(1),
+        roomName: z.string().min(1),
         maxPlayers: z.number().min(1),
         rounds: z.number().min(1),
         description: z.string().min(1),
@@ -13,9 +13,9 @@ export const gameRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const gameRoom = await ctx.db.$transaction(async (tx) => {
-        const gameRoom = await tx.game.create({
+        const gameRoom = await tx.gameRoom.create({
           data: {
-            gameTitle: input.title,
+            roomName: input.roomName,
             maxPlayers: input.maxPlayers,
             rounds: input.rounds,
             description: input.description,
@@ -29,12 +29,12 @@ export const gameRouter = createTRPCRouter({
       return gameRoom;
     }),
   getAllGameRoom: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.db.game.findMany();
+    return await ctx.db.gameRoom.findMany();
   }),
   getGameRoom: publicProcedure
     .input(z.object({ roomId: z.number() }))
     .query(async ({ input, ctx }) => {
-      return await ctx.db.game.findFirst({
+      return await ctx.db.gameRoom.findFirst({
         where: {
           id: input.roomId,
         },
@@ -44,7 +44,7 @@ export const gameRouter = createTRPCRouter({
     .input(z.object({ roomId: z.number() }))
     .mutation(async ({ input, ctx }) => {
       const gameRound = ctx.db.$transaction(async (tx) => {
-        const updateGameState = await tx.game.update({
+        const updateGameState = await tx.gameRoom.update({
           where: {
             id: input.roomId,
           },
@@ -54,26 +54,42 @@ export const gameRouter = createTRPCRouter({
           include: {
             chat: {
               include: {
-                UsersOnChats: true,
+                User: true,
               },
             },
           },
         });
+        if (!updateGameState || !updateGameState.chat) {
+          throw Error("gameid is invalid");
+        }
         const createGameRound = await tx.round.create({
           data: {
             gameId: updateGameState.id,
           },
         });
+        const chatId = updateGameState.chat.id;
 
+        const kuamTongHarm: KaumTongHarm[] = await tx.$queryRaw(
+          Prisma.sql`SELECT * FROM kaumTongHarm ORDER BY random() LIMIT ${updateGameState.chat.User.length}`,
+        );
+        if (kuamTongHarm.length !== updateGameState.chat.User.length)
+          throw new Error("word is not enough");
         const userResult = await Promise.all(
-          updateGameState.chat.UsersOnChats.map(async (e) => {
+          updateGameState.chat.User.map(async (e, index) => {
+            const ktm = kuamTongHarm[index];
+            if (!ktm) {
+              throw new Error(`word at index ${index} is undefined`);
+            }
             return await tx.userResult.create({
               data: {
-                userId: e.userId,
-                kuamTongHarm: "hello",
-                chatId: updateGameState.chat.id,
+                userId: e.id,
+                kuamTongHarm: ktm.word,
+                chatId: chatId,
                 gameId: updateGameState.id,
                 roundId: createGameRound.id,
+              },
+              include: {
+                user: true,
               },
             });
           }),
@@ -86,16 +102,21 @@ export const gameRouter = createTRPCRouter({
   getRecentRound: publicProcedure
     .input(z.object({ roomId: z.number() }))
     .query(async ({ input, ctx }) => {
-      return await ctx.db.round.findFirst({
+      const result = await ctx.db.round.findFirst({
         where: {
           gameId: input.roomId,
         },
         orderBy: {
           id: "desc",
         },
-        select: {
-          UserResult: true,
+        include: {
+          UserResult: {
+            include: {
+              user: true,
+            },
+          },
         },
       });
+      return result;
     }),
 });
