@@ -1,6 +1,7 @@
 "use client";
-import { validateRequest } from "@ktm/server/api/auth";
-import { api } from "@ktm/trpc/react";
+import { useEffect } from "react";
+import { socket } from "./socket";
+import { Button } from "@ktm/components/ui/button";
 
 export default function Page() {
   const user = api.auth.me.useQuery();
