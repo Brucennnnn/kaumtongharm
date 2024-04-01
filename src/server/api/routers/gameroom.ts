@@ -52,6 +52,7 @@ export const gameRoomRouter = createTRPCRouter({
           },
         },
       });
+      if (!res) throw new Error("internal error");
       return res;
     }),
   getGameRoom: publicProcedure

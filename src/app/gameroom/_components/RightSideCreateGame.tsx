@@ -39,14 +39,13 @@ export default function RightSideCreateGame() {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
-      await createGameRoom.mutateAsync({
+      const data = await createGameRoom.mutateAsync({
         description: values.description,
         roomName: values.roomName,
         maxPlayers: values.maxPlayers,
         rounds: values.rounds,
       });
-      const gameroom = createGameRoom.data;
-      router.push(`gameroom/${gameroom?.id}`);
+      router.push(`gameroom/${data.id}`);
     } catch (error) {
       if (error instanceof Error) {
         console.log(error.message);
