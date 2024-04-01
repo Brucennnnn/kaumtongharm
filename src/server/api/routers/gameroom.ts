@@ -44,6 +44,13 @@ export const gameRoomRouter = createTRPCRouter({
             contains: input.searchQuery,
           },
         },
+        include: {
+          chat: {
+            include: {
+              User: true,
+            },
+          },
+        },
       });
       return res;
     }),

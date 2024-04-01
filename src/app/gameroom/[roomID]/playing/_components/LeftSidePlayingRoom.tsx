@@ -29,7 +29,7 @@ export default function LeftSidePlayingRoom(props: {
   let chatChannel: Channel | null = null;
   const pusher = usePusher();
   const deadTime = props.recentRound.startedAt.valueOf() + 24000;
-
+  const isEnd = new Date().valueOf() >= deadTime;
   const utils = api.useUtils();
   const exitChat = api.chat.exitChat.useMutation();
   chatChannel = pusher.subscribe(`gameroom-${props.gameRoom.id}`);
@@ -88,7 +88,7 @@ export default function LeftSidePlayingRoom(props: {
 
       <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2">
         {props.recentRound.UserResult.map((e) => {
-          if (e.user.id !== data?.userId) {
+          if (!isEnd && e.user.id !== data?.userId) {
             return (
               <PlayerCard
                 userId={e.user.id}
@@ -106,7 +106,7 @@ export default function LeftSidePlayingRoom(props: {
         })}
       </div>
 
-      {new Date().valueOf() <= deadTime ? <Timer deadline={timeLeft} /> : ""}
+      {isEnd ? "" : <Timer deadline={timeLeft} />}
     </div>
   );
 }
