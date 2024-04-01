@@ -1,7 +1,9 @@
 import "@ktm/styles/globals.css";
+import { config } from "@fortawesome/fontawesome-svg-core";
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "@ktm/trpc/react";
 
+config.autoAddCss = false;
 const inter = Inter({
   subsets: ["latin"],
   variable: "--font-sans",

@@ -24,7 +24,7 @@ export default function Page({ params }: { params: { roomId: string } }) {
   console.log(round.data);
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center bg-bgImage">
       <GameWrapper
         leftside={
           round.data?.UserResult ? (
@@ -33,7 +33,9 @@ export default function Page({ params }: { params: { roomId: string } }) {
             <div>NoUserResult</div>
           )
         }
-        rightside={<RightSidePlayingRoom roomId={params.roomId} />}
+        rightside={
+          <RightSidePlayingRoom roomId={params.roomId} chatId={data.chat?.id} />
+        }
       ></GameWrapper>
     </div>
   );

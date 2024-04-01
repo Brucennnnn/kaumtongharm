@@ -2,18 +2,37 @@
 import { cn } from "@ktm/lib/utils";
 import { Button } from "@ktm/components/ui/button";
 import { useState } from "react";
+import { api } from "@ktm/trpc/react";
 export default function PlayerCard({
   isAlive,
   name,
+  chatId,
+  roundId,
+  userId,
   point,
   word,
 }: {
   isAlive: boolean;
+  userId: string;
+  chatId: number;
+  roundId: number;
   name: string;
   point: number;
   word: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
+  const vote = api.gameAction.voteToUser.useMutation();
+
+  const utils = api.useUtils();
+  async function handleOnVote() {
+    vote.mutate({
+      chatId: chatId,
+      roundId: roundId,
+      toUser: userId,
+    });
+    await utils.gameRoom.getRecentRound.invalidate();
+  }
+
   return (
     <Button
       className={cn(
@@ -22,6 +41,8 @@ export default function PlayerCard({
           ? "hover:shodow-none bg-roombg shadow-button  hover:bg-error hover:shadow-none"
           : "cursor-not-allowed bg-roombg opacity-50",
       )}
+      disabled={!isAlive}
+      onClick={handleOnVote}
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
     >

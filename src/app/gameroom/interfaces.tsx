@@ -8,5 +8,5 @@ export interface gameRoom {
   roundTime: number;
   isBegin: boolean;
   createdAt: Date;
-  currentPlayers?: number;
+  currentPlayers: number;
 }

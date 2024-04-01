@@ -45,12 +45,14 @@ CREATE TABLE "Message" (
 CREATE TABLE "GameRoom" (
     "id" INTEGER NOT NULL PRIMARY KEY AUTOINCREMENT,
     "roomName" TEXT NOT NULL,
+    "hostId" TEXT NOT NULL,
     "maxPlayers" INTEGER NOT NULL,
     "rounds" INTEGER NOT NULL,
     "description" TEXT NOT NULL,
     "roundTime" INTEGER NOT NULL DEFAULT 240,
     "isBegin" BOOLEAN NOT NULL DEFAULT false,
-    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    CONSTRAINT "GameRoom_hostId_fkey" FOREIGN KEY ("hostId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable
@@ -70,11 +72,24 @@ CREATE TABLE "UserResult" (
     "chatId" INTEGER NOT NULL,
     "gameRoomId" INTEGER NOT NULL,
     "roundId" INTEGER NOT NULL,
-    "point" INTEGER NOT NULL DEFAULT 0,
+    "point" INTEGER NOT NULL DEFAULT 1,
     CONSTRAINT "UserResult_userId_fkey" FOREIGN KEY ("userId") REFERENCES "User" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "UserResult_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "UserResult_gameRoomId_fkey" FOREIGN KEY ("gameRoomId") REFERENCES "GameRoom" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
     CONSTRAINT "UserResult_roundId_fkey" FOREIGN KEY ("roundId") REFERENCES "Round" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
+);
+
+-- CreateTable
+CREATE TABLE "UserVote" (
+    "voterId" TEXT NOT NULL,
+    "voteToId" TEXT NOT NULL,
+    "roundId" INTEGER NOT NULL,
+    "chatId" INTEGER NOT NULL,
+    "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+
+    PRIMARY KEY ("voterId", "voteToId", "roundId", "chatId"),
+    CONSTRAINT "UserVote_roundId_fkey" FOREIGN KEY ("roundId") REFERENCES "Round" ("id") ON DELETE RESTRICT ON UPDATE CASCADE,
+    CONSTRAINT "UserVote_chatId_fkey" FOREIGN KEY ("chatId") REFERENCES "Chat" ("id") ON DELETE RESTRICT ON UPDATE CASCADE
 );
 
 -- CreateTable

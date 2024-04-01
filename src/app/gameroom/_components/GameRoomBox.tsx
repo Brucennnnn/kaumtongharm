@@ -6,7 +6,7 @@ import { type Dispatch, type SetStateAction } from "react";
 
 interface gameRoomBoxProps {
   selectedroom: gameRoom | null;
-  room: gameRoom | null;
+  room: gameRoom;
   setSelectedRoom: Dispatch<SetStateAction<gameRoom | null>>;
 }
 

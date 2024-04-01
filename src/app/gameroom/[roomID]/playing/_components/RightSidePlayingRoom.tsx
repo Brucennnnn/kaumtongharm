@@ -2,7 +2,10 @@
 import { Button } from "@ktm/components/ui/button";
 import { api } from "@ktm/trpc/react";
 
-export default function RightSidePlayingRoom(props: { roomId: string }) {
+export default function RightSidePlayingRoom(props: {
+  roomId: string;
+  chatId?: number;
+}) {
   const startRound = api.gameRoom.startRound.useMutation();
   const joinChat = api.chat.joinChat.useMutation();
   const exitChat = api.chat.exitChat.useMutation();
@@ -15,7 +18,7 @@ export default function RightSidePlayingRoom(props: { roomId: string }) {
     await utils.gameRoom.getRecentRound.invalidate();
   };
   const handleJoinChat = () => {
-    joinChat.mutate({ chatId: 1 });
+    if (props.chatId) joinChat.mutate({ chatId: props.chatId });
   };
   const handleExitChat = () => {
     exitChat.mutate();
@@ -29,7 +32,6 @@ export default function RightSidePlayingRoom(props: { roomId: string }) {
       <Button onClick={() => handleJoinChat()} className="w-fit bg-success">
         Join Chat
       </Button>
-
       <Button onClick={() => handleExitChat()} className="w-fit bg-success">
         Exit Chat
       </Button>

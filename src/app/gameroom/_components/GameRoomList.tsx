@@ -7,16 +7,21 @@ import { Button } from "@ktm/components/ui/button";
 import { Input } from "@ktm/components/ui/input";
 import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { type RouterOutputs } from "@ktm/trpc/react";
 
 interface gameRoomListProps {
   setSearchString: Dispatch<SetStateAction<string>>;
   selectedroom: gameRoom | null;
   setSelectedRoom: Dispatch<SetStateAction<gameRoom | null>>;
-  allRooms: gameRoom[];
+  allGameRoom: allGameRoom;
 }
 
+type allGameRoom = NonNullable<
+  RouterOutputs["gameRoom"]["getGameRoomsByFilter"]
+>;
+
 export default function GameRoomList(props: gameRoomListProps) {
-  const { allRooms, setSelectedRoom, selectedroom, setSearchString } = props;
+  const { allGameRoom, setSelectedRoom, selectedroom, setSearchString } = props;
   return (
     <div className="flex w-full grow flex-col gap-3">
       <div className="flex w-full justify-end">
@@ -32,8 +37,8 @@ export default function GameRoomList(props: gameRoomListProps) {
       <div className="relative w-full">
         <FontAwesomeIcon
           icon={faSearch}
-          className="absolute left-3 top-3 self-center text-stroke"
-          size="lg"
+          className="absolute left-3 top-2.5  self-center text-2xl text-stroke"
+          width="16"
         />
         <Input
           placeholder="Search Room"
@@ -44,22 +49,29 @@ export default function GameRoomList(props: gameRoomListProps) {
         />
       </div>
       <div className="scroll flex w-full grow flex-col gap-y-3 rounded-lg bg-background p-3">
-        {allRooms && allRooms.length != 0 ? (
-          allRooms.map((item: gameRoom, _index) => {
-            return (
-              <GameRoomBox
-                key={item.id}
-                room={item}
-                selectedroom={selectedroom}
-                setSelectedRoom={setSelectedRoom}
-              />
-            );
-          })
-        ) : (
-          <div className="flex h-full w-full items-center justify-center font-semibold text-main">
-            no results
-          </div>
-        )}
+        {allGameRoom.map((item, index) => {
+          return (
+            <GameRoomBox
+              key={item.id}
+              room={
+                {
+                  id: item.id,
+                  roomName: item.roomName,
+                  maxPlayers: item.maxPlayers,
+                  rounds: item.rounds,
+                  description: item.description,
+                  chatId: item.chat?.id,
+                  roundTime: item.roundTime,
+                  isBegin: item.isBegin,
+                  createdAt: item.createdAt,
+                  currentPlayers: item.chat?.User.length,
+                } as gameRoom
+              }
+              selectedroom={selectedroom}
+              setSelectedRoom={setSelectedRoom}
+            />
+          );
+        })}
       </div>
     </div>
   );
