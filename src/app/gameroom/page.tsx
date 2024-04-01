@@ -136,6 +136,8 @@ const room8: gameRoom = {
   players: [p1, p2],
 };
 
+const allRooms = [room1, room2, room3, room4, room5, room6, room7, room8];
+
 export default function Page() {
   const [selectedRoom, setSelectedRoom] = useState<gameRoom | null>(null);
   return (
@@ -145,7 +147,7 @@ export default function Page() {
           <GameRoomList
             selectedroom={selectedRoom}
             setSelectedRoom={setSelectedRoom}
-            allRooms={[room1, room2, room3, room4, room5, room6, room7, room8]}
+            allRooms={allRooms}
           />
         }
         rightside={
