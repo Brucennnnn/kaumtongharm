@@ -1,8 +1,12 @@
-import { createTRPCRouter, publicProcedure } from "@ktm/server/api/trpc";
+import {
+  createTRPCRouter,
+  publicProcedure,
+  userProcedure,
+} from "@ktm/server/api/trpc";
 import { z } from "zod";
 import { Prisma, type KaumTongHarm } from "@prisma/client";
 export const gameRoomRouter = createTRPCRouter({
-  createGameRoom: publicProcedure
+  createGameRoom: userProcedure
     .input(
       z.object({
         roomName: z.string().min(1),
@@ -19,6 +23,7 @@ export const gameRoomRouter = createTRPCRouter({
             maxPlayers: input.maxPlayers,
             rounds: input.rounds,
             description: input.description,
+            hostId: ctx.session.userId,
             chat: {
               create: {},
             },
