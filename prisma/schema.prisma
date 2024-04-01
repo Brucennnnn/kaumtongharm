@@ -36,6 +36,7 @@ model User {
   UserResult     UserResult[]
   Session        Session[]
   chatId         Int?
+  GameRoom       GameRoom[]
 }
 
 model Session {
@@ -58,6 +59,8 @@ model Message {
 model GameRoom {
   id          Int          @id @default(autoincrement())
   roomName    String
+  hostId      String
+  user        User         @relation(fields: [hostId], references: [id])
   maxPlayers  Int
   rounds      Int
   description String
