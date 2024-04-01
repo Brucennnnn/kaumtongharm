@@ -14,7 +14,8 @@ export default function Page() {
     searchQuery: searchString,
   });
   return (
-    <div className="flex h-screen min-h-fit items-center justify-center p-4">
+
+    <div className="bg-bgImage flex h-screen min-h-fit items-center justify-center p-4">
       <CardWrapper
         leftside={
           <GameRoomList
