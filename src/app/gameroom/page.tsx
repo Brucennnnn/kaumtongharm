@@ -64,7 +64,7 @@ const room3: gameRoom = {
   description: "description",
   chatId: 0,
   roundTime: 0,
-  isBegin: false,
+  isBegin: true,
   createdAt: new Date(),
   players: [p1, p2, p3, p4],
 };
@@ -77,7 +77,7 @@ const room4: gameRoom = {
   description: "description",
   chatId: 0,
   roundTime: 0,
-  isBegin: false,
+  isBegin: true,
   createdAt: new Date(),
   players: [p1],
 };
@@ -114,7 +114,7 @@ const room7: gameRoom = {
   maxPlayers: 10,
   rounds: 5,
   description:
-    "description long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long",
+    "description long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long long",
   chatId: 0,
   roundTime: 0,
   isBegin: false,

@@ -17,9 +17,9 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
     router.push(`gameroom/${room.id}/wating`);
   };
   return (
-    <div className="flex h-80 min-h-fit w-full flex-col gap-y-3 rounded-2xl border-[1.5px] border-b-[3px] border-r-[3px] border-solid border-stroke bg-main p-3">
+    <div className="flex h-80 min-h-fit w-full flex-col gap-y-3 rounded-2xl border-2 border-stroke bg-main p-3 shadow-card">
       <div className="flex h-fit w-full flex-col gap-y-2">
-        <div className="line-clamp-1 h-fit w-fit max-w-full items-center rounded-md bg-background p-2 text-3xl font-bold text-stroke">
+        <div className="line-clamp-1 h-fit w-fit max-w-full items-center rounded-md bg-background p-2 text-3xl font-bold leading-10 text-stroke">
           {room.gameTitle}
         </div>
         <div className="flex h-fit w-full flex-row gap-x-2.5">
@@ -31,13 +31,13 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
           </div>
         </div>
       </div>
-      <div className="line-clamp-4 h-full w-full rounded-[10px] bg-background p-3 text-xl font-bold text-stroke">
+      <div className="line-clamp-4 h-full w-full rounded-[10px] bg-background p-3 py-1 text-xl font-bold text-stroke">
         {room.description}
       </div>
       <div className="flex h-10 w-full flex-row-reverse">
         <Button
           className={cn(
-            "h-full w-[120px] rounded-md border-[1.5px] border-b-[3px] border-r-[3px] border-stroke bg-secondary text-base font-bold",
+            "h-full w-[120px] rounded-md border-2 border-stroke bg-secondary text-base font-bold shadow-button",
             room.players.length >= room.maxPlayers ? "cursor-not-allowed" : "",
           )}
           onClick={() => {

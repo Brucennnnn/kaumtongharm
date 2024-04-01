@@ -36,7 +36,7 @@ export default function GameRoomList(props: gameRoomListProps) {
     <div className="flex w-full grow flex-col gap-3">
       <div className="flex w-full justify-end">
         <Button
-          className="text-md rounded-md border-[1.5px] border-b-[3px] border-r-[3px] border-stroke bg-pending font-bold"
+          className="text-md rounded-md border-2 border-stroke bg-pending font-bold shadow-button"
           onClick={() => {
             setSelectedRoom(null);
           }}
@@ -62,21 +62,12 @@ export default function GameRoomList(props: gameRoomListProps) {
         {filteredRooms && filteredRooms.length != 0 ? (
           filteredRooms.map((item: gameRoom, _index) => {
             return (
-              <div
-                className="h-fit w-full hover:cursor-pointer hover:opacity-90"
-                key={_index}
-                onClick={() => {
-                  setSelectedRoom(item);
-                }}
-              >
-                <GameRoomBox
-                  maxPlayer={item.maxPlayers}
-                  name={item.gameTitle}
-                  players={item.players}
-                  isBegin={item.isBegin}
-                  isSelected={item.id == selectedroom?.id}
-                />
-              </div>
+              <GameRoomBox
+                key={item.id}
+                room={item}
+                selectedroom={selectedroom}
+                setSelectedRoom={setSelectedRoom}
+              />
             );
           })
         ) : (

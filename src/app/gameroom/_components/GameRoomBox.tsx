@@ -1,39 +1,43 @@
+"use client";
 import { cn } from "@ktm/lib/utils";
-import { type player } from "../interfaces";
+import { type gameRoom } from "../interfaces";
+import { Button } from "@ktm/components/ui/button";
+import { type Dispatch, type SetStateAction } from "react";
 
 interface gameRoomBoxProps {
-  name: string;
-  isBegin: boolean;
-  players: player[];
-  maxPlayer: number;
-  isSelected: boolean;
+  selectedroom: gameRoom | null;
+  room: gameRoom | null;
+  setSelectedRoom: Dispatch<SetStateAction<gameRoom | null>>;
 }
 
 export default function GameRoomBox(props: gameRoomBoxProps) {
-  const { name, isBegin, players, maxPlayer, isSelected } = props;
+  const { room, selectedroom, setSelectedRoom } = props;
   return (
-    <div
+    <Button
+      onClick={() => {
+        setSelectedRoom(room);
+      }}
       className={cn(
-        "flex h-fit w-full flex-row items-center rounded-md bg-roombg p-2.5",
-        isSelected
-          ? "border-[1.5px] border-b-[3px] border-r-[3px] border-solid border-stroke bg-hardpink"
+        "flex h-fit w-full flex-row items-center gap-2 rounded-md bg-roombg p-2.5 py-2",
+        room?.id == selectedroom?.id
+          ? "border-2 border-stroke bg-hardpink shadow-box"
           : "",
       )}
     >
-      <div className="flex h-fit grow flex-col justify-between">
-        <div className="line-clamp-1 h-fit text-base font-bold text-stroke">
-          {name}
+      <div className="flex h-fit w-full grow flex-col justify-between overflow-hidden">
+        <div className="line-clamp-1 h-fit text-start text-base font-bold text-stroke">
+          {room?.gameTitle}
         </div>
         <div
           className={cn(
-            "line-clamp-1 text-xs font-bold text-stroke",
-            !isBegin ? "text-availble" : "text-error",
+            "line-clamp-1 h-fit text-start text-xs font-bold text-stroke",
+            !room?.isBegin ? "text-availble" : "text-error",
           )}
         >
-          {!isBegin ? "Availble" : "In game"}
+          {!room?.isBegin ? "Availble" : "In game"}
         </div>
       </div>
-      <div className="h-fit text-base font-bold text-stroke">{`${players.length}/${maxPlayer}`}</div>
-    </div>
+      <div className="h-fit text-base font-bold text-stroke">{`${room?.players.length}/${room?.maxPlayers}`}</div>
+    </Button>
   );
 }
