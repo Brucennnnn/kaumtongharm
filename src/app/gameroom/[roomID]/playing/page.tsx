@@ -17,7 +17,7 @@ export default function Page({ params }: { params: { roomId: string } }) {
     data.isBegin &&
     ((round.isSuccess && !round.data) ||
       !round.isSuccess ||
-      !round.data?.UserResult)
+      !round.data?.result.UserResult)
   ) {
     return <></>;
   }
@@ -27,7 +27,7 @@ export default function Page({ params }: { params: { roomId: string } }) {
     <div className="flex min-h-screen items-center justify-center bg-bgImage">
       <GameWrapper
         leftside={
-          round.data?.UserResult ? (
+          round.data?.result.UserResult ? (
             <LeftSidePlayingRoom recentRound={round.data} gameRoom={data} />
           ) : (
             <div>NoUserResult</div>

@@ -164,22 +164,36 @@ export const gameRoomRouter = createTRPCRouter({
   getRecentRound: publicProcedure
     .input(z.object({ roomId: z.number() }))
     .query(async ({ input, ctx }) => {
-      const result = await ctx.db.round.findFirst({
-        where: {
-          gameRoomId: input.roomId,
-        },
-        orderBy: {
-          id: "desc",
-        },
-        include: {
-          UserResult: {
-            include: {
-              user: true,
-            },
+      const res = await ctx.db.$transaction(async (tx) => {
+        const result = await tx.round.findFirst({
+          where: {
+            gameRoomId: input.roomId,
           },
-        },
+          orderBy: {
+            id: "desc",
+          },
+          include: {
+            UserResult: {
+              include: {
+                user: true,
+              },
+            },
+            game: true,
+          },
+        });
+        if (!result) throw new Error("room id is wrong");
+        const countRound = await tx.round.count({
+          where: {
+            gameRoomId: input.roomId,
+          },
+        });
+        let isNext = true;
+        if (countRound % result?.game.rounds === 0) {
+          isNext = false;
+        }
+        return { isNext, result };
       });
-      return result;
+      return res;
     }),
   joinGameRoom: userProcedure
     .input(z.object({ roomId: z.number() }))

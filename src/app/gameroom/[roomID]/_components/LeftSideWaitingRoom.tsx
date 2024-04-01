@@ -19,6 +19,15 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
   // const pusher = usePusher();
   // const utils = api.useUtils();
   const exitChat = api.chat.exitChat.useMutation();
+  const utils = api.useUtils();
+
+  const startRound = api.gameRoom.startRound.useMutation();
+  const handleStartRound = async () => {
+    await startRound.mutateAsync({
+      roomId: props.gameRoom.id,
+    });
+    router.push(`/gameroom/${props.gameRoom.id}/playing`);
+  };
   // chatChannel = pusher.subscribe(`gameroom-${props.gameRoom.id}`);
   // useEffect(() => {
   //   chatChannel.bind("start-round", async (data: string) => {
@@ -71,12 +80,18 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
           return <NameCard key={e.id} isMe name={e.username} />;
         })}
       </div>
-      <div className="flex w-full">
+      <div className="flex w-full justify-between">
         <Button
           onClick={() => handleExitButton()}
           className="w-[102px] rounded-md border-2 border-stroke bg-error p-3 text-base font-bold text-white shadow-button"
         >
           back
+        </Button>
+        <Button
+          onClick={() => handleStartRound()}
+          className="w-[102px] rounded-md border-2 border-stroke bg-success p-3 text-base font-bold text-stroke shadow-button"
+        >
+          StartRoom
         </Button>
       </div>
     </div>
