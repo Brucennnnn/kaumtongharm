@@ -27,9 +27,9 @@ export default function LeftSideRoomList() {
           }}
         />
       </div>
-      <div className=" w-full flex-1  flex-col rounded-md bg-background p-2">
+      {/* <div className=" w-full flex-1  flex-col rounded-md bg-background p-2">
         <RoomCard />
-      </div>
+      </div> */}
     </div>
   );
 }

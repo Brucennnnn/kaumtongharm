@@ -14,6 +14,7 @@ import {
   FormItem,
 } from "@ktm/components/ui/form";
 import { Input } from "@ktm/components/ui/input";
+import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   roomName: z.string().min(1),
@@ -23,6 +24,7 @@ const formSchema = z.object({
 });
 
 export default function RightSideCreateGame() {
+  const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
@@ -35,13 +37,23 @@ export default function RightSideCreateGame() {
 
   const createGameRoom = api.gameRoom.createGameRoom.useMutation();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    createGameRoom.mutate({
-      description: values.description,
-      roomName: values.roomName,
-      maxPlayers: values.maxPlayers,
-      rounds: values.rounds,
-    });
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await createGameRoom.mutateAsync({
+        description: values.description,
+        roomName: values.roomName,
+        maxPlayers: values.maxPlayers,
+        rounds: values.rounds,
+      });
+      const gameroom = createGameRoom.data;
+      router.push(`gameroom/${gameroom?.id}`);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log("Something went wrong.");
+      }
+    }
   }
 
   return (
@@ -49,7 +61,7 @@ export default function RightSideCreateGame() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="h-fit w-full min-w-[400px] space-y-2 rounded-2xl bg-main p-3 shadow-card"
+          className="h-fit w-full space-y-2 rounded-2xl border-2 border-stroke bg-main p-3 shadow-card"
         >
           <FormField
             control={form.control}
@@ -133,7 +145,7 @@ export default function RightSideCreateGame() {
           <div className="flex w-full justify-end p-1">
             <Button
               type="submit"
-              className="w-[102px] rounded-md border-stroke bg-pending p-3 text-base font-bold text-stroke shadow-button"
+              className="w-[102px] rounded-md border-2 border-stroke bg-pending p-3 text-base font-bold text-stroke shadow-button"
             >
               Create
             </Button>
