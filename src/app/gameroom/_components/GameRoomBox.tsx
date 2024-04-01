@@ -26,7 +26,7 @@ export default function GameRoomBox(props: gameRoomBoxProps) {
     >
       <div className="flex h-fit w-full grow flex-col justify-between overflow-hidden">
         <div className="line-clamp-1 h-fit text-start text-base font-bold text-stroke">
-          {room?.gameTitle}
+          {room?.roomName}
         </div>
         <div
           className={cn(
@@ -37,7 +37,7 @@ export default function GameRoomBox(props: gameRoomBoxProps) {
           {!room?.isBegin ? "Availble" : "In game"}
         </div>
       </div>
-      <div className="h-fit text-base font-bold text-stroke">{`${room?.players.length}/${room?.maxPlayers}`}</div>
+      <div className="h-fit text-base font-bold text-stroke">{`${room?.currentPlayers}/${room?.maxPlayers}`}</div>
     </Button>
   );
 }

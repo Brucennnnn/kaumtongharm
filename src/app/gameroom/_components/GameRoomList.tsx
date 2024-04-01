@@ -1,7 +1,7 @@
 "use client";
 import { type gameRoom } from "../interfaces";
 import GameRoomBox from "./GameRoomBox";
-import { type Dispatch, type SetStateAction, useState, useEffect } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 
 import { Button } from "@ktm/components/ui/button";
 import { Input } from "@ktm/components/ui/input";
@@ -9,29 +9,14 @@ import { faSearch } from "@fortawesome/free-solid-svg-icons";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 
 interface gameRoomListProps {
+  setSearchString: Dispatch<SetStateAction<string>>;
   selectedroom: gameRoom | null;
   setSelectedRoom: Dispatch<SetStateAction<gameRoom | null>>;
   allRooms: gameRoom[];
 }
 
 export default function GameRoomList(props: gameRoomListProps) {
-  const [searchString, setSearchString] = useState("");
-  const { allRooms, setSelectedRoom, selectedroom } = props;
-  const [filteredRooms, setFilteredRooms] = useState<gameRoom[]>(allRooms);
-
-  useEffect(() => {
-    if (searchString != "") {
-      const tempFilteredRooms: gameRoom[] = [];
-      allRooms.map((room: gameRoom) => {
-        if (room.gameTitle.includes(searchString)) {
-          tempFilteredRooms.push(room);
-        }
-      });
-      setFilteredRooms(tempFilteredRooms);
-    } else {
-      setFilteredRooms(allRooms);
-    }
-  }, [allRooms, searchString]);
+  const { allRooms, setSelectedRoom, selectedroom, setSearchString } = props;
   return (
     <div className="flex w-full grow flex-col gap-3">
       <div className="flex w-full justify-end">
@@ -59,8 +44,8 @@ export default function GameRoomList(props: gameRoomListProps) {
         />
       </div>
       <div className="scroll flex w-full grow flex-col gap-y-3 rounded-lg bg-background p-3">
-        {filteredRooms && filteredRooms.length != 0 ? (
-          filteredRooms.map((item: gameRoom, _index) => {
+        {allRooms && allRooms.length != 0 ? (
+          allRooms.map((item: gameRoom, _index) => {
             return (
               <GameRoomBox
                 key={item.id}
