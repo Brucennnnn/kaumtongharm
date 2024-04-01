@@ -31,6 +31,22 @@ export const gameRoomRouter = createTRPCRouter({
   getAllGameRoom: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.gameRoom.findMany();
   }),
+  getGameRoomsByFilter: publicProcedure
+    .input(
+      z.object({
+        searchQuery: z.string().optional(),
+      }),
+    )
+    .query(async ({ ctx, input }) => {
+      const res = await ctx.db.gameRoom.findMany({
+        where: {
+          roomName: {
+            contains: input.searchQuery,
+          },
+        },
+      });
+      return res;
+    }),
   getGameRoom: publicProcedure
     .input(z.object({ roomId: z.number() }))
     .query(async ({ input, ctx }) => {

@@ -25,11 +25,14 @@ const config = {
       orange: "#F25F4C",
       hardpink: "#FF9C9C",
       lightpink: "#F8EDED",
+      availble: "#63FF60",
     },
     boxShadow: {
       none: "none",
       button: "2px 2px 0px 0px #001858",
       card: "4px 4px 0px 0px #001858",
+      box: "2px 2px 0px 0px #001858",
+      availble: "#63FF60",
     },
     screens: {
       sm: "376px",
@@ -76,7 +79,7 @@ const config = {
       },
     },
   },
-  plugins: [require("tailwindcss-animate")],
+  plugins: [require("tailwindcss-animate"), require("tailwind-scrollbar-hide")],
 } satisfies Config;
 
 export default config;
