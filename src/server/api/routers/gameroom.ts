@@ -42,6 +42,7 @@ export const gameRoomRouter = createTRPCRouter({
   getAllGameRoom: publicProcedure.query(async ({ ctx }) => {
     return await ctx.db.gameRoom.findMany();
   }),
+
   getGameRoomsByFilter: publicProcedure
     .input(
       z.object({
@@ -74,7 +75,11 @@ export const gameRoomRouter = createTRPCRouter({
           id: input.roomId,
         },
         include: {
-          chat: true,
+          chat: {
+            include: {
+              User: true,
+            },
+          },
         },
       });
     }),
@@ -88,8 +93,16 @@ export const gameRoomRouter = createTRPCRouter({
           },
           data: {
             isBegin: true,
+            Round: {
+              create: {},
+            },
           },
           include: {
+            Round: {
+              orderBy: {
+                id: "desc",
+              },
+            },
             chat: {
               include: {
                 User: true,
@@ -97,14 +110,10 @@ export const gameRoomRouter = createTRPCRouter({
             },
           },
         });
-        if (!updateGameState || !updateGameState.chat) {
+        const recentRound = updateGameState.Round[0];
+        if (!updateGameState || !updateGameState.chat || !recentRound) {
           throw Error("gameid is invalid");
         }
-        const createGameRound = await tx.round.create({
-          data: {
-            gameRoomId: updateGameState.id,
-          },
-        });
         const chatId = updateGameState.chat.id;
 
         const kuamTongHarm: KaumTongHarm[] = await tx.$queryRaw(
@@ -112,6 +121,13 @@ export const gameRoomRouter = createTRPCRouter({
         );
         if (kuamTongHarm.length !== updateGameState.chat.User.length)
           throw new Error("word is not enough");
+
+        let isNext = true;
+
+        if (updateGameState.Round.length % updateGameState.rounds === 0) {
+          isNext = false;
+        }
+
         const userResult = await Promise.all(
           updateGameState.chat.User.map(async (e, index) => {
             const ktm = kuamTongHarm[index];
@@ -124,7 +140,7 @@ export const gameRoomRouter = createTRPCRouter({
                 kuamTongHarm: ktm.word,
                 chatId: chatId,
                 gameRoomId: updateGameState.id,
-                roundId: createGameRound.id,
+                roundId: recentRound.id,
               },
               include: {
                 user: true,
@@ -133,12 +149,12 @@ export const gameRoomRouter = createTRPCRouter({
           }),
         );
 
-        return { createGameRound, userResult };
+        return { recentRound, userResult, isNext };
       });
 
       await Promise.all([
         ctx.pusher.trigger(
-          `gameroom-${gameRound.createGameRound.gameRoomId}`,
+          `gameroom-${gameRound.recentRound.gameRoomId}`,
           "start-round",
           "hello",
         ),
@@ -148,21 +164,58 @@ export const gameRoomRouter = createTRPCRouter({
   getRecentRound: publicProcedure
     .input(z.object({ roomId: z.number() }))
     .query(async ({ input, ctx }) => {
-      const result = await ctx.db.round.findFirst({
-        where: {
-          gameRoomId: input.roomId,
-        },
-        orderBy: {
-          id: "desc",
-        },
-        include: {
-          UserResult: {
-            include: {
-              user: true,
-            },
+      const res = await ctx.db.$transaction(async (tx) => {
+        const result = await tx.round.findFirst({
+          where: {
+            gameRoomId: input.roomId,
           },
-        },
+          orderBy: {
+            id: "desc",
+          },
+          include: {
+            UserResult: {
+              include: {
+                user: true,
+              },
+            },
+            game: true,
+          },
+        });
+        if (!result) throw new Error("room id is wrong");
+        const countRound = await tx.round.count({
+          where: {
+            gameRoomId: input.roomId,
+          },
+        });
+        let isNext = true;
+        if (countRound % result?.game.rounds === 0) {
+          isNext = false;
+        }
+        return { isNext, result };
       });
-      return result;
+      return res;
+    }),
+  joinGameRoom: userProcedure
+    .input(z.object({ roomId: z.number() }))
+    .mutation(async ({ input, ctx }) => {
+      return await ctx.db.$transaction(async (tx) => {
+        const gameRoom = await tx.gameRoom.findFirst({
+          where: {
+            id: input.roomId,
+          },
+          include: {
+            chat: true,
+          },
+        });
+        if (!gameRoom || !gameRoom.chat) throw new Error("room Id is wrong");
+        return await tx.user.update({
+          where: {
+            id: ctx.session.userId,
+          },
+          data: {
+            chatId: gameRoom.chat.id,
+          },
+        });
+      });
     }),
 });

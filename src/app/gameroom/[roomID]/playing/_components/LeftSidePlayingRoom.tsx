@@ -8,6 +8,7 @@ import { usePusher } from "@ktm/app/_context/PusherContext";
 import { type Channel } from "pusher-js";
 import { useEffect, useState } from "react";
 import { Dayjs } from "@ktm/utils/dayjs";
+import GoNextButton from "./GoNextButton";
 
 // interface LeftSidePagePlayingRoom {
 //   id: number;
@@ -21,6 +22,7 @@ import { Dayjs } from "@ktm/utils/dayjs";
 
 type RecentRound = NonNullable<RouterOutputs["gameRoom"]["getRecentRound"]>;
 type GameRoom = NonNullable<RouterOutputs["gameRoom"]["getGameRoom"]>;
+
 export default function LeftSidePlayingRoom(props: {
   recentRound: RecentRound;
   gameRoom: GameRoom;
@@ -28,7 +30,7 @@ export default function LeftSidePlayingRoom(props: {
   const { isSuccess, data } = api.auth.me.useQuery();
   let chatChannel: Channel | null = null;
   const pusher = usePusher();
-  const deadTime = props.recentRound.startedAt.valueOf() + 24000;
+  const deadTime = props.recentRound.result.startedAt.valueOf() + 5000;
   const isEnd = new Date().valueOf() >= deadTime;
   const utils = api.useUtils();
   const exitChat = api.chat.exitChat.useMutation();
@@ -87,8 +89,8 @@ export default function LeftSidePlayingRoom(props: {
       </div>
 
       <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2">
-        {props.recentRound.UserResult.map((e) => {
-          if (!isEnd && e.user.id !== data?.userId) {
+        {props.recentRound.result.UserResult.map((e) => {
+          if (!isEnd && e.user.id !== data?.id) {
             return (
               <PlayerCard
                 userId={e.user.id}
@@ -106,7 +108,15 @@ export default function LeftSidePlayingRoom(props: {
         })}
       </div>
 
-      {isEnd ? "" : <Timer deadline={timeLeft} />}
+      {isEnd ? (
+        <GoNextButton
+          isNext={props.recentRound.isNext}
+          isOwner={data?.id === props.gameRoom.hostId}
+          roomId={props.gameRoom.id}
+        />
+      ) : (
+        <Timer deadline={timeLeft} />
+      )}
     </div>
   );
 }

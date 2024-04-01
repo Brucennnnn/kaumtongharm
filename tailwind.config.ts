@@ -26,6 +26,7 @@ const config = {
       hardpink: "#FF9C9C",
       lightpink: "#F8EDED",
       availble: "#63FF60",
+      white: "#FFFFFF",
     },
     boxShadow: {
       none: "none",
