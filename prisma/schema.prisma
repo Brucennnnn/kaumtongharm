@@ -24,6 +24,7 @@ model Chat {
   gameRoom   GameRoom     @relation(fields: [gameRoomId], references: [id])
   UserResult UserResult[]
   User       User[]
+  UserVote   UserVote[]
 }
 
 model User {
@@ -74,6 +75,7 @@ model Round {
   gameRoomId Int
   game       GameRoom     @relation(fields: [gameRoomId], references: [id])
   UserResult UserResult[]
+  UserVote   UserVote[]
 }
 
 model UserResult {
@@ -88,7 +90,19 @@ model UserResult {
   game         GameRoom @relation(fields: [gameRoomId], references: [id])
   roundId      Int
   round        Round    @relation(fields: [roundId], references: [id])
-  point        Int      @default(0)
+  point        Int      @default(1)
+}
+
+model UserVote {
+  voterId   String
+  voteToId  String
+  roundId   Int
+  round     Round    @relation(fields: [roundId], references: [id])
+  chatId    Int
+  chat      Chat     @relation(fields: [chatId], references: [id])
+  createdAt DateTime @default(now())
+
+  @@id([voterId, voteToId, roundId, chatId])
 }
 
 model KaumTongHarm {

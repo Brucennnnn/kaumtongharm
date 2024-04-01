@@ -6,17 +6,18 @@ import { type RouterOutputs } from "@ktm/trpc/react";
 import { api } from "@ktm/trpc/react";
 import { usePusher } from "@ktm/app/_context/PusherContext";
 import { type Channel } from "pusher-js";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import { Dayjs } from "@ktm/utils/dayjs";
 
-interface LeftSidePagePlayingRoom {
-  id: number;
-  roomName: string;
-  maxPlayers: number;
-  rounds: number;
-  description: string;
-  isBegin: boolean;
-  createdAt: Date;
-}
+// interface LeftSidePagePlayingRoom {
+//   id: number;
+//   roomName: string;
+//   maxPlayers: number;
+//   rounds: number;
+//   description: string;
+//   isBegin: boolean;
+//   createdAt: Date;
+// }
 
 type RecentRound = NonNullable<RouterOutputs["gameRoom"]["getRecentRound"]>;
 type GameRoom = NonNullable<RouterOutputs["gameRoom"]["getGameRoom"]>;
@@ -27,6 +28,7 @@ export default function LeftSidePlayingRoom(props: {
   const { isSuccess, data } = api.auth.me.useQuery();
   let chatChannel: Channel | null = null;
   const pusher = usePusher();
+  const deadTime = props.recentRound.startedAt.valueOf() + 24000;
 
   const utils = api.useUtils();
   const exitChat = api.chat.exitChat.useMutation();
@@ -54,6 +56,19 @@ export default function LeftSidePlayingRoom(props: {
     };
   });
 
+  const [timeLeft, setTimeLeft] = useState("04:00");
+  useEffect(() => {
+    const timeDiff = deadTime - Date.now();
+    const interval = setInterval(() => {
+      if (timeDiff > 0) {
+        setTimeLeft(Dayjs(timeDiff).format("mm:ss"));
+      } else {
+        setTimeLeft("00:00");
+      }
+    }, 1000);
+
+    return () => clearInterval(interval);
+  });
   if (isSuccess && !data) return <></>;
   return (
     <div className="flex h-full w-full flex-col gap-3">
@@ -76,6 +91,9 @@ export default function LeftSidePlayingRoom(props: {
           if (e.user.id !== data?.userId) {
             return (
               <PlayerCard
+                userId={e.user.id}
+                chatId={e.chatId}
+                roundId={e.roundId}
                 key={e.id}
                 name={e.user.username}
                 isAlive={e.status === "alive"}
@@ -88,7 +106,7 @@ export default function LeftSidePlayingRoom(props: {
         })}
       </div>
 
-      <Timer deadline={props.recentRound.startedAt.valueOf() + 240000} />
+      {new Date().valueOf() <= deadTime ? <Timer deadline={timeLeft} /> : ""}
     </div>
   );
 }

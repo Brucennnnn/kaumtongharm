@@ -33,7 +33,9 @@ export default function Page({ params }: { params: { roomId: string } }) {
             <div>NoUserResult</div>
           )
         }
-        rightside={<RightSidePlayingRoom roomId={params.roomId} />}
+        rightside={
+          <RightSidePlayingRoom roomId={params.roomId} chatId={data.chat?.id} />
+        }
       ></GameWrapper>
     </div>
   );

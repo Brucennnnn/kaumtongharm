@@ -4,6 +4,7 @@ import { createCallerFactory, createTRPCRouter } from "@ktm/server/api/trpc";
 import { chatRouter } from "./routers/chat";
 import { gameRoomRouter } from "./routers/gameroom";
 import { kaumTongHarmRouter } from "./routers/kaumTongHarm";
+import { gameActionRouter } from "./routers/gameaction";
 
 /**
  * This is the primary router for your server.
@@ -15,6 +16,7 @@ export const appRouter = createTRPCRouter({
   auth: authRouter,
   chat: chatRouter,
   gameRoom: gameRoomRouter,
+  gameAction: gameActionRouter,
   kaumTongHarm: kaumTongHarmRouter,
 });
 
