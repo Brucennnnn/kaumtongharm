@@ -25,6 +25,7 @@ const config = {
       orange: "#F25F4C",
       hardpink: "#FF9C9C",
       lightpink: "#F8EDED",
+      availble: "#63FF60",
     },
     boxShadow: {
       none: "none",
