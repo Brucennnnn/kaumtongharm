@@ -1,42 +1,24 @@
 "use client";
-import { type Channel } from "pusher-js";
-import { usePusher } from "@ktm/app/_context/PusherContext";
 import { api } from "@ktm/trpc/react";
 import { redirect } from "next/navigation";
-import { Button } from "@ktm/components/ui/button";
-import { useEffect } from "react";
-export default function Chat({ params }: { params: { roomID: string } }) {
-  const { isSuccess, data } = api.auth.me.useQuery(undefined, {});
+import GameWrapper from "@ktm/app/gameroom/_components/GameWrapper";
+import LeftSideWaitingRoom from "./_components/LeftSideWaitingRoom";
+export default function Chat({ params }: { params: { roomId: string } }) {
+  const user = api.auth.me.useQuery(undefined, {});
 
-  if (isSuccess && !data) {
-    redirect("/login");
-  }
+  const { isSuccess, data } = api.gameRoom.getGameRoom.useQuery({
+    roomId: parseInt(params.roomId),
+  });
 
-  let chatChannel: Channel | null = null;
-  const pusher = usePusher();
-
-  chatChannel = pusher.subscribe(`chat-${params.roomID}`);
-  useEffect(() => {
-    if (isSuccess) {
-      chatChannel.bind("test", (data: string) => {
-        console.log(data);
-      });
-    }
-    return () => {
-      chatChannel.unbind_all();
-    };
-  }, [isSuccess, data, chatChannel]);
-
-  const sendChat = api.chat.sendChatMessage.useMutation();
-  const onClickHello = () => {
-    sendChat.mutate({
-      message: "hello",
-    });
-  };
+  if (!data || (user.isSuccess && !user.data) || !user.isSuccess || !user.data)
+    return <></>;
 
   return (
-    <div>
-      <Button onClick={onClickHello}>Pusher</Button>
+    <div className="flex min-h-screen items-center justify-center bg-bgImage">
+      <GameWrapper
+        leftside={<LeftSideWaitingRoom gameRoom={data} />}
+        rightside={<div className="h-full w-full">no chat</div>}
+      ></GameWrapper>
     </div>
   );
 }

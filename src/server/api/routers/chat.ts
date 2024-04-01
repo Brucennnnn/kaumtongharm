@@ -21,7 +21,7 @@ export const chatRouter = createTRPCRouter({
       }),
     )
     .mutation(async ({ ctx, input }) => {
-      await ctx.db.user.update({
+      const user = await ctx.db.user.update({
         data: {
           chatId: input.chatId,
         },
@@ -29,6 +29,7 @@ export const chatRouter = createTRPCRouter({
           id: ctx.session.userId,
         },
       });
+      return user;
     }),
   exitChat: userProcedure.mutation(async ({ ctx }) => {
     await ctx.db.user.update({

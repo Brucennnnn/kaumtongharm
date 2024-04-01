@@ -1,7 +1,9 @@
+"use client";
 import { Button } from "@ktm/components/ui/button";
 import { type gameRoom } from "../interfaces";
 import { cn } from "@ktm/lib/utils";
 import { useRouter } from "next/navigation";
+import { api } from "@ktm/trpc/react";
 
 interface GameRoomDetailsProps {
   room: gameRoom;
@@ -10,11 +12,18 @@ interface GameRoomDetailsProps {
 export default function GameRoomDetails(props: GameRoomDetailsProps) {
   const { room } = props;
   const router = useRouter();
-  const handleJoin = () => {
-    // if (room.currentPlayers >= room.maxPlayers) {
-    //   return;
-    // }
-    router.push(`gameroom/${room.id}`);
+  const joinChat = api.chat.joinChat.useMutation();
+
+  const handleJoin = async () => {
+    if (room.currentPlayers >= room.maxPlayers) {
+      return;
+    }
+    const chat = await joinChat.mutateAsync({
+      chatId: room.chatId,
+    });
+    if (chat) {
+      router.push(`gameroom/${room.id}`);
+    }
   };
   return (
     <div className="flex h-80 min-h-fit w-full flex-col gap-y-3 rounded-2xl border-2 border-stroke bg-main p-3 shadow-card">
@@ -38,11 +47,9 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
         <Button
           className={cn(
             "h-full w-[120px] rounded-md border border-stroke bg-secondary text-base font-bold shadow-button",
-            // room.currentPlayers >= room.maxPlayers ? "cursor-not-allowed" : "",
+            room.currentPlayers >= room.maxPlayers ? "cursor-not-allowed" : "",
           )}
-          onClick={() => {
-            handleJoin();
-          }}
+          onClick={() => handleJoin()}
         >
           Join
         </Button>

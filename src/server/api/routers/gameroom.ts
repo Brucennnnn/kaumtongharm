@@ -25,7 +25,13 @@ export const gameRoomRouter = createTRPCRouter({
             description: input.description,
             hostId: ctx.session.userId,
             chat: {
-              create: {},
+              create: {
+                User: {
+                  connect: {
+                    id: ctx.session.userId,
+                  },
+                },
+              },
             },
           },
         });

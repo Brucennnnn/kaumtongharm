@@ -24,7 +24,7 @@ export default function Page({ params }: { params: { roomId: string } }) {
   console.log(round.data);
 
   return (
-    <div className="flex min-h-screen items-center justify-center">
+    <div className="flex min-h-screen items-center justify-center bg-bgImage">
       <GameWrapper
         leftside={
           round.data?.UserResult ? (

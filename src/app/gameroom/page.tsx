@@ -4,7 +4,7 @@ import GameRoomList from "./_components/GameRoomList";
 import { type gameRoom } from "./interfaces";
 import CardWrapper from "./_components/GameWrapper";
 import RightSideCreateGame from "./_components/RightSideCreateGame";
-import GameRoomDetails from "./_components/GameRoomDatails";
+import GameRoomDetails from "./_components/GameRoomDetails";
 import { api } from "@ktm/trpc/react";
 
 export default function Page() {
@@ -15,8 +15,7 @@ export default function Page() {
   });
   if (!data) return <></>;
   return (
-
-    <div className="bg-bgImage flex h-screen min-h-fit items-center justify-center p-4">
+    <div className="flex h-screen min-h-fit items-center justify-center bg-bgImage p-4">
       <CardWrapper
         leftside={
           <GameRoomList

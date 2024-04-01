@@ -18,7 +18,7 @@ import { useRouter } from "next/navigation";
 
 const formSchema = z.object({
   roomName: z.string().min(1),
-  maxPlayers: z.coerce.number().min(1),
+  maxPlayers: z.coerce.number().min(3),
   rounds: z.coerce.number().min(1),
   description: z.string().min(1).max(128),
 });
@@ -28,10 +28,10 @@ export default function RightSideCreateGame() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      roomName: "Default",
+      roomName: "",
       maxPlayers: 1,
       rounds: 1,
-      description: "Hello",
+      description: "",
     },
   });
 
