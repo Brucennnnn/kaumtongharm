@@ -37,16 +37,23 @@ export default function RightSideCreateGame() {
 
   const createGameRoom = api.gameRoom.createGameRoom.useMutation();
 
-  function onSubmit(values: z.infer<typeof formSchema>) {
-    createGameRoom.mutate({
-      description: values.description,
-      roomName: values.roomName,
-      maxPlayers: values.maxPlayers,
-      rounds: values.rounds,
-    });
-    const gameroom = createGameRoom.data;
-    console.log(gameroom);
-    router.push(`gameroom/${gameroom?.id}`);
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    try {
+      await createGameRoom.mutateAsync({
+        description: values.description,
+        roomName: values.roomName,
+        maxPlayers: values.maxPlayers,
+        rounds: values.rounds,
+      });
+      const gameroom = createGameRoom.data;
+      router.push(`gameroom/${gameroom?.id}`);
+    } catch (error) {
+      if (error instanceof Error) {
+        console.log(error.message);
+      } else {
+        console.log("Something went wrong.");
+      }
+    }
   }
 
   return (
