@@ -1,29 +1,30 @@
 "use client";
-import { validateRequest } from "@ktm/server/api/auth";
-import { api } from "@ktm/trpc/react";
+import { socket } from "./socket";
+import { Button } from "@ktm/components/ui/button";
+import { useState, useEffect } from "react";
 
-export default function Page() {
-  const user = api.auth.me.useQuery();
-  if (user.isSuccess && !user.data) {
-    console.log("this user", user);
+export default function Home() {
+  const [isConnected, setIsConnected] = useState(false);
+
+  function handlePing() {
+    socket.emit("message", "ping", (val) => {
+      console.log(val);
+    });
   }
-
-  const { data, isSuccess } = api.kaumTongHarm.getAll.useQuery();
-  const randomWord = api.kaumTongHarm.getRamdom.useQuery({ take: 5 });
-
-  console.log(randomWord.data);
+  console.log("client side", socket.connected);
+  useEffect(() => {
+    console.log(socket.connected);
+    if (socket.connected) {
+      console.log("hi");
+      setIsConnected(true);
+    }
+    socket.on("connected", () => {
+      socket.emit("message", { mello: "bruce" });
+    });
+  });
   return (
-    <>
-      <h1>Create an account</h1>
-      {/* <form action={signup}> */}
-      {/*   <label htmlFor="username">Username</label> */}
-      {/*   <input name="username" id="username" /> */}
-      {/*   <br /> */}
-      {/*   <label htmlFor="password">Password</label> */}
-      {/*   <input type="password" name="password" id="password" /> */}
-      {/*   <br /> */}
-      {/*   <button>Continue</button> */}
-      {/* </form> */}
-    </>
+    <div>
+      <Button onClick={handlePing}>Ping</Button>
+    </div>
   );
 }
