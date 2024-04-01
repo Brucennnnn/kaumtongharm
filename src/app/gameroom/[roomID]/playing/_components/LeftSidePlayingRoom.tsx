@@ -21,6 +21,7 @@ import { Dayjs } from "@ktm/utils/dayjs";
 
 type RecentRound = NonNullable<RouterOutputs["gameRoom"]["getRecentRound"]>;
 type GameRoom = NonNullable<RouterOutputs["gameRoom"]["getGameRoom"]>;
+
 export default function LeftSidePlayingRoom(props: {
   recentRound: RecentRound;
   gameRoom: GameRoom;
@@ -106,7 +107,7 @@ export default function LeftSidePlayingRoom(props: {
         })}
       </div>
 
-      {isEnd ? "" : <Timer deadline={timeLeft} />}
+      {isEnd ? <></> : <Timer deadline={timeLeft} />}
     </div>
   );
 }
