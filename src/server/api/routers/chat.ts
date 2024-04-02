@@ -8,11 +8,17 @@ export const chatRouter = createTRPCRouter({
 	sendChatMessage: publicProcedure
 		.input(
 			z.object({
+				username: z.string(),
 				message: z.string(),
 			}),
 		)
 		.mutation(async ({ ctx, input }) => {
-			await Promise.all([ctx.pusher.trigger(`chat-1`, "test", input.message)]);
+			await Promise.all([
+				ctx.pusher.trigger("chat-1", "test", {
+					username: input.username,
+					message: input.message,
+				}),
+			]);
 		}),
 	joinChat: userProcedure
 		.input(
