@@ -18,11 +18,11 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
     if (room.currentPlayers >= room.maxPlayers) {
       return;
     }
-    console.log("fixwhite chatId", room.chatId);
+    console.log("fixwhite chatId fixid now w", room.chatId);
     joinChat.mutate({
-      chatId: room.chatId,
+      chatId: 1,
     });
-    router.push(`gameroom/${room.id}`);
+    router.push(`gameroom/1`);
   };
   return (
     <div className="flex h-80 min-h-fit w-full flex-col gap-y-3 rounded-2xl border-2 border-stroke bg-main p-3 shadow-card">
