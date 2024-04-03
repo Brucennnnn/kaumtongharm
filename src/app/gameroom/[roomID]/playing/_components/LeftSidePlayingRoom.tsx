@@ -22,7 +22,7 @@ export default function LeftSidePlayingRoom(props: {
   const { isSuccess, data } = api.auth.me.useQuery();
   let chatChannel: Channel | null = null;
   const pusher = usePusher();
-  const deadTime = props.recentRound.result.startedAt.valueOf() + 50000;
+  const deadTime = props.recentRound.result.startedAt.valueOf() + 300000;
   const isEnd = new Date().valueOf() >= deadTime;
   const utils = api.useUtils();
   const router = useRouter();
