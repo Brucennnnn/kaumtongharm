@@ -9,6 +9,8 @@ import { Form } from "@ktm/components/ui/form";
 import { Input } from "@ktm/components/ui/input";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
+import { api } from "@ktm/trpc/react";
+import { redirect } from "next/navigation";
 
 type ChatMessage = {
 	username: string;
