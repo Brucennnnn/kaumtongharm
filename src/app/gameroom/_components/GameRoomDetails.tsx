@@ -18,11 +18,11 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
     if (room.currentPlayers >= room.maxPlayers) {
       return;
     }
-    console.log("fixwhite chatId fixid now w", room.chatId);
+    console.log("fixwhite chatId fixid now w", props.room.id);
     joinGameRoom.mutate({
       roomId: props.room.id,
     });
-    router.push(`gameroom/${1}`);
+    router.push(`gameroom/${props.room.id}`);
     // joinChat.mutate({
     //   chatId: 1,
     // });
