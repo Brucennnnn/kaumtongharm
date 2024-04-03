@@ -13,7 +13,7 @@ export default function Page() {
   const [selectedRoom, setSelectedRoom] = useState<gameRoom | null>(null);
 
   const { isSuccess, data } = api.gameRoom.getGameRoomsByFilter.useQuery({
-    searchQuery: searchString,
+    // searchQuery: searchString,
   });
   if (!data) return <></>;
   return (
