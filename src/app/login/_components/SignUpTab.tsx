@@ -36,7 +36,7 @@ export default function SignUpTab() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="w-[432px] space-y-3 rounded-xl border-2 border-stroke bg-main p-3"
+          className="mx-3 w-auto min-w-[280px] space-y-3 rounded-xl border-2 border-stroke bg-main p-3 lg:w-[432px]"
         >
           <FormField
             control={form.control}

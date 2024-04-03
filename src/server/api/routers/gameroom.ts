@@ -67,6 +67,9 @@ export const gameRoomRouter = createTRPCRouter({
             },
           },
         },
+        orderBy: {
+          id: "desc",
+        },
       });
       if (!res) throw new Error("internal error");
       return res;

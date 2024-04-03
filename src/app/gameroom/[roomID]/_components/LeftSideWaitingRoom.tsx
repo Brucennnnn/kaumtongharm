@@ -93,12 +93,16 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
         >
           back
         </Button>
-        <Button
-          onClick={() => handleStartRound()}
-          className="w-[102px] rounded-md border-2 border-stroke bg-success p-3 text-base font-bold text-stroke shadow-button"
-        >
-          StartRoom
-        </Button>
+        {data?.id === props.gameRoom.hostId ? (
+          <Button
+            onClick={() => handleStartRound()}
+            className="w-[102px] rounded-md border-2 border-stroke bg-success p-3 text-base font-bold text-stroke shadow-button"
+          >
+            StartRoom
+          </Button>
+        ) : (
+          <></>
+        )}
       </div>
     </div>
   );
