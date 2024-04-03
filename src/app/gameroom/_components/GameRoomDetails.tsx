@@ -14,12 +14,12 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
   const router = useRouter();
   const joinGameRoom = api.gameRoom.joinGameRoom.useMutation();
 
-  const handleJoin = () => {
+  const handleJoin = async () => {
     if (room.currentPlayers >= room.maxPlayers) {
       return;
     }
     console.log("fixwhite chatId fixid now w", props.room.id);
-    joinGameRoom.mutate({
+    await joinGameRoom.mutateAsync({
       roomId: props.room.id,
     });
     router.push(`gameroom/${props.room.id}`);
