@@ -19,10 +19,10 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
       return;
     }
     console.log("fixwhite chatId fixid now w", room.chatId);
-    joinChat.mutate({
-      chatId: 1,
-    });
-    router.push(`gameroom/1`);
+    // joinChat.mutate({
+    //   chatId: 1,
+    // });
+    // router.push(`gameroom/1`);
   };
   return (
     <div className="flex h-80 min-h-fit w-full flex-col gap-y-3 rounded-2xl border-2 border-stroke bg-main p-3 shadow-card">
