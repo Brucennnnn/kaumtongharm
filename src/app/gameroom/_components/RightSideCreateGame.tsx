@@ -11,6 +11,7 @@ import { Form, FormControl, FormField, FormItem } from '@ktm/components/ui/form'
 import { Input } from '@ktm/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { toast } from '@ktm/components/ui/use-toast';
+import ProfileCard from './ProfileCard';
 
 const formSchema = z.object({
   roomName: z.string().min(1),
@@ -32,6 +33,7 @@ export default function RightSideCreateGame() {
   });
 
   const createGameRoom = api.gameRoom.createGameRoom.useMutation();
+  const { data } = api.auth.me.useQuery();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
@@ -52,7 +54,7 @@ export default function RightSideCreateGame() {
   }
 
   return (
-    <div className="h-fit w-full">
+    <div className=" flex h-full w-full flex-col justify-between">
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -147,6 +149,7 @@ export default function RightSideCreateGame() {
           </div>
         </form>
       </Form>
+      <ProfileCard name={data?.username ?? ''} />
     </div>
   );
 }
