@@ -40,7 +40,11 @@ export const gameRoomRouter = createTRPCRouter({
       return gameRoom;
     }),
   getAllGameRoom: publicProcedure.query(async ({ ctx }) => {
-    return await ctx.db.gameRoom.findMany();
+    return await ctx.db.gameRoom.findMany({
+      orderBy: {
+        id: "desc",
+      },
+    });
   }),
 
   getGameRoomsByFilter: publicProcedure
@@ -230,4 +234,7 @@ export const gameRoomRouter = createTRPCRouter({
       ]);
       return result;
     }),
+  test: userProcedure.input(z.object({ test: z.number() })).mutation(() => {
+    return true;
+  }),
 });
