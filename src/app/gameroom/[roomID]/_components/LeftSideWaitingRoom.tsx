@@ -11,17 +11,17 @@ import { useRouter } from "next/navigation";
 
 type GameRoom = NonNullable<RouterOutputs["gameRoom"]["getGameRoom"]>;
 export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
-  const { isSuccess, data } = api.auth.me.useQuery();
-  const router = useRouter();
-  const exitChat = api.chat.exitChat.useMutation();
-  const utils = api.useUtils();
+	const { isSuccess, data } = api.auth.me.useQuery();
+	const router = useRouter();
+	const exitChat = api.chat.exitChat.useMutation();
+	const utils = api.useUtils();
 
-  const startRound = api.gameRoom.startRound.useMutation();
-  const handleStartRound = async () => {
-    await startRound.mutateAsync({
-      roomId: props.gameRoom.id,
-    });
-  };
+	const startRound = api.gameRoom.startRound.useMutation();
+	const handleStartRound = async () => {
+		await startRound.mutateAsync({
+			roomId: props.gameRoom.id,
+		});
+	};
 
   let chatChannel: Channel | null = null;
   const pusher = usePusher();
@@ -38,40 +38,40 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
     };
   }, [utils, chatChannel]);
 
-  async function handleExitButton() {
-    await exitChat.mutateAsync({ roomId: props.gameRoom.id });
-    router.push("/gameroom");
-  }
+	async function handleExitButton() {
+		await exitChat.mutateAsync({ roomId: props.gameRoom.id });
+		router.push("/gameroom");
+	}
 
-  useEffect(() => {
-    const beforeUnload = (event: BeforeUnloadEvent) => {
-      exitChat.mutate({ roomId: props.gameRoom.id });
-      event.preventDefault();
-    };
-    window.addEventListener("beforeunload", beforeUnload);
-    return () => {
-      window.removeEventListener("beforeunload", beforeUnload);
-    };
-  });
+	useEffect(() => {
+		const beforeUnload = (event: BeforeUnloadEvent) => {
+			exitChat.mutate({ roomId: props.gameRoom.id });
+			event.preventDefault();
+		};
+		window.addEventListener("beforeunload", beforeUnload);
+		return () => {
+			window.removeEventListener("beforeunload", beforeUnload);
+		};
+	});
 
-  if (isSuccess && !data) return <></>;
-  return (
-    <div className="flex h-full w-full flex-col gap-3">
-      <div className="flex w-full justify-between  ">
-        <div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
-          {props.gameRoom.roomName}
-        </div>
-        <div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
-          Players :{" "}
-          <span className="h4 text-orange">
-            {props.gameRoom.chat?.User.length}
-          </span>
-          /{props.gameRoom.maxPlayers}
-        </div>
-      </div>
-      <div className=" flex items-center break-all rounded-md bg-background p-2 font-bold text-stroke ">
-        {props.gameRoom.description}
-      </div>
+	if (isSuccess && !data) return <></>;
+	return (
+		<div className="flex h-full w-full flex-col gap-3">
+			<div className="flex w-full justify-between  ">
+				<div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
+					{props.gameRoom.roomName}
+				</div>
+				<div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
+					Players :{" "}
+					<span className="h4 text-orange">
+						{props.gameRoom.chat?.User.length}
+					</span>
+					/{props.gameRoom.maxPlayers}
+				</div>
+			</div>
+			<div className=" flex items-center break-all rounded-md bg-background p-2 font-bold text-stroke ">
+				{props.gameRoom.description}
+			</div>
 
       <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2">
         {props.gameRoom.chat?.User.map((e) => {

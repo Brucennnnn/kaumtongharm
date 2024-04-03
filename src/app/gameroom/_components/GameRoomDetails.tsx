@@ -6,13 +6,13 @@ import { useRouter } from "next/navigation";
 import { api } from "@ktm/trpc/react";
 
 interface GameRoomDetailsProps {
-  room: gameRoom;
+	room: gameRoom;
 }
 
 export default function GameRoomDetails(props: GameRoomDetailsProps) {
-  const { room } = props;
-  const router = useRouter();
-  const joinGameRoom = api.gameRoom.joinGameRoom.useMutation();
+	const { room } = props;
+	const router = useRouter();
+	const joinGameRoom = api.gameRoom.joinGameRoom.useMutation();
 
   const handleJoin = async () => {
     if (room.currentPlayers >= room.maxPlayers) {
