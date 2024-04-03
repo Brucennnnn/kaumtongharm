@@ -21,7 +21,6 @@ export async function signup(
       hashedPassword: hashedPassword,
     },
   });
-  console.log("successfully created");
 
   const session = await lucia.createSession(userId, {});
   const sessionCookie = lucia.createSessionCookie(session.id);

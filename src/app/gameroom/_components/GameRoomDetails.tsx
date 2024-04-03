@@ -18,7 +18,6 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
     if (room.currentPlayers >= room.maxPlayers) {
       return;
     }
-    console.log("fixwhite chatId fixid now w", props.room.id);
     await joinGameRoom.mutateAsync({
       roomId: props.room.id,
     });

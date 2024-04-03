@@ -5,13 +5,11 @@ import { api } from "@ktm/trpc/react";
 export default function Page() {
   const user = api.auth.me.useQuery();
   if (user.isSuccess && !user.data) {
-    console.log("this user", user);
   }
 
   const { data, isSuccess } = api.kaumTongHarm.getAll.useQuery();
   const randomWord = api.kaumTongHarm.getRamdom.useQuery({ take: 5 });
 
-  console.log(randomWord.data);
   return (
     <>
       <h1>Create an account</h1>

@@ -9,7 +9,6 @@ export default function GameRoomLayout({
   params: { roomID: string };
 }) {
   const joinChat = api.gameRoom.joinGameRoom.useMutation();
-  console.log("paramsid", params);
   useEffect(() => {
     joinChat.mutate({ roomId: parseInt(params.roomID) });
   }, [params.roomID]);

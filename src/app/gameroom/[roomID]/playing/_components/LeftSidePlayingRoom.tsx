@@ -48,7 +48,6 @@ export default function LeftSidePlayingRoom(props: {
         <div>
           {result.map((e) => {
             const userName = stringObject[e.userId];
-            console.log("dfa", userName, stringObject, e.userId);
             if (userName) {
               return (
                 <span key={e.userId}>
@@ -60,12 +59,9 @@ export default function LeftSidePlayingRoom(props: {
         </div>
       ),
     });
-    console.log(result);
   }
   useEffect(() => {
     chatChannel.bind("start-round", async (data: string) => {
-      console.log("playing-room-start-round");
-      console.log("hello");
       await utils.gameRoom.getRecentRound.invalidate();
     });
     chatChannel.bind("playing-room", async (data: { status: string }) => {
@@ -73,8 +69,6 @@ export default function LeftSidePlayingRoom(props: {
         router.push(`/gameroom/${props.gameRoom.id}`);
       }
       if (data.status === "refresh") {
-        console.log("hello");
-        console.log("refresh bruce");
         await utils.gameRoom.getRecentRound.invalidate();
       }
     });

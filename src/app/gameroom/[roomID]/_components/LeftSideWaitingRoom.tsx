@@ -31,7 +31,6 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
       router.push(`/gameroom/${props.gameRoom.id}/playing`);
     });
     chatChannel.bind("waiting-room", async (data: string) => {
-      console.log(data);
       await utils.gameRoom.getGameRoom.invalidate();
     });
     return () => {

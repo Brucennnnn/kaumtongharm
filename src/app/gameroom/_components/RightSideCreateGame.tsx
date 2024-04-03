@@ -45,7 +45,6 @@ export default function RightSideCreateGame() {
         maxPlayers: values.maxPlayers,
         rounds: values.rounds,
       });
-      console.log(data);
       router.push(`gameroom/${data.id}`);
     } catch (error) {
       if (error instanceof Error) {
