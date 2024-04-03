@@ -36,6 +36,7 @@
     "@trpc/next": "next",
     "@trpc/react-query": "next",
     "@trpc/server": "next",
+    "@vercel/speed-insights": "^1.0.10",
     "class-variance-authority": "^0.7.0",
     "clsx": "^2.1.0",
     "dayjs": "^1.11.10",
