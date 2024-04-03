@@ -2,6 +2,7 @@ import "@ktm/styles/globals.css";
 import { config } from "@fortawesome/fontawesome-svg-core";
 import { Inter } from "next/font/google";
 import { TRPCReactProvider } from "@ktm/trpc/react";
+import { Toaster } from "@ktm/components/ui/toaster";
 
 config.autoAddCss = false;
 const inter = Inter({
@@ -24,6 +25,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider>{children}</TRPCReactProvider>
+        <Toaster />
       </body>
     </html>
   );

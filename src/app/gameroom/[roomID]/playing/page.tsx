@@ -2,13 +2,20 @@
 import GameWrapper from "@ktm/app/gameroom/_components/GameWrapper";
 import LeftSidePlayingRoom from "./_components/LeftSidePlayingRoom";
 import { api } from "@ktm/trpc/react";
-import RightSidePlayingRoom from "./_components/RightSidePlayingRoom";
+import { useEffect } from "react";
+import Link from "next/link";
+import { Button } from "@ktm/components/ui/button";
+import { useRouter } from "next/navigation";
 
 export default function Page({ params }: { params: { roomId: string } }) {
+  const router = useRouter();
   const { isSuccess, data } = api.gameRoom.getGameRoom.useQuery({
     roomId: parseInt(params.roomId),
   });
 
+  const exitChat = api.chat.exitChat.useMutation();
+
+  // const joinChat = api.gameRoom.joinGameRoom.useMutation();
   const round = api.gameRoom.getRecentRound.useQuery({
     roomId: parseInt(params.roomId),
   });
@@ -21,10 +28,14 @@ export default function Page({ params }: { params: { roomId: string } }) {
   ) {
     return <></>;
   }
-  console.log(round.data);
+
+  async function handleExitButton() {
+    await exitChat.mutateAsync({ roomId: parseInt(params.roomId) });
+    router.push("/gameroom");
+  }
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bgImage">
+    <div className="relative flex min-h-screen items-center justify-center bg-bgImage">
       <GameWrapper
         leftside={
           round.data?.result.UserResult ? (
@@ -34,9 +45,16 @@ export default function Page({ params }: { params: { roomId: string } }) {
           )
         }
         rightside={
-          <RightSidePlayingRoom roomId={params.roomId} chatId={data.chat?.id} />
+          // <RightSidePlayingRoom roomId={params.roomId} chatId={data.chat?.id} />
+          <div></div>
         }
       ></GameWrapper>
+      <Button
+        onClick={handleExitButton}
+        className="border-storke h4 absolute bottom-0 right-0 m-3 rounded-md border bg-pending p-4 font-bold text-stroke shadow-button"
+      >
+        gameroom
+      </Button>
     </div>
   );
 }

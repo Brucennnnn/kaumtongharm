@@ -7,18 +7,22 @@ export default function GoNextButton({
   isOwner,
   isNext,
   roomId,
+  handleEndGame,
 }: {
   isOwner: boolean;
   isNext: boolean;
   roomId: number;
+  handleEndGame: () => void;
 }) {
   const continueGame = api.gameRoom.startRound.useMutation();
   function handleOnClick() {
     if (isNext) {
       continueGame.mutate({ roomId });
+    } else {
+      handleEndGame();
     }
-    console.log("end game");
   }
+
   return (
     <Button
       className={cn(

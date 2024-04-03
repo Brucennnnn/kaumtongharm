@@ -30,7 +30,7 @@ export async function signup(
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect("/");
+  return redirect("/gameroom");
 }
 
 interface ActionResult {
@@ -73,7 +73,7 @@ export async function login(
     sessionCookie.value,
     sessionCookie.attributes,
   );
-  return redirect("/");
+  return redirect("/gameroom");
 }
 export async function logout(): Promise<ActionResult> {
   const { session } = await validateRequest();

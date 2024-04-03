@@ -28,17 +28,37 @@ export const chatRouter = createTRPCRouter({
         where: {
           id: ctx.session.userId,
         },
+        include: {
+          chat: {
+            include: {
+              gameRoom: true,
+            },
+          },
+        },
       });
+
+      await Promise.all([
+        ctx.pusher.trigger(
+          `gameroom-${user.chat?.gameRoomId}`,
+          "waiting-room",
+          "refresh",
+        ),
+      ]);
       return user;
     }),
-  exitChat: userProcedure.mutation(async ({ ctx }) => {
-    await ctx.db.user.update({
-      data: {
-        chatId: null,
-      },
-      where: {
-        id: ctx.session.userId,
-      },
-    });
-  }),
+  exitChat: userProcedure
+    .input(z.object({ roomId: z.number() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.user.update({
+        data: {
+          chatId: null,
+        },
+        where: {
+          id: ctx.session.userId,
+        },
+      });
+      await Promise.all([
+        ctx.pusher.trigger(`gameroom-${input.roomId}`, "waiting-room", "exit"),
+      ]);
+    }),
 });

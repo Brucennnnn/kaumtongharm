@@ -24,9 +24,10 @@ const config = {
       highlight: "#FF8906",
       orange: "#F25F4C",
       hardpink: "#FF9C9C",
-      lightpink: "#F8EDED",
+      light: "#F8EDED",
       availble: "#63FF60",
       white: "#FFFFFF",
+      medie: "#1A1A1A",
     },
     boxShadow: {
       none: "none",

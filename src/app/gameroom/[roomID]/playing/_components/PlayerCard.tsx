@@ -54,9 +54,7 @@ export default function PlayerCard({
         <>
           <div className="flex flex-row gap-2">
             <div className="h4 font-bold text-stroke">{name}</div>
-            {isAlive && (
-              <div className="h4 font-bold text-error">({point})</div>
-            )}
+            <div className="h4 font-bold text-error">({point})</div>
           </div>
           <div className="h4 font-bold text-stroke">{word}</div>
         </>

@@ -20,9 +20,9 @@ export default function RightSidePlayingRoom(props: {
   const handleJoinChat = () => {
     if (props.chatId) joinChat.mutate({ chatId: props.chatId });
   };
-  const handleExitChat = () => {
-    exitChat.mutate();
-  };
+  // const handleExitChat = () => {
+  //   exitChat.mutate();
+  // };
 
   return (
     <div className="flex h-full w-full flex-col ">
@@ -32,9 +32,9 @@ export default function RightSidePlayingRoom(props: {
       <Button onClick={() => handleJoinChat()} className="w-fit bg-success">
         Join Chat
       </Button>
-      <Button onClick={() => handleExitChat()} className="w-fit bg-success">
-        Exit Chat
-      </Button>
+      {/* <Button onClick={() => handleExitChat()} className="w-fit bg-success"> */}
+      {/*   Exit Chat */}
+      {/* </Button> */}
     </div>
   );
 }

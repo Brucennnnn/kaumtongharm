@@ -198,7 +198,7 @@ export const gameRoomRouter = createTRPCRouter({
   joinGameRoom: userProcedure
     .input(z.object({ roomId: z.number() }))
     .mutation(async ({ input, ctx }) => {
-      return await ctx.db.$transaction(async (tx) => {
+      const result = await ctx.db.$transaction(async (tx) => {
         const gameRoom = await tx.gameRoom.findFirst({
           where: {
             id: input.roomId,
@@ -215,7 +215,19 @@ export const gameRoomRouter = createTRPCRouter({
           data: {
             chatId: gameRoom.chat.id,
           },
+          include: {
+            chat: {
+              include: {
+                gameRoom: true,
+              },
+            },
+          },
         });
       });
+
+      await Promise.all([
+        ctx.pusher.trigger(`gameroom-${input.roomId}`, "waiting-room", "join"),
+      ]);
+      return result;
     }),
 });

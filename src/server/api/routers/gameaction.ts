@@ -68,8 +68,66 @@ export const gameActionRouter = createTRPCRouter({
             chatId: input.chatId,
           },
         });
+
         return newVote;
       });
+
+      await Promise.all([
+        ctx.pusher.trigger(`gameroom-${userVote.gameRoomId}`, "playing-room", {
+          status: "refresh",
+        }),
+      ]);
       return userVote;
+    }),
+  endGame: userProcedure
+    .input(
+      z.object({
+        roomId: z.number(),
+        take: z.number(),
+      }),
+    )
+    .mutation(async ({ ctx, input }) => {
+      const gameResult = await ctx.db.$transaction(async (tx) => {
+        const round = await tx.round.findMany({
+          where: {
+            gameRoomId: input.roomId,
+          },
+          take: input.take,
+          orderBy: {
+            id: "desc",
+          },
+        });
+        const result = await tx.userResult.groupBy({
+          by: ["userId"],
+          where: {
+            roundId: {
+              gte: round[round.length - 1]?.id,
+            },
+            gameRoomId: input.roomId,
+          },
+          _sum: {
+            point: true,
+          },
+          orderBy: {
+            _sum: {
+              point: "desc",
+            },
+          },
+        });
+        await tx.gameRoom.update({
+          data: {},
+          where: {
+            id: input.roomId,
+          },
+        });
+        return result;
+      });
+
+      await Promise.all([
+        ctx.pusher.trigger(`gameroom-${input.roomId}`, "playing-room", {
+          status: "end-game",
+        }),
+      ]);
+      return gameResult;
     }),
 });
