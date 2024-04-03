@@ -1,4 +1,3 @@
-import { postRouter } from "@ktm/server/api/routers/post";
 import { authRouter } from "@ktm/server/api/routers/auth";
 import { createCallerFactory, createTRPCRouter } from "@ktm/server/api/trpc";
 import { chatRouter } from "./routers/chat";
@@ -12,7 +11,6 @@ import { gameActionRouter } from "./routers/gameaction";
  * All routers added in /api/routers should be manually added here.
  */
 export const appRouter = createTRPCRouter({
-  post: postRouter,
   auth: authRouter,
   chat: chatRouter,
   gameRoom: gameRoomRouter,
