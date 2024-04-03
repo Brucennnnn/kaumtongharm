@@ -1,13 +1,11 @@
 "use client";
 import NameCard from "../playing/_components/NameCard";
-import PlayerCard from "../playing/_components/PlayerCard";
 import { type RouterOutputs } from "@ktm/trpc/react";
 import { api } from "@ktm/trpc/react";
 import { usePusher } from "@ktm/app/_context/PusherContext";
 import { type Channel } from "pusher-js";
 import { useEffect, useState } from "react";
 import { Button } from "@ktm/components/ui/button";
-import { Dayjs } from "@ktm/utils/dayjs";
 
 import { useRouter } from "next/navigation";
 
@@ -15,9 +13,6 @@ type GameRoom = NonNullable<RouterOutputs["gameRoom"]["getGameRoom"]>;
 export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
   const { isSuccess, data } = api.auth.me.useQuery();
   const router = useRouter();
-  // const chatChannel: Channel | null = null;
-  // const pusher = usePusher();
-  // const utils = api.useUtils();
   const exitChat = api.chat.exitChat.useMutation();
   const utils = api.useUtils();
 
@@ -26,28 +21,32 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
     await startRound.mutateAsync({
       roomId: props.gameRoom.id,
     });
-    router.push(`/gameroom/${props.gameRoom.id}/playing`);
   };
-  // chatChannel = pusher.subscribe(`gameroom-${props.gameRoom.id}`);
-  // useEffect(() => {
-  //   chatChannel.bind("start-round", async (data: string) => {
-  //     console.log(data);
-  //     console.log("bruce");
-  //     await utils.gameRoom.getRecentRound.invalidate();
-  //   });
-  //
-  //   return () => {
-  //     chatChannel.unbind_all();
-  //   };
-  // }, [utils, chatChannel]);
+
+  let chatChannel: Channel | null = null;
+  const pusher = usePusher();
+  chatChannel = pusher.subscribe(`gameroom-${props.gameRoom.id}`);
+  useEffect(() => {
+    chatChannel.bind("start-round", async (data: string) => {
+      router.push(`/gameroom/${props.gameRoom.id}/playing`);
+    });
+    chatChannel.bind("waiting-room", async (data: string) => {
+      console.log(data);
+      await utils.gameRoom.getGameRoom.invalidate();
+    });
+    return () => {
+      chatChannel.unbind_all();
+    };
+  }, [utils, chatChannel]);
+
   async function handleExitButton() {
-    await exitChat.mutateAsync();
+    await exitChat.mutateAsync({ roomId: props.gameRoom.id });
     router.push("/gameroom");
   }
 
   useEffect(() => {
     const beforeUnload = (event: BeforeUnloadEvent) => {
-      exitChat.mutate();
+      exitChat.mutate({ roomId: props.gameRoom.id });
       event.preventDefault();
     };
     window.addEventListener("beforeunload", beforeUnload);
@@ -77,7 +76,14 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
 
       <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2">
         {props.gameRoom.chat?.User.map((e) => {
-          return <NameCard key={e.id} isMe name={e.username} />;
+          return (
+            <NameCard
+              key={e.id}
+              isMe={e.id === data?.id}
+              name={e.username}
+              isAlive={true}
+            />
+          );
         })}
       </div>
       <div className="flex w-full justify-between">

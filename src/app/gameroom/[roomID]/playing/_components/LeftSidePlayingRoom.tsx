@@ -9,16 +9,8 @@ import { type Channel } from "pusher-js";
 import { useEffect, useState } from "react";
 import { Dayjs } from "@ktm/utils/dayjs";
 import GoNextButton from "./GoNextButton";
-
-// interface LeftSidePagePlayingRoom {
-//   id: number;
-//   roomName: string;
-//   maxPlayers: number;
-//   rounds: number;
-//   description: string;
-//   isBegin: boolean;
-//   createdAt: Date;
-// }
+import { useRouter } from "next/navigation";
+import { useToast } from "@ktm/components/ui/use-toast";
 
 type RecentRound = NonNullable<RouterOutputs["gameRoom"]["getRecentRound"]>;
 type GameRoom = NonNullable<RouterOutputs["gameRoom"]["getGameRoom"]>;
@@ -33,13 +25,58 @@ export default function LeftSidePlayingRoom(props: {
   const deadTime = props.recentRound.result.startedAt.valueOf() + 5000;
   const isEnd = new Date().valueOf() >= deadTime;
   const utils = api.useUtils();
+  const router = useRouter();
   const exitChat = api.chat.exitChat.useMutation();
+  const endGame = api.gameAction.endGame.useMutation();
+  const { toast } = useToast();
   chatChannel = pusher.subscribe(`gameroom-${props.gameRoom.id}`);
+  const stringObject: Record<string, string> = Object.fromEntries(
+    props.recentRound.result.UserResult.map((e) => [
+      e.user.id,
+      e.user.username,
+    ]),
+  );
+  async function handleEndGame() {
+    const result = await endGame.mutateAsync({
+      roomId: props.gameRoom.id,
+      take: props.gameRoom.rounds,
+    });
+    toast({
+      title: "Result",
+      variant: "default",
+      description: (
+        <div>
+          {result.map((e) => {
+            const userName = stringObject[e.userId];
+            console.log("dfa", userName, stringObject, e.userId);
+            if (userName) {
+              return (
+                <span key={e.userId}>
+                  {stringObject[e.userId]} have {e._sum.point} points
+                </span>
+              );
+            }
+          })}
+        </div>
+      ),
+    });
+    console.log(result);
+  }
   useEffect(() => {
     chatChannel.bind("start-round", async (data: string) => {
-      console.log(data);
-      console.log("bruce");
+      console.log("playing-room-start-round");
+      console.log("hello");
       await utils.gameRoom.getRecentRound.invalidate();
+    });
+    chatChannel.bind("playing-room", async (data: { status: string }) => {
+      if (data.status === "end-game") {
+        router.push(`/gameroom/${props.gameRoom.id}`);
+      }
+      if (data.status === "refresh") {
+        console.log("hello");
+        console.log("refresh bruce");
+        await utils.gameRoom.getRecentRound.invalidate();
+      }
     });
 
     return () => {
@@ -49,7 +86,7 @@ export default function LeftSidePlayingRoom(props: {
 
   useEffect(() => {
     const beforeUnload = (event: BeforeUnloadEvent) => {
-      exitChat.mutate();
+      exitChat.mutate({ roomId: props.gameRoom.id });
       event.preventDefault();
     };
     window.addEventListener("beforeunload", beforeUnload);
@@ -83,28 +120,39 @@ export default function LeftSidePlayingRoom(props: {
         </div>
       </div>
       <div className=" flex items-center break-all rounded-md bg-background p-2 font-bold text-stroke ">
-        {props.gameRoom.description} fsad ladsjfskld;fjd
-        sfkals;djfksdl;fjkasdfjasl;dj
-        kjafl;sjdkfja;sdjfksd;lfjsdakfsa;lsssddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddddd
+        {props.gameRoom.description}
       </div>
 
       <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2">
         {props.recentRound.result.UserResult.map((e) => {
-          if (!isEnd && e.user.id !== data?.id) {
+          if (!isEnd) {
+            if (e.user.id !== data?.id) {
+              return (
+                <PlayerCard
+                  userId={e.user.id}
+                  chatId={e.chatId}
+                  roundId={e.roundId}
+                  key={e.id}
+                  name={e.user.username}
+                  isAlive={e.status === "alive"}
+                  point={e.point}
+                  word={e.kuamTongHarm}
+                />
+              );
+            }
             return (
-              <PlayerCard
-                userId={e.user.id}
-                chatId={e.chatId}
-                roundId={e.roundId}
+              <NameCard
                 key={e.id}
+                isMe
                 name={e.user.username}
                 isAlive={e.status === "alive"}
                 point={e.point}
-                word={e.kuamTongHarm}
               />
             );
           }
-          return <NameCard key={e.id} isMe name={e.user.username} />;
+          return (
+            <NameCard key={e.id} isMe name={e.user.username} isAlive={true} />
+          );
         })}
       </div>
 
@@ -113,6 +161,7 @@ export default function LeftSidePlayingRoom(props: {
           isNext={props.recentRound.isNext}
           isOwner={data?.id === props.gameRoom.hostId}
           roomId={props.gameRoom.id}
+          handleEndGame={handleEndGame}
         />
       ) : (
         <Timer deadline={timeLeft} />
