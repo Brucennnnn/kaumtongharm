@@ -12,13 +12,17 @@ interface GameRoomDetailsProps {
 export default function GameRoomDetails(props: GameRoomDetailsProps) {
   const { room } = props;
   const router = useRouter();
-  const joinChat = api.chat.joinChat.useMutation();
+  const joinGameRoom = api.gameRoom.joinGameRoom.useMutation();
 
   const handleJoin = () => {
     if (room.currentPlayers >= room.maxPlayers) {
       return;
     }
     console.log("fixwhite chatId fixid now w", room.chatId);
+    joinGameRoom.mutate({
+      roomId: props.room.id,
+    });
+    router.push(`gameroom/${1}`);
     // joinChat.mutate({
     //   chatId: 1,
     // });
@@ -48,7 +52,7 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
             "h-full w-[120px] rounded-md border border-stroke bg-secondary text-base font-bold shadow-button",
             room.currentPlayers >= room.maxPlayers ? "cursor-not-allowed" : "",
           )}
-          onClick={() => handleJoin()}
+          onClick={handleJoin}
         >
           Join
         </Button>
