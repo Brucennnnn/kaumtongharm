@@ -6,24 +6,24 @@ export default function GameRoomLayout({
   params,
 }: {
   children: React.ReactNode;
-  params: { roomId: string };
+  params: { roomID: string };
 }) {
   const joinChat = api.gameRoom.joinGameRoom.useMutation();
   console.log("paramsid", params);
-  // useEffect(() => {
-  //   joinChat.mutate({ roomId: parseInt(params.roomId) });
-  // }, [params.roomId]);
-  //
-  // const exitChat = api.chat.exitChat.useMutation();
-  // useEffect(() => {
-  //   const beforeUnload = (event: BeforeUnloadEvent) => {
-  //     exitChat.mutate({ roomId: parseInt(params.roomId) });
-  //     event.preventDefault();
-  //   };
-  //   window.addEventListener("beforeunload", beforeUnload);
-  //   return () => {
-  //     window.removeEventListener("beforeunload", beforeUnload);
-  //   };
-  // });
+  useEffect(() => {
+    joinChat.mutate({ roomId: parseInt(params.roomID) });
+  }, [params.roomID]);
+
+  const exitChat = api.chat.exitChat.useMutation();
+  useEffect(() => {
+    const beforeUnload = (event: BeforeUnloadEvent) => {
+      exitChat.mutate({ roomId: parseInt(params.roomID) });
+      event.preventDefault();
+    };
+    window.addEventListener("beforeunload", beforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", beforeUnload);
+    };
+  });
   return children;
 }

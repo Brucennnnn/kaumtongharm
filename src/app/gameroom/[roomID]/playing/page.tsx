@@ -7,17 +7,17 @@ import Link from "next/link";
 import { Button } from "@ktm/components/ui/button";
 import { useRouter } from "next/navigation";
 
-export default function Page({ params }: { params: { roomId: string } }) {
+export default function Page({ params }: { params: { roomID: string } }) {
   const router = useRouter();
   const { isSuccess, data } = api.gameRoom.getGameRoom.useQuery({
-    roomId: parseInt(params.roomId),
+    roomId: parseInt(params.roomID),
   });
 
   const exitChat = api.chat.exitChat.useMutation();
 
   // const joinChat = api.gameRoom.joinGameRoom.useMutation();
   const round = api.gameRoom.getRecentRound.useQuery({
-    roomId: parseInt(params.roomId),
+    roomId: parseInt(params.roomID),
   });
   if ((isSuccess && !data) || !isSuccess || !data) return <></>;
   if (
@@ -30,7 +30,7 @@ export default function Page({ params }: { params: { roomId: string } }) {
   }
 
   async function handleExitButton() {
-    await exitChat.mutateAsync({ roomId: parseInt(params.roomId) });
+    await exitChat.mutateAsync({ roomId: parseInt(params.roomID) });
     router.push("/gameroom");
   }
 
