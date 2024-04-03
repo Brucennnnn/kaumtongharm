@@ -10,7 +10,7 @@ export default function GameRoomLayout({
 }) {
   const joinChat = api.gameRoom.joinGameRoom.useMutation();
   useEffect(() => {
-    joinChat.mutate({ roomId: parseInt(params.roomId) });
+    joinChat.mutate({ roomId: 1 });
   }, [params.roomId]);
 
   const exitChat = api.chat.exitChat.useMutation();
