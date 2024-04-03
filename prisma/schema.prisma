@@ -8,15 +8,6 @@ datasource db {
   url      = "file:./dev.db"
 }
 
-model Post {
-  id        Int      @id @default(autoincrement())
-  name      String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-
-  @@index([name])
-}
-
 model Chat {
   id         Int          @id @default(autoincrement())
   Message    Message[]
