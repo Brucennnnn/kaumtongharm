@@ -14,13 +14,13 @@ import { api } from "@ktm/trpc/react";
 import { redirect } from "next/navigation";
 
 type ChatMessage = {
-	username: string;
-	message: string;
+  username: string;
+  message: string;
 };
 
 type MessageType = {
-	sender: string;
-	message: string;
+  sender: string;
+  message: string;
 };
 
 export default function Page() {

@@ -16,8 +16,8 @@ type RecentRound = NonNullable<RouterOutputs["gameRoom"]["getRecentRound"]>;
 type GameRoom = NonNullable<RouterOutputs["gameRoom"]["getGameRoom"]>;
 
 export default function LeftSidePlayingRoom(props: {
-	recentRound: RecentRound;
-	gameRoom: GameRoom;
+  recentRound: RecentRound;
+  gameRoom: GameRoom;
 }) {
   const { isSuccess, data } = api.auth.me.useQuery();
   let chatChannel: Channel | null = null;
@@ -73,93 +73,93 @@ export default function LeftSidePlayingRoom(props: {
       }
     });
 
-		return () => {
-			chatChannel.unbind_all();
-		};
-	}, [utils, chatChannel, router, props.gameRoom.id]);
+    return () => {
+      chatChannel.unbind_all();
+    };
+  }, [utils, chatChannel, router, props.gameRoom.id]);
 
-	useEffect(() => {
-		const beforeUnload = (event: BeforeUnloadEvent) => {
-			exitChat.mutate({ roomId: props.gameRoom.id });
-			event.preventDefault();
-		};
-		window.addEventListener("beforeunload", beforeUnload);
-		return () => {
-			window.removeEventListener("beforeunload", beforeUnload);
-		};
-	});
+  useEffect(() => {
+    const beforeUnload = (event: BeforeUnloadEvent) => {
+      exitChat.mutate({ roomId: props.gameRoom.id });
+      event.preventDefault();
+    };
+    window.addEventListener("beforeunload", beforeUnload);
+    return () => {
+      window.removeEventListener("beforeunload", beforeUnload);
+    };
+  });
 
-	const [timeLeft, setTimeLeft] = useState("04:00");
-	useEffect(() => {
-		const timeDiff = deadTime - Date.now();
-		const interval = setInterval(() => {
-			if (timeDiff > 0) {
-				setTimeLeft(Dayjs(timeDiff).format("mm:ss"));
-			} else {
-				setTimeLeft("00:00");
-			}
-		}, 1000);
+  const [timeLeft, setTimeLeft] = useState("04:00");
+  useEffect(() => {
+    const timeDiff = deadTime - Date.now();
+    const interval = setInterval(() => {
+      if (timeDiff > 0) {
+        setTimeLeft(Dayjs(timeDiff).format("mm:ss"));
+      } else {
+        setTimeLeft("00:00");
+      }
+    }, 1000);
 
-		return () => clearInterval(interval);
-	});
-	if (isSuccess && !data) return <></>;
-	return (
-		<div className="flex h-full w-full flex-col gap-3">
-			<div className="flex w-full justify-between  ">
-				<div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
-					{props.gameRoom.roomName}
-				</div>
-				<div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
-					Players: {props.gameRoom.maxPlayers}
-				</div>
-			</div>
-			<div className=" flex items-center break-all rounded-md bg-background p-2 font-bold text-stroke ">
-				{props.gameRoom.description}
-			</div>
+    return () => clearInterval(interval);
+  });
+  if (isSuccess && !data) return <></>;
+  return (
+    <div className="flex h-full w-full flex-col gap-3">
+      <div className="flex w-full justify-between  ">
+        <div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
+          {props.gameRoom.roomName}
+        </div>
+        <div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
+          Players: {props.gameRoom.maxPlayers}
+        </div>
+      </div>
+      <div className=" flex items-center break-all rounded-md bg-background p-2 font-bold text-stroke ">
+        {props.gameRoom.description}
+      </div>
 
-			<div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2">
-				{props.recentRound.result.UserResult.map((e) => {
-					if (!isEnd) {
-						if (e.user.id !== data?.id) {
-							return (
-								<PlayerCard
-									userId={e.user.id}
-									chatId={e.chatId}
-									roundId={e.roundId}
-									key={e.id}
-									name={e.user.username}
-									isAlive={e.status === "alive"}
-									point={e.point}
-									word={e.kuamTongHarm}
-								/>
-							);
-						}
-						return (
-							<NameCard
-								key={e.id}
-								isMe
-								name={e.user.username}
-								isAlive={e.status === "alive"}
-								point={e.point}
-							/>
-						);
-					}
-					return (
-						<NameCard key={e.id} isMe name={e.user.username} isAlive={true} />
-					);
-				})}
-			</div>
+      <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2">
+        {props.recentRound.result.UserResult.map((e) => {
+          if (!isEnd) {
+            if (e.user.id !== data?.id) {
+              return (
+                <PlayerCard
+                  userId={e.user.id}
+                  chatId={e.chatId}
+                  roundId={e.roundId}
+                  key={e.id}
+                  name={e.user.username}
+                  isAlive={e.status === "alive"}
+                  point={e.point}
+                  word={e.kuamTongHarm}
+                />
+              );
+            }
+            return (
+              <NameCard
+                key={e.id}
+                isMe
+                name={e.user.username}
+                isAlive={e.status === "alive"}
+                point={e.point}
+              />
+            );
+          }
+          return (
+            <NameCard key={e.id} isMe name={e.user.username} isAlive={true} />
+          );
+        })}
+      </div>
 
-			{isEnd ? (
-				<GoNextButton
-					isNext={props.recentRound.isNext}
-					isOwner={data?.id === props.gameRoom.hostId}
-					roomId={props.gameRoom.id}
-					handleEndGame={handleEndGame}
-				/>
-			) : (
-				<Timer deadline={timeLeft} />
-			)}
-		</div>
-	);
+      {isEnd ? (
+        <GoNextButton
+          isNext={props.recentRound.isNext}
+          isOwner={data?.id === props.gameRoom.hostId}
+          roomId={props.gameRoom.id}
+          handleEndGame={handleEndGame}
+        />
+      ) : (
+        <Timer deadline={timeLeft} />
+      )}
+    </div>
+  );
 }
