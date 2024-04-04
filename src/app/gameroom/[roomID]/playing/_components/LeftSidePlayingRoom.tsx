@@ -1,24 +1,21 @@
-"use client";
-import NameCard from "./NameCard";
-import PlayerCard from "./PlayerCard";
-import Timer from "./Timer";
-import { type RouterOutputs } from "@ktm/trpc/react";
-import { api } from "@ktm/trpc/react";
-import { usePusher } from "@ktm/app/_context/PusherContext";
-import { type Channel } from "pusher-js";
-import { useEffect, useState } from "react";
-import { Dayjs } from "@ktm/utils/dayjs";
-import GoNextButton from "./GoNextButton";
-import { useRouter } from "next/navigation";
-import { useToast } from "@ktm/components/ui/use-toast";
+'use client';
+import NameCard from './NameCard';
+import PlayerCard from './PlayerCard';
+import Timer from './Timer';
+import { type RouterOutputs } from '@ktm/trpc/react';
+import { api } from '@ktm/trpc/react';
+import { usePusher } from '@ktm/app/_context/PusherContext';
+import { type Channel } from 'pusher-js';
+import { useEffect, useState } from 'react';
+import { Dayjs } from '@ktm/utils/dayjs';
+import GoNextButton from './GoNextButton';
+import { useRouter } from 'next/navigation';
+import { useToast } from '@ktm/components/ui/use-toast';
 
-type RecentRound = NonNullable<RouterOutputs["gameRoom"]["getRecentRound"]>;
-type GameRoom = NonNullable<RouterOutputs["gameRoom"]["getGameRoom"]>;
+type RecentRound = NonNullable<RouterOutputs['gameRoom']['getRecentRound']>;
+type GameRoom = NonNullable<RouterOutputs['gameRoom']['getGameRoom']>;
 
-export default function LeftSidePlayingRoom(props: {
-  recentRound: RecentRound;
-  gameRoom: GameRoom;
-}) {
+export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; gameRoom: GameRoom }) {
   const { isSuccess, data } = api.auth.me.useQuery();
   let chatChannel: Channel | null = null;
   const pusher = usePusher();
@@ -31,10 +28,7 @@ export default function LeftSidePlayingRoom(props: {
   const { toast } = useToast();
   chatChannel = pusher.subscribe(`gameroom-${props.gameRoom.id}`);
   const stringObject: Record<string, string> = Object.fromEntries(
-    props.recentRound.result.UserResult.map((e) => [
-      e.user.id,
-      e.user.username,
-    ]),
+    props.recentRound.result.UserResult.map((e) => [e.user.id, e.user.username]),
   );
   async function handleEndGame() {
     const result = await endGame.mutateAsync({
@@ -42,8 +36,8 @@ export default function LeftSidePlayingRoom(props: {
       take: props.gameRoom.rounds,
     });
     toast({
-      title: "Result",
-      variant: "default",
+      title: 'Result',
+      variant: 'default',
       description: (
         <div>
           {result.map((e) => {
@@ -61,14 +55,14 @@ export default function LeftSidePlayingRoom(props: {
     });
   }
   useEffect(() => {
-    chatChannel.bind("start-round", async (data: string) => {
+    chatChannel.bind('start-round', async (data: string) => {
       await utils.gameRoom.getRecentRound.invalidate();
     });
-    chatChannel.bind("playing-room", async (data: { status: string }) => {
-      if (data.status === "end-game") {
+    chatChannel.bind('playing-room', async (data: { status: string }) => {
+      if (data.status === 'end-game') {
         router.push(`/gameroom/${props.gameRoom.id}`);
       }
-      if (data.status === "refresh") {
+      if (data.status === 'refresh') {
         await utils.gameRoom.getRecentRound.invalidate();
       }
     });
@@ -83,20 +77,20 @@ export default function LeftSidePlayingRoom(props: {
       exitChat.mutate({ roomId: props.gameRoom.id });
       event.preventDefault();
     };
-    window.addEventListener("beforeunload", beforeUnload);
+    window.addEventListener('beforeunload', beforeUnload);
     return () => {
-      window.removeEventListener("beforeunload", beforeUnload);
+      window.removeEventListener('beforeunload', beforeUnload);
     };
   });
 
-  const [timeLeft, setTimeLeft] = useState("04:00");
+  const [timeLeft, setTimeLeft] = useState('04:00');
   useEffect(() => {
     const timeDiff = deadTime - Date.now();
     const interval = setInterval(() => {
       if (timeDiff > 0) {
-        setTimeLeft(Dayjs(timeDiff).format("mm:ss"));
+        setTimeLeft(Dayjs(timeDiff).format('mm:ss'));
       } else {
-        setTimeLeft("00:00");
+        setTimeLeft('00:00');
       }
     }, 1000);
 
@@ -128,25 +122,15 @@ export default function LeftSidePlayingRoom(props: {
                   roundId={e.roundId}
                   key={e.id}
                   name={e.user.username}
-                  isAlive={e.status === "alive"}
+                  isAlive={e.status === 'alive'}
                   point={e.point}
                   word={e.kuamTongHarm}
                 />
               );
             }
-            return (
-              <NameCard
-                key={e.id}
-                isMe
-                name={e.user.username}
-                isAlive={e.status === "alive"}
-                point={e.point}
-              />
-            );
+            return <NameCard key={e.id} isMe name={e.user.username} isAlive={e.status === 'alive'} point={e.point} />;
           }
-          return (
-            <NameCard key={e.id} isMe name={e.user.username} isAlive={true} />
-          );
+          return <NameCard key={e.id} isMe name={e.user.username} isAlive={true} />;
         })}
       </div>
 

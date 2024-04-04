@@ -1,18 +1,18 @@
-"use client";
+'use client';
 
-import { usePusher } from "@ktm/app/_context/PusherContext";
-import { api } from "@ktm/trpc/react";
-import { redirect } from "next/navigation";
-import { Button } from "@ktm/components/ui/button";
-import { useEffect, useRef, useState } from "react";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { faPaperPlane } from "@fortawesome/free-solid-svg-icons";
-import { Input } from "@ktm/components/ui/input";
-import { useForm } from "react-hook-form";
-import { type ZodType, z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import type { SubmitHandler } from "react-hook-form";
-import { Form } from "@ktm/components/ui/form";
+import { usePusher } from '@ktm/app/_context/PusherContext';
+import { api } from '@ktm/trpc/react';
+import { redirect } from 'next/navigation';
+import { Button } from '@ktm/components/ui/button';
+import { useEffect, useRef, useState } from 'react';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { Input } from '@ktm/components/ui/input';
+import { useForm } from 'react-hook-form';
+import { type ZodType, z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import type { SubmitHandler } from 'react-hook-form';
+import { Form } from '@ktm/components/ui/form';
 
 type ChatMessage = {
   username: string;
@@ -24,7 +24,7 @@ export default function Chat({ params }: { params: { chatID: string } }) {
   const [chats, setChats] = useState<ChatMessage[]>([]);
 
   if (isSuccess && !data) {
-    redirect("/login");
+    redirect('/login');
   }
 
   const chatSchema: ZodType<ChatMessage> = z.object({
@@ -35,8 +35,8 @@ export default function Chat({ params }: { params: { chatID: string } }) {
   const chatForm = useForm<ChatMessage>({
     resolver: zodResolver(chatSchema),
     defaultValues: {
-      username: "",
-      message: "",
+      username: '',
+      message: '',
     },
   });
 
@@ -45,7 +45,7 @@ export default function Chat({ params }: { params: { chatID: string } }) {
 
   useEffect(() => {
     if (isSuccess) {
-      chatChannel.bind("test", (data: ChatMessage) => {
+      chatChannel.bind('test', (data: ChatMessage) => {
         const { username, message } = data;
         setChats((prevState) => [...prevState, { username, message }]);
       });
@@ -61,17 +61,17 @@ export default function Chat({ params }: { params: { chatID: string } }) {
   const targetElement = useRef<HTMLDivElement | null>(null);
   const scrollingBottom = () => {
     targetElement.current?.scrollIntoView({
-      behavior: "smooth",
+      behavior: 'smooth',
     });
   };
 
   const sendChat = api.chat.sendChatMessage.useMutation();
   const onSubmit: SubmitHandler<ChatMessage> = async (value) => {
     sendChat.mutate({
-      username: data?.username ?? "Unknown",
+      username: data?.username ?? 'Unknown',
       message: value.message,
     });
-    resetField("message");
+    resetField('message');
   };
 
   return (
@@ -88,14 +88,11 @@ export default function Chat({ params }: { params: { chatID: string } }) {
       </div>
 
       <Form {...chatForm}>
-        <form
-          onSubmit={handleSubmit(onSubmit)}
-          className="flex w-full gap-3 rounded-3xl bg-main px-4 py-3"
-        >
+        <form onSubmit={handleSubmit(onSubmit)} className="flex w-full gap-3 rounded-3xl bg-main px-4 py-3">
           <Input
             className="w-full border-none bg-main p-0 text-base font-bold placeholder:text-background"
             placeholder="Typing..."
-            {...register("message")}
+            {...register('message')}
           />
           <Button type="submit" className="p-0">
             <FontAwesomeIcon icon={faPaperPlane} className="w-4 text-[#fff]" />

@@ -1,18 +1,12 @@
-"use client";
+'use client';
 
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@ktm/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@ktm/components/ui/form";
-import { Input } from "@ktm/components/ui/input";
-import { login } from "@ktm/action/auth";
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Button } from '@ktm/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@ktm/components/ui/form';
+import { Input } from '@ktm/components/ui/input';
+import { login } from '@ktm/action/auth';
 
 const formSchema = z.object({
   username: z.string().min(4).max(12),
@@ -23,8 +17,8 @@ export default function LoginTab() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {

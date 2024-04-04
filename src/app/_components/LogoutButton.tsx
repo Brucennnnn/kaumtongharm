@@ -1,5 +1,5 @@
-"use client";
-import { logout } from "@ktm/action/auth";
+'use client';
+import { logout } from '@ktm/action/auth';
 export default function LogoutButton() {
   return (
     <form

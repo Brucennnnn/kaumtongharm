@@ -6,13 +6,13 @@
  * TL;DR - This is where all the tRPC server stuff is created and plugged in. The pieces you will
  * need to use are documented accordingly near the end.
  */
-import { TRPCError, initTRPC } from "@trpc/server";
-import superjson from "superjson";
-import { ZodError } from "zod";
-import { type Session } from "lucia";
-import { pusher } from "../pusher/pusher";
+import { TRPCError, initTRPC } from '@trpc/server';
+import superjson from 'superjson';
+import { ZodError } from 'zod';
+import { type Session } from 'lucia';
+import { pusher } from '../pusher/pusher';
 
-import { db } from "@ktm/server/db";
+import { db } from '@ktm/server/db';
 
 /**
  * 1. CONTEXT
@@ -26,10 +26,7 @@ import { db } from "@ktm/server/db";
  *
  * @see https://trpc.io/docs/server/context
  */
-export const createTRPCContext = async (opts: {
-  headers: Headers;
-  session: Session | null;
-}) => {
+export const createTRPCContext = async (opts: { headers: Headers; session: Session | null }) => {
   return {
     db,
 
@@ -52,8 +49,7 @@ const t = initTRPC.context<typeof createTRPCContext>().create({
       ...shape,
       data: {
         ...shape.data,
-        zodError:
-          error.cause instanceof ZodError ? error.cause.flatten() : null,
+        zodError: error.cause instanceof ZodError ? error.cause.flatten() : null,
       },
     };
   },
@@ -94,8 +90,8 @@ export const userProcedure = t.procedure.use(async (opt) => {
   const session = opt.ctx.session;
   if (!session) {
     throw new TRPCError({
-      code: "UNAUTHORIZED",
-      message: "You must be signed in to perform this action.",
+      code: 'UNAUTHORIZED',
+      message: 'You must be signed in to perform this action.',
     });
   }
   return opt.next({

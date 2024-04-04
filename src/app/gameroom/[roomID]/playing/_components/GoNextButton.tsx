@@ -1,7 +1,7 @@
-"use client";
-import { Button } from "@ktm/components/ui/button";
-import { api } from "@ktm/trpc/react";
-import { cn } from "@ktm/lib/utils";
+'use client';
+import { Button } from '@ktm/components/ui/button';
+import { api } from '@ktm/trpc/react';
+import { cn } from '@ktm/lib/utils';
 
 export default function GoNextButton({
   isOwner,
@@ -26,15 +26,15 @@ export default function GoNextButton({
   return (
     <Button
       className={cn(
-        "rounded-md border-2 border-stroke  p-3 text-base font-bold text-stroke shadow-button",
+        'rounded-md border-2 border-stroke  p-3 text-base font-bold text-stroke shadow-button',
         {
           hidden: !isOwner,
         },
-        isNext ? "bg-pending" : "bg-error",
+        isNext ? 'bg-pending' : 'bg-error',
       )}
       onClick={handleOnClick}
     >
-      {isNext ? "Continue game" : "End game"}
+      {isNext ? 'Continue game' : 'End game'}
     </Button>
   );
 }

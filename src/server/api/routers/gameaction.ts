@@ -1,5 +1,5 @@
-import { createTRPCRouter, userProcedure } from "@ktm/server/api/trpc";
-import { z } from "zod";
+import { createTRPCRouter, userProcedure } from '@ktm/server/api/trpc';
+import { z } from 'zod';
 export const gameActionRouter = createTRPCRouter({
   voteToUser: userProcedure
     .input(
@@ -30,17 +30,14 @@ export const gameActionRouter = createTRPCRouter({
                 voteToId: input.toUser,
               },
               orderBy: {
-                createdAt: "asc",
+                createdAt: 'asc',
               },
             },
             UserResult: true,
           },
         });
 
-        if (
-          newVote.UserVote.length === 0 ||
-          newVote.UserResult.length / 2 > newVote.UserVote.length
-        ) {
+        if (newVote.UserVote.length === 0 || newVote.UserResult.length / 2 > newVote.UserVote.length) {
           return newVote;
         }
         await tx.userResult.updateMany({
@@ -48,7 +45,7 @@ export const gameActionRouter = createTRPCRouter({
             point: {
               decrement: 1,
             },
-            status: "died",
+            status: 'died',
           },
           where: {
             userId: input.toUser,
@@ -73,8 +70,8 @@ export const gameActionRouter = createTRPCRouter({
       });
 
       await Promise.all([
-        ctx.pusher.trigger(`gameroom-${userVote.gameRoomId}`, "playing-room", {
-          status: "refresh",
+        ctx.pusher.trigger(`gameroom-${userVote.gameRoomId}`, 'playing-room', {
+          status: 'refresh',
         }),
       ]);
       return userVote;
@@ -94,11 +91,11 @@ export const gameActionRouter = createTRPCRouter({
           },
           take: input.take,
           orderBy: {
-            id: "desc",
+            id: 'desc',
           },
         });
         const result = await tx.userResult.groupBy({
-          by: ["userId"],
+          by: ['userId'],
           where: {
             roundId: {
               gte: round[round.length - 1]?.id,
@@ -110,7 +107,7 @@ export const gameActionRouter = createTRPCRouter({
           },
           orderBy: {
             _sum: {
-              point: "desc",
+              point: 'desc',
             },
           },
         });
@@ -124,8 +121,8 @@ export const gameActionRouter = createTRPCRouter({
       });
 
       await Promise.all([
-        ctx.pusher.trigger(`gameroom-${input.roomId}`, "playing-room", {
-          status: "end-game",
+        ctx.pusher.trigger(`gameroom-${input.roomId}`, 'playing-room', {
+          status: 'end-game',
         }),
       ]);
       return gameResult;

@@ -1,6 +1,6 @@
-"use client";
-import { useEffect } from "react";
-import { api } from "@ktm/trpc/react";
+'use client';
+import { useEffect } from 'react';
+import { api } from '@ktm/trpc/react';
 export default function GameRoomLayout({
   children,
   params,
@@ -19,9 +19,9 @@ export default function GameRoomLayout({
       exitChat.mutate({ roomId: parseInt(params.roomID) });
       event.preventDefault();
     };
-    window.addEventListener("beforeunload", beforeUnload);
+    window.addEventListener('beforeunload', beforeUnload);
     return () => {
-      window.removeEventListener("beforeunload", beforeUnload);
+      window.removeEventListener('beforeunload', beforeUnload);
     };
   });
   return children;

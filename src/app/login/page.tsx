@@ -1,23 +1,18 @@
-"use client";
-import {
-  Tabs,
-  TabsContent,
-  TabsList,
-  TabsTrigger,
-} from "@ktm/components/ui/tabs";
-import LoginTab from "./_components/LoginTab";
-import SignUpTab from "./_components/SignUpTab";
-import LogoutButton from "../_components/LogoutButton";
-import { api } from "@ktm/trpc/react";
-import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+'use client';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ktm/components/ui/tabs';
+import LoginTab from './_components/LoginTab';
+import SignUpTab from './_components/SignUpTab';
+import LogoutButton from '../_components/LogoutButton';
+import { api } from '@ktm/trpc/react';
+import { useRouter } from 'next/navigation';
+import { useEffect } from 'react';
 export default function Page() {
   const router = useRouter();
   const { isSuccess, data } = api.auth.me.useQuery();
 
   useEffect(() => {
     if (isSuccess && data) {
-      router.push("/gameroom");
+      router.push('/gameroom');
     }
   }, [isSuccess, data]);
   return (

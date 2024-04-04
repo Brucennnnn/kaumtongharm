@@ -1,5 +1,5 @@
-import { createEnv } from "@t3-oss/env-nextjs";
-import { z } from "zod";
+import { createEnv } from '@t3-oss/env-nextjs';
+import { z } from 'zod';
 
 export const env = createEnv({
   /**
@@ -11,7 +11,7 @@ export const env = createEnv({
     IS_PROD: z
       .string()
       .toLowerCase()
-      .transform((x) => x === "true")
+      .transform((x) => x === 'true')
       .pipe(z.boolean()),
     DATABASE_AUTH: z.string(),
     PUSHER_SECRET: z.string(),

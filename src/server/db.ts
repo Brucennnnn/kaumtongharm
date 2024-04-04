@@ -1,7 +1,7 @@
-import { PrismaClient } from "@prisma/client";
-import { PrismaLibSQL } from "@prisma/adapter-libsql";
-import { createClient } from "@libsql/client";
-import { env } from "@ktm/env";
+import { PrismaClient } from '@prisma/client';
+import { PrismaLibSQL } from '@prisma/adapter-libsql';
+import { createClient } from '@libsql/client';
+import { env } from '@ktm/env';
 
 let libsql: ReturnType<typeof createClient> | undefined;
 if (env.IS_PROD) {
@@ -17,6 +17,6 @@ if (env.IS_PROD) {
 
 const adapter = new PrismaLibSQL(libsql);
 export const db = new PrismaClient({
-  log: env.IS_PROD ? ["error"] : ["query", "error", "warn"],
+  log: env.IS_PROD ? ['error'] : ['query', 'error', 'warn'],
   adapter: adapter,
 });
