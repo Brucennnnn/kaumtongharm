@@ -29,7 +29,7 @@ export default function Page({ params }: { params: { roomID: string } }) {
   }
 
   return (
-    <div className="relative flex min-h-screen items-center justify-center bg-bgImage">
+    <div className="relative flex min-h-screen items-center justify-center bg-bgImage bg-cover bg-center">
       <GameWrapper
         leftside={
           round.data?.result.UserResult ? (

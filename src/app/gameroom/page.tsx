@@ -17,7 +17,7 @@ export default function Page() {
   });
   if (!data) return <></>;
   return (
-    <div className="flex h-screen min-h-fit items-center justify-center bg-bgImage p-4">
+    <div className="flex h-screen min-h-fit items-center justify-center bg-bgImage bg-cover bg-center p-4">
       <CardWrapper
         leftside={
           <GameRoomList

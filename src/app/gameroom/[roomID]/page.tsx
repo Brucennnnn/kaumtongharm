@@ -14,7 +14,7 @@ export default function Chat({ params }: { params: { roomID: string } }) {
   if (!data || (user.isSuccess && !user.data) || !user.isSuccess || !user.data) return <></>;
 
   return (
-    <div className="flex min-h-screen items-center justify-center bg-bgImage">
+    <div className="flex min-h-screen items-center justify-center bg-bgImage bg-cover bg-center">
       <GameWrapper
         leftside={<LeftSideWaitingRoom gameRoom={data} />}
         rightside={

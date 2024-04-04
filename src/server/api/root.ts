@@ -4,6 +4,7 @@ import { chatRouter } from './routers/chat';
 import { gameRoomRouter } from './routers/gameroom';
 import { kaumTongHarmRouter } from './routers/kaumTongHarm';
 import { gameActionRouter } from './routers/gameaction';
+import { userRouter } from './routers/user';
 
 /**
  * This is the primary router for your server.
@@ -16,6 +17,7 @@ export const appRouter = createTRPCRouter({
   gameRoom: gameRoomRouter,
   gameAction: gameActionRouter,
   kaumTongHarm: kaumTongHarmRouter,
+  user: userRouter,
 });
 
 // export type definition of API
