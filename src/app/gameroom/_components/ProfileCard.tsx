@@ -1,20 +1,15 @@
-"use client";
-import { Button } from "@ktm/components/ui/button";
-import { useState } from "react";
-import { Dialog, DialogContent } from "@ktm/components/ui/dialog";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-} from "@ktm/components/ui/form";
-import { faCircleUser } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { Input } from "@ktm/components/ui/input";
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { api } from "@ktm/trpc/react";
+'use client';
+import { Button } from '@ktm/components/ui/button';
+import { useState } from 'react';
+import { Dialog, DialogContent } from '@ktm/components/ui/dialog';
+import { Form, FormControl, FormField, FormItem } from '@ktm/components/ui/form';
+import { faCircleUser } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { Input } from '@ktm/components/ui/input';
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { api } from '@ktm/trpc/react';
 const formSchema = z.object({
   username: z.string().min(4).max(12),
 });
@@ -40,10 +35,10 @@ export default function ProfileCard({ name }: { name: string }) {
   return (
     <>
       <div className="flex h-fit w-full justify-between rounded-md border-2 border-stroke bg-main p-2 shadow-box">
-        <div className="p-1 text-2xl font-bold text-stroke">{name}</div>
+        <div className="p-1 text-xl font-bold text-stroke">{name}</div>
         <div className="py-2">
           <Button
-            className="h-fit rounded-md bg-secondary p-1 text-xs font-bold shadow-button"
+            className="h-fit rounded-md bg-secondary py-1 px-2 text-xs font-bold shadow-button"
             onClick={() => setOpen(true)}
           >
             Edit Profile
@@ -51,21 +46,12 @@ export default function ProfileCard({ name }: { name: string }) {
         </div>
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="h-fit w-[417px] rounded-2xl bg-main p-0 shadow-box">
+        <DialogContent className="h-fit w-[417px] rounded-xl bg-main p-0 shadow-box">
           <Form {...form}>
-            <form
-              onSubmit={form.handleSubmit(onSubmit)}
-              className="space-y-3 p-3"
-            >
+            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 p-3">
               <div className="flex w-full flex-row gap-3 py-3">
-                <FontAwesomeIcon
-                  icon={faCircleUser}
-                  className="h-fit text-error"
-                  width="36"
-                />
-                <div className="text-3xl font-bold text-error">
-                  Edit Profile
-                </div>
+                <FontAwesomeIcon icon={faCircleUser} className="h-fit text-error" width="30" />
+                <div className="text-2xl font-bold text-error">Edit Profile</div>
               </div>
               <FormField
                 control={form.control}
@@ -90,16 +76,16 @@ export default function ProfileCard({ name }: { name: string }) {
               />
               <div className="flex w-full justify-center gap-4 py-1">
                 <Button
-                  className="w-fit rounded-md  bg-secondary p-3 text-xl font-bold text-stroke shadow-button"
+                  className="w-fit min-w-[90px] rounded-md  bg-secondary p-3 text-md font-bold text-stroke shadow-button"
                   onClick={() => setOpen(false)}
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  className="w-fit rounded-md  bg-pending p-3 text-xl font-bold text-stroke shadow-button"
+                  className="w-fit min-w-[90px] rounded-md  bg-pending p-3 text-md font-bold text-stroke shadow-button"
                 >
-                  Submit
+                  Confirm
                 </Button>
               </div>
             </form>
