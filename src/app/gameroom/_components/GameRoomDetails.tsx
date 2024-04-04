@@ -1,9 +1,9 @@
-"use client";
-import { Button } from "@ktm/components/ui/button";
-import { type gameRoom } from "../interfaces";
-import { cn } from "@ktm/lib/utils";
-import { useRouter } from "next/navigation";
-import { api } from "@ktm/trpc/react";
+'use client';
+import { Button } from '@ktm/components/ui/button';
+import { type gameRoom } from '../interfaces';
+import { cn } from '@ktm/lib/utils';
+import { useRouter } from 'next/navigation';
+import { api } from '@ktm/trpc/react';
 
 interface GameRoomDetailsProps {
   room: gameRoom;
@@ -48,8 +48,8 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
       <div className="flex h-10 w-full flex-row-reverse">
         <Button
           className={cn(
-            "h-full w-[120px] rounded-md border border-stroke bg-secondary text-base font-bold shadow-button",
-            room.currentPlayers >= room.maxPlayers ? "cursor-not-allowed" : "",
+            'h-full w-[120px] rounded-md border border-stroke bg-secondary text-base font-bold shadow-button',
+            room.currentPlayers >= room.maxPlayers ? 'cursor-not-allowed' : '',
           )}
           onClick={handleJoin}
         >

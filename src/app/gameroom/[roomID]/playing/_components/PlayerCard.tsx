@@ -1,8 +1,8 @@
-"use client";
-import { cn } from "@ktm/lib/utils";
-import { Button } from "@ktm/components/ui/button";
-import { useState } from "react";
-import { api } from "@ktm/trpc/react";
+'use client';
+import { cn } from '@ktm/lib/utils';
+import { Button } from '@ktm/components/ui/button';
+import { useState } from 'react';
+import { api } from '@ktm/trpc/react';
 export default function PlayerCard({
   isAlive,
   name,
@@ -36,10 +36,10 @@ export default function PlayerCard({
   return (
     <Button
       className={cn(
-        "flex h-fit w-full min-w-[200px] justify-between",
+        'flex h-fit w-full min-w-[200px] justify-between',
         isAlive
-          ? "hover:shodow-none bg-roombg shadow-button  hover:bg-error hover:shadow-none"
-          : "cursor-not-allowed bg-roombg opacity-50",
+          ? 'hover:shodow-none bg-roombg shadow-button  hover:bg-error hover:shadow-none'
+          : 'cursor-not-allowed bg-roombg opacity-50',
       )}
       disabled={!isAlive}
       onClick={handleOnVote}

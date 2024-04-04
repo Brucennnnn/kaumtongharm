@@ -1,11 +1,8 @@
-"use client";
-import { Button } from "@ktm/components/ui/button";
-import { api } from "@ktm/trpc/react";
+'use client';
+import { Button } from '@ktm/components/ui/button';
+import { api } from '@ktm/trpc/react';
 
-export default function RightSidePlayingRoom(props: {
-  roomId: string;
-  chatId?: number;
-}) {
+export default function RightSidePlayingRoom(props: { roomId: string; chatId?: number }) {
   const startRound = api.gameRoom.startRound.useMutation();
   const joinChat = api.chat.joinChat.useMutation();
   const exitChat = api.chat.exitChat.useMutation();

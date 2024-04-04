@@ -1,9 +1,9 @@
-import { authRouter } from "@ktm/server/api/routers/auth";
-import { createCallerFactory, createTRPCRouter } from "@ktm/server/api/trpc";
-import { chatRouter } from "./routers/chat";
-import { gameRoomRouter } from "./routers/gameroom";
-import { kaumTongHarmRouter } from "./routers/kaumTongHarm";
-import { gameActionRouter } from "./routers/gameaction";
+import { authRouter } from '@ktm/server/api/routers/auth';
+import { createCallerFactory, createTRPCRouter } from '@ktm/server/api/trpc';
+import { chatRouter } from './routers/chat';
+import { gameRoomRouter } from './routers/gameroom';
+import { kaumTongHarmRouter } from './routers/kaumTongHarm';
+import { gameActionRouter } from './routers/gameaction';
 
 /**
  * This is the primary router for your server.

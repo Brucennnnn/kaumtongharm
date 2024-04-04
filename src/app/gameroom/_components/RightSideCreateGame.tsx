@@ -1,20 +1,16 @@
-"use client";
+'use client';
 
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { api } from "@ktm/trpc/react";
-import { z } from "zod";
-import { Textarea } from "@ktm/components/ui/textarea";
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { api } from '@ktm/trpc/react';
+import { z } from 'zod';
+import { Textarea } from '@ktm/components/ui/textarea';
 
-import { Button } from "@ktm/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-} from "@ktm/components/ui/form";
-import { Input } from "@ktm/components/ui/input";
-import { useRouter } from "next/navigation";
+import { Button } from '@ktm/components/ui/button';
+import { Form, FormControl, FormField, FormItem } from '@ktm/components/ui/form';
+import { Input } from '@ktm/components/ui/input';
+import { useRouter } from 'next/navigation';
+import { toast } from '@ktm/components/ui/use-toast';
 
 const formSchema = z.object({
   roomName: z.string().min(1),
@@ -28,10 +24,10 @@ export default function RightSideCreateGame() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      roomName: "",
+      roomName: '',
       maxPlayers: 1,
       rounds: 1,
-      description: "",
+      description: '',
     },
   });
 
@@ -47,11 +43,11 @@ export default function RightSideCreateGame() {
       });
       router.push(`gameroom/${data.id}`);
     } catch (error) {
-      if (error instanceof Error) {
-        console.log(error.message);
-      } else {
-        console.log("Something went wrong.");
-      }
+      return toast({
+        title: 'Error',
+        variant: 'default',
+        description: <div>something went wrong</div>,
+      });
     }
   }
 

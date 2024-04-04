@@ -1,11 +1,11 @@
-import "server-only";
+import 'server-only';
 
-import { headers } from "next/headers";
-import { cache } from "react";
+import { headers } from 'next/headers';
+import { cache } from 'react';
 
-import { createCaller } from "@ktm/server/api/root";
-import { createTRPCContext } from "@ktm/server/api/trpc";
-import { validateRequest } from "@ktm/server/api/auth";
+import { createCaller } from '@ktm/server/api/root';
+import { createTRPCContext } from '@ktm/server/api/trpc';
+import { validateRequest } from '@ktm/server/api/auth';
 
 /**
  * This wraps the `createTRPCContext` helper and provides the required context for the tRPC API when
@@ -14,7 +14,7 @@ import { validateRequest } from "@ktm/server/api/auth";
 const createContext = cache(async () => {
   const heads = new Headers(headers());
   const { session } = await validateRequest();
-  heads.set("x-trpc-source", "rsc");
+  heads.set('x-trpc-source', 'rsc');
 
   return createTRPCContext({
     headers: heads,

@@ -1,19 +1,13 @@
-"use client";
+'use client';
 
-import { z } from "zod";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useForm } from "react-hook-form";
-import { Button } from "@ktm/components/ui/button";
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from "@ktm/components/ui/form";
-import { Input } from "@ktm/components/ui/input";
-import { signup } from "@ktm/action/auth";
-import { redirect } from "next/navigation";
+import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import { Button } from '@ktm/components/ui/button';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@ktm/components/ui/form';
+import { Input } from '@ktm/components/ui/input';
+import { signup } from '@ktm/action/auth';
+import { redirect } from 'next/navigation';
 
 const formSchema = z.object({
   username: z.string().min(4).max(12),
@@ -24,8 +18,8 @@ export default function SignUpTab() {
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      username: "",
-      password: "",
+      username: '',
+      password: '',
     },
   });
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -43,7 +37,7 @@ export default function SignUpTab() {
             name="username"
             render={({ field }) => (
               <FormItem>
-                {" "}
+                {' '}
                 <FormControl>
                   <div className="flex w-full min-w-0 flex-row items-center justify-center gap-2 rounded-md bg-background px-2 text-xl  font-bold text-stroke">
                     <span>Username: </span>

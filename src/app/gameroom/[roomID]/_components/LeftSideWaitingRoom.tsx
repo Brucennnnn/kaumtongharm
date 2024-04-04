@@ -1,15 +1,15 @@
-"use client";
-import NameCard from "../playing/_components/NameCard";
-import { type RouterOutputs } from "@ktm/trpc/react";
-import { api } from "@ktm/trpc/react";
-import { usePusher } from "@ktm/app/_context/PusherContext";
-import { type Channel } from "pusher-js";
-import { useEffect, useState } from "react";
-import { Button } from "@ktm/components/ui/button";
+'use client';
+import NameCard from '../playing/_components/NameCard';
+import { type RouterOutputs } from '@ktm/trpc/react';
+import { api } from '@ktm/trpc/react';
+import { usePusher } from '@ktm/app/_context/PusherContext';
+import { type Channel } from 'pusher-js';
+import { useEffect, useState } from 'react';
+import { Button } from '@ktm/components/ui/button';
 
-import { useRouter } from "next/navigation";
+import { useRouter } from 'next/navigation';
 
-type GameRoom = NonNullable<RouterOutputs["gameRoom"]["getGameRoom"]>;
+type GameRoom = NonNullable<RouterOutputs['gameRoom']['getGameRoom']>;
 export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
   const { isSuccess, data } = api.auth.me.useQuery();
   const router = useRouter();
@@ -27,10 +27,10 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
   const pusher = usePusher();
   chatChannel = pusher.subscribe(`gameroom-${props.gameRoom.id}`);
   useEffect(() => {
-    chatChannel.bind("start-round", async (data: string) => {
+    chatChannel.bind('start-round', async (data: string) => {
       router.push(`/gameroom/${props.gameRoom.id}/playing`);
     });
-    chatChannel.bind("waiting-room", async (data: string) => {
+    chatChannel.bind('waiting-room', async (data: string) => {
       await utils.gameRoom.getGameRoom.invalidate();
     });
     return () => {
@@ -40,7 +40,7 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
 
   async function handleExitButton() {
     await exitChat.mutateAsync({ roomId: props.gameRoom.id });
-    router.push("/gameroom");
+    router.push('/gameroom');
   }
 
   useEffect(() => {
@@ -48,9 +48,9 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
       exitChat.mutate({ roomId: props.gameRoom.id });
       event.preventDefault();
     };
-    window.addEventListener("beforeunload", beforeUnload);
+    window.addEventListener('beforeunload', beforeUnload);
     return () => {
-      window.removeEventListener("beforeunload", beforeUnload);
+      window.removeEventListener('beforeunload', beforeUnload);
     };
   });
 
@@ -62,11 +62,8 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
           {props.gameRoom.roomName}
         </div>
         <div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
-          Players :{" "}
-          <span className="h4 text-orange">
-            {props.gameRoom.chat?.User.length}
-          </span>
-          /{props.gameRoom.maxPlayers}
+          Players : <span className="h4 text-orange">{props.gameRoom.chat?.User.length}</span>/
+          {props.gameRoom.maxPlayers}
         </div>
       </div>
       <div className=" flex items-center break-all rounded-md bg-background p-2 font-bold text-stroke ">
@@ -75,14 +72,7 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
 
       <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2">
         {props.gameRoom.chat?.User.map((e) => {
-          return (
-            <NameCard
-              key={e.id}
-              isMe={e.id === data?.id}
-              name={e.username}
-              isAlive={true}
-            />
-          );
+          return <NameCard key={e.id} isMe={e.id === data?.id} name={e.username} isAlive={true} />;
         })}
       </div>
       <div className="flex w-full justify-between">

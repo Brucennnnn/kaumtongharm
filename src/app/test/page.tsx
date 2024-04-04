@@ -1,6 +1,27 @@
-"use client";
-import { validateRequest } from "@ktm/server/api/auth";
-import { api } from "@ktm/trpc/react";
+'use client';
+
+import { useEffect, useRef, useState } from 'react';
+import { Button } from '@ktm/components/ui/button';
+import { socket } from '@ktm/action/socket';
+import { type ZodType, z } from 'zod';
+import { type SubmitHandler, useForm } from 'react-hook-form';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { Form } from '@ktm/components/ui/form';
+import { Input } from '@ktm/components/ui/input';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
+import { api } from '@ktm/trpc/react';
+import { redirect } from 'next/navigation';
+
+type ChatMessage = {
+  username: string;
+  message: string;
+};
+
+type MessageType = {
+  sender: string;
+  message: string;
+};
 
 export default function Page() {
   const user = api.auth.me.useQuery();

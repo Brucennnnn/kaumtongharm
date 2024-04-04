@@ -1,13 +1,13 @@
-"use client";
-import { type gameRoom } from "../interfaces";
-import GameRoomBox from "./GameRoomBox";
-import { type Dispatch, type SetStateAction } from "react";
+'use client';
+import { type gameRoom } from '../interfaces';
+import GameRoomBox from './GameRoomBox';
+import { type Dispatch, type SetStateAction } from 'react';
 
-import { Button } from "@ktm/components/ui/button";
-import { Input } from "@ktm/components/ui/input";
-import { faSearch } from "@fortawesome/free-solid-svg-icons";
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
-import { type RouterOutputs } from "@ktm/trpc/react";
+import { Button } from '@ktm/components/ui/button';
+import { Input } from '@ktm/components/ui/input';
+import { faSearch } from '@fortawesome/free-solid-svg-icons';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { type RouterOutputs } from '@ktm/trpc/react';
 
 interface gameRoomListProps {
   setSearchString: Dispatch<SetStateAction<string>>;
@@ -16,9 +16,7 @@ interface gameRoomListProps {
   allGameRoom: allGameRoom;
 }
 
-type allGameRoom = NonNullable<
-  RouterOutputs["gameRoom"]["getGameRoomsByFilter"]
->;
+type allGameRoom = NonNullable<RouterOutputs['gameRoom']['getGameRoomsByFilter']>;
 
 export default function GameRoomList(props: gameRoomListProps) {
   const { allGameRoom, setSelectedRoom, selectedroom, setSearchString } = props;

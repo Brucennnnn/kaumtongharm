@@ -1,11 +1,10 @@
-"use client";
-import GameWrapper from "@ktm/app/gameroom/_components/GameWrapper";
-import LeftSidePlayingRoom from "./_components/LeftSidePlayingRoom";
-import { api } from "@ktm/trpc/react";
-import { useEffect } from "react";
-import Link from "next/link";
-import { Button } from "@ktm/components/ui/button";
-import { useRouter } from "next/navigation";
+'use client';
+import GameWrapper from '@ktm/app/gameroom/_components/GameWrapper';
+import LeftSidePlayingRoom from './_components/LeftSidePlayingRoom';
+import { api } from '@ktm/trpc/react';
+import { Button } from '@ktm/components/ui/button';
+import { useRouter } from 'next/navigation';
+import { ChatContainer } from '../_components/ChatContainer';
 
 export default function Page({ params }: { params: { roomID: string } }) {
   const router = useRouter();
@@ -20,18 +19,13 @@ export default function Page({ params }: { params: { roomID: string } }) {
     roomId: parseInt(params.roomID),
   });
   if ((isSuccess && !data) || !isSuccess || !data) return <></>;
-  if (
-    data.isBegin &&
-    ((round.isSuccess && !round.data) ||
-      !round.isSuccess ||
-      !round.data?.result.UserResult)
-  ) {
+  if (data.isBegin && ((round.isSuccess && !round.data) || !round.isSuccess || !round.data?.result.UserResult)) {
     return <></>;
   }
 
   async function handleExitButton() {
     await exitChat.mutateAsync({ roomId: parseInt(params.roomID) });
-    router.push("/gameroom");
+    router.push('/gameroom');
   }
 
   return (
@@ -44,10 +38,7 @@ export default function Page({ params }: { params: { roomID: string } }) {
             <div>NoUserResult</div>
           )
         }
-        rightside={
-          // <RightSidePlayingRoom roomId={params.roomId} chatId={data.chat?.id} />
-          <div></div>
-        }
+        rightside={<ChatContainer roomsChannel={params.roomID} gameRoom={data} />}
       ></GameWrapper>
       <Button
         onClick={handleExitButton}

@@ -1,4 +1,4 @@
-import { createTRPCRouter, publicProcedure } from "@ktm/server/api/trpc";
+import { createTRPCRouter, publicProcedure } from '@ktm/server/api/trpc';
 export const authRouter = createTRPCRouter({
   me: publicProcedure.query(async ({ ctx }) => {
     if (!ctx.session?.userId) return null;
