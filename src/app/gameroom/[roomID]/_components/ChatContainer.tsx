@@ -138,8 +138,8 @@ export function ChatContainer(props: ChatProps) {
   };
 
   return (
-    <div className="flex w-full flex-col justify-between gap-2">
-      <div className="flex h-full flex-col gap-2 overflow-y-scroll">
+    <div className="flex w-full flex-col h-full justify-between gap-2">
+      <div className="flex h-full flex-col gap-2 overflow-y-hidden">
         {chats.map((chat, index) => {
           if (chat.isPrivate) {
             return (
@@ -161,13 +161,16 @@ export function ChatContainer(props: ChatProps) {
       </div>
 
       <Form {...chatForm}>
-        <form onSubmit={handleSubmit(onSubmit)} className="flex w-full gap-3 rounded-3xl bg-main px-4 py-3">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className="flex w-full items-center gap-3 rounded-3xl h-fit bg-main px-4 py-3"
+        >
           <Input
-            className="w-full border-none bg-main p-0 text-base font-bold placeholder:text-background"
+            className="w-full border-none bg-main p-0 text-base font-bold h-7 placeholder:text-background"
             placeholder="Typing..."
             {...register('message')}
           />
-          <Button type="submit" className="p-0">
+          <Button type="submit" className="p-0 h-full">
             <FontAwesomeIcon icon={faPaperPlane} className="w-4 text-[#fff]" />
           </Button>
         </form>

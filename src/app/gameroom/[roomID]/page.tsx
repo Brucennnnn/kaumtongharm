@@ -18,7 +18,7 @@ export default function Chat({ params }: { params: { roomID: string } }) {
       <GameWrapper
         leftside={<LeftSideWaitingRoom gameRoom={data} />}
         rightside={
-          <div className="flex h-full w-full">
+          <div className="flex w-full min-h-full">
             <ChatContainer roomsChannel={params.roomID} gameRoom={data} />
           </div>
         }
