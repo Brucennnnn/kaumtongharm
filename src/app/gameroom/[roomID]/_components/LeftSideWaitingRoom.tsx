@@ -84,7 +84,9 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
         >
           back
         </Button>
-        {data?.id === props.gameRoom.hostId ? (
+        {data?.id === props.gameRoom.hostId &&
+        props.gameRoom.chat?.User.length &&
+        props.gameRoom.maxPlayers / 2 < props.gameRoom.chat.User.length ? (
           <Button
             onClick={() => handleStartRound()}
             className="w-[102px] rounded-md border-2 border-stroke secondary p-3 text-base font-bold text-stroke shadow-button"

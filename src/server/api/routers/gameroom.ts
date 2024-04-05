@@ -216,7 +216,4 @@ export const gameRoomRouter = createTRPCRouter({
     await Promise.all([ctx.pusher.trigger(`gameroom-${input.roomId}`, 'waiting-room', 'join')]);
     return result;
   }),
-  test: userProcedure.input(z.object({ test: z.number() })).mutation(() => {
-    return true;
-  }),
 });
