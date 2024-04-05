@@ -147,7 +147,7 @@ export default function RightSideCreateGame() {
           <div className="flex w-full justify-end p-1">
             <Button
               type="submit"
-              className="w-[102px] yellow rounded-md border-2 border-stroke bg-pending p-3 text-base font-bold text-stroke shadow-button"
+              className="w-[102px] secondary rounded-md border-2 border-stroke bg-pending p-3 text-base font-bold text-stroke shadow-button"
             >
               Create
             </Button>

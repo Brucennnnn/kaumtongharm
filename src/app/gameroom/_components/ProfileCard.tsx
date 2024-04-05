@@ -10,13 +10,15 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { api } from '@ktm/trpc/react';
-import { faSliders } from '@fortawesome/free-solid-svg-icons';
+import { faGamepad, faSliders } from '@fortawesome/free-solid-svg-icons';
 import LogoutButton from '@ktm/app/_components/LogoutButton';
+import { useRouter } from 'next/navigation';
 const formSchema = z.object({
   username: z.string().min(4).max(12),
 });
 
-export default function ProfileCard({ name }: { name: string }) {
+export default function ProfileCard({ name, roomId }: { name: string; roomId?: number }) {
+  const router = useRouter();
   const [open, setOpen] = useState(false);
   const updateProfile = api.user.updateProfile.useMutation();
   const utils = api.useUtils();
@@ -34,13 +36,27 @@ export default function ProfileCard({ name }: { name: string }) {
     setOpen(false);
   }
 
+  const exitChat = api.chat.exitChat.useMutation();
+  async function handleExitButton() {
+    if (roomId) {
+      await exitChat.mutateAsync({ roomId: roomId });
+    }
+    router.push('/gameroom');
+  }
+
   return (
     <>
       <div className="flex h-fit lg:max-w-[360px] justify-between items-center rounded-md border-2 w-full border-stroke bg-main p-2 shadow-box ">
         <div className="p-1 text-xl font-bold text-stroke flex items-center h-fit">{name}</div>
         <div className=" space-x-2 flex flex-row">
           <Button
-            className=" rounded-full p-3 border border-stroke bg-secondary-default  text-lg font-bold text-stroke shadow-button m-0 hover:bg-secondary-hover focus:bg-secondary-click"
+            onClick={handleExitButton}
+            className=" rounded-full p-3 border border-stroke  text-lg font-bold text-stroke shadow-button m-0 yellow"
+          >
+            <FontAwesomeIcon icon={faGamepad} className=" self-center text-2xl text-stroke" width="16" />
+          </Button>
+          <Button
+            className=" rounded-full p-3 border border-stroke   text-lg font-bold text-stroke shadow-button m-0 secondary"
             onClick={() => setOpen(true)}
           >
             <FontAwesomeIcon icon={faSliders} className=" self-center text-2xl text-stroke" width="16" />
@@ -51,8 +67,8 @@ export default function ProfileCard({ name }: { name: string }) {
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogContent className="h-fit w-[417px] rounded-xl bg-main p-0 shadow-box">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-3 p-3">
-              <div className="flex w-full flex-row gap-3 py-3">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 space-y-2">
+              <div className="flex w-full flex-row gap-3">
                 <FontAwesomeIcon icon={faCircleUser} className="h-fit text-error" width="30" />
                 <div className="text-2xl font-bold text-error">Edit Profile</div>
               </div>
@@ -77,18 +93,18 @@ export default function ProfileCard({ name }: { name: string }) {
                   </FormItem>
                 )}
               />
-              <div className="flex w-full justify-center gap-4 py-1">
+              <div className="flex w-full gap-4 py-1 justify-end">
                 <Button
-                  className="w-fit min-w-[90px] rounded-md  bg-secondary-default hover:bg-secondary-hover focus:bg-secondary-click p-3 text-md font-bold text-stroke shadow-button"
+                  type="submit"
+                  className="w-fit min-w-[90px] rounded-md  border border-stroke secondary p-3 text-md font-bold text-stroke shadow-button"
+                >
+                  Confirm
+                </Button>
+                <Button
+                  className="w-fit min-w-[90px] rounded-md  border border-stroke red p-3 text-md font-bold text-stroke shadow-button"
                   onClick={() => setOpen(false)}
                 >
                   Cancel
-                </Button>
-                <Button
-                  type="submit"
-                  className="w-fit min-w-[90px] rounded-md  bg-yellow-default hover:bg-yellow-hover focus:bg-yellow-click p-3 text-md font-bold text-stroke shadow-button"
-                >
-                  Confirm
                 </Button>
               </div>
             </form>

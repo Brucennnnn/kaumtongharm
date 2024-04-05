@@ -6,6 +6,13 @@ export const authRouter = createTRPCRouter({
       where: {
         id: ctx.session.userId,
       },
+      include: {
+        chat: {
+          include: {
+            gameRoom: true,
+          },
+        },
+      },
     });
 
     if (!userData) {

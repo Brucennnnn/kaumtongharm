@@ -75,15 +75,15 @@ export default function Chat({ params }: { params: { chatID: string } }) {
   };
 
   return (
-    <div className="overflowAnchor-auto flex w-full flex-col justify-between gap-2">
-      <div className="flex flex-col gap-2 overflow-y-scroll">
+    <div className="overflowAnchor-auto flex w-full flex-1 flex-col justify-between gap-2">
+      <div className="flex flex-col gap-2 overflow-y-scroll text-stroke">
         {chats.map((chat, index) => (
           <div key={index} className="flex flex-col gap-1 p-2">
             <h5 className="text-xl font-bold text-stroke">{chat.username} :</h5>
             <p className="pl-1 text-base font-bold">{chat.message}</p>
           </div>
         ))}
-        <div className="flex h-10" />
+        <div className="flex lg:min:h-full flex-1" />
         <div ref={targetElement} />
       </div>
 
