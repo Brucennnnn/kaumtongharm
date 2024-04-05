@@ -40,7 +40,7 @@ CREATE TABLE "GameRoom" (
     "hostId" TEXT NOT NULL,
     "maxPlayers" INTEGER NOT NULL,
     "rounds" INTEGER NOT NULL,
-    "description" TEXT NOT NULL,
+    "description" TEXT,
     "roundTime" INTEGER NOT NULL DEFAULT 240,
     "isBegin" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
@@ -96,3 +96,6 @@ CREATE UNIQUE INDEX "Chat_gameRoomId_key" ON "Chat"("gameRoomId");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "User_username_key" ON "User"("username");
+
+-- CreateIndex
+CREATE UNIQUE INDEX "KaumTongHarm_word_key" ON "KaumTongHarm"("word");

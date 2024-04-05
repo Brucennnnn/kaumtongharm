@@ -56,7 +56,7 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
 
   if (isSuccess && !data) return <></>;
   return (
-    <div className="flex h-full w-full flex-col gap-3">
+    <div className="flex  w-full flex-col gap-3 min-h-full ">
       <div className="flex w-full justify-between  ">
         <div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
           {props.gameRoom.roomName}
@@ -66,11 +66,13 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
           {props.gameRoom.maxPlayers}
         </div>
       </div>
-      <div className=" flex items-center break-all rounded-md bg-background p-2 font-bold text-stroke ">
-        {props.gameRoom.description}
-      </div>
+      {props.gameRoom.description && (
+        <div className=" flex items-center break-all rounded-md bg-background p-2 font-bold text-stroke ">
+          {props.gameRoom.description}
+        </div>
+      )}
 
-      <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2">
+      <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2 max-h-[200px]  lg:max-h-full lg:h-full scroll">
         {props.gameRoom.chat?.User.map((e) => {
           return <NameCard key={e.id} isMe={e.id === data?.id} name={e.username} isAlive={true} />;
         })}
@@ -78,14 +80,14 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
       <div className="flex w-full justify-between">
         <Button
           onClick={() => handleExitButton()}
-          className="w-[102px] rounded-md border-2 border-stroke bg-error p-3 text-base font-bold text-white shadow-button"
+          className="w-[102px] rounded-md border-2 border-stroke red p-3 text-base font-bold text-stroke shadow-button"
         >
           back
         </Button>
         {data?.id === props.gameRoom.hostId ? (
           <Button
             onClick={() => handleStartRound()}
-            className="w-[102px] rounded-md border-2 border-stroke bg-success p-3 text-base font-bold text-stroke shadow-button"
+            className="w-[102px] rounded-md border-2 border-stroke secondary p-3 text-base font-bold text-stroke shadow-button"
           >
             StartRoom
           </Button>

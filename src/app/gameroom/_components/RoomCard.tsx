@@ -4,7 +4,7 @@ export default function RoomCard() {
   const isAvaliable = true;
   const isSelect = true;
   return (
-    <Button className={cn('flex h-fit w-full justify-between ', isSelect ? 'bg-hardpink' : 'bg-roombg')}>
+    <Button className={cn('flex h-fit w-full justify-between hover:bg-roombg', isSelect ? 'bg-hardpink' : 'bg-roombg')}>
       <div className="flex flex-col">
         <div className="h4 font-bold text-stroke">This is Room Name</div>
         <div className={cn('h5 w-fit', isAvaliable ? 'text-success' : 'text-error')}>Avaliable</div>

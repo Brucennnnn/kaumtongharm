@@ -2,9 +2,9 @@
 import GameWrapper from '@ktm/app/gameroom/_components/GameWrapper';
 import LeftSidePlayingRoom from './_components/LeftSidePlayingRoom';
 import { api } from '@ktm/trpc/react';
-import { Button } from '@ktm/components/ui/button';
 import { useRouter } from 'next/navigation';
 import { ChatContainer } from '../_components/ChatContainer';
+import { useEffect } from 'react';
 
 export default function Page({ params }: { params: { roomID: string } }) {
   const router = useRouter();
@@ -12,22 +12,20 @@ export default function Page({ params }: { params: { roomID: string } }) {
     roomId: parseInt(params.roomID),
   });
 
-  const exitChat = api.chat.exitChat.useMutation();
+  const me = api.auth.me.useQuery(undefined, {});
+  useEffect(() => {
+    if (me.isSuccess && !me.data) {
+      router.push('/login');
+    }
+  }, [me.isSuccess, me.data]);
 
-  // const joinChat = api.gameRoom.joinGameRoom.useMutation();
   const round = api.gameRoom.getRecentRound.useQuery({
     roomId: parseInt(params.roomID),
   });
-  if ((isSuccess && !data) || !isSuccess || !data) return <></>;
+  if ((isSuccess && !data) || !isSuccess || !data || !me.data) return <></>;
   if (data.isBegin && ((round.isSuccess && !round.data) || !round.isSuccess || !round.data?.result.UserResult)) {
     return <></>;
   }
-
-  async function handleExitButton() {
-    await exitChat.mutateAsync({ roomId: parseInt(params.roomID) });
-    router.push('/gameroom');
-  }
-
   return (
     <div className="relative flex min-h-screen items-center justify-center bg-bgImage bg-cover bg-center">
       <GameWrapper
@@ -38,14 +36,13 @@ export default function Page({ params }: { params: { roomID: string } }) {
             <div>NoUserResult</div>
           )
         }
-        rightside={<ChatContainer roomsChannel={params.roomID} gameRoom={data} />}
+        rightside={
+          <div className="flex w-full min-h-full">
+            <ChatContainer roomsChannel={params.roomID} gameRoom={data} />
+          </div>
+        }
+        me={me.data}
       ></GameWrapper>
-      <Button
-        onClick={handleExitButton}
-        className="border-storke h4 absolute bottom-0 right-0 m-3 rounded-md border bg-pending p-4 font-bold text-stroke shadow-button"
-      >
-        gameroom
-      </Button>
     </div>
   );
 }

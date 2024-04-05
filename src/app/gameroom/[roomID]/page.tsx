@@ -22,6 +22,7 @@ export default function Chat({ params }: { params: { roomID: string } }) {
             <ChatContainer roomsChannel={params.roomID} gameRoom={data} />
           </div>
         }
+        me={user.data}
       ></GameWrapper>
     </div>
   );

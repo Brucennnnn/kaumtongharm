@@ -8,7 +8,21 @@ const config = {
     colors: {
       background: '#FFF6E4',
       stroke: '#001858',
-      secondary: '#8BD3DD',
+      secondary: {
+        default: '#8BD3DD',
+        hover: '#08C8E2',
+        click: '#08A1E2',
+      },
+      red: {
+        default: '#E78989',
+        hover: '#E14C4C',
+        click: '#A00000',
+      },
+      yellow: {
+        default: '#FFC164',
+        hover: '#FF9E0C',
+        click: '#C77E11',
+      },
       main: '#F4D2C1',
       paragraph: '#172C66',
       tertiary: '#F582AE',
@@ -52,6 +66,7 @@ const config = {
       md: '8px',
       lg: '12px',
       xl: '16px',
+      full: '9999px',
       '2xl': '20px',
       '3xl': '24px',
       '4xl': '36px',

@@ -156,7 +156,7 @@ export function ChatContainer(props: ChatProps) {
             </div>
           );
         })}
-        <div className="flex h-10" />
+        <div className="flex flex-1 h-10 lg:min:h-full" />
         <div ref={targetElement} />
       </div>
 

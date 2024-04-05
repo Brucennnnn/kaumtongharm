@@ -18,7 +18,7 @@ export default function GameRoomBox(props: gameRoomBoxProps) {
         setSelectedRoom(room);
       }}
       className={cn(
-        'flex h-fit w-full flex-row items-center gap-2 rounded-md bg-roombg p-2.5 py-2',
+        'flex h-fit w-full flex-row items-center gap-2 rounded-md bg-roombg p-2.5 py-2 hover:bg-hardpink',
         room?.id == selectedroom?.id ? 'border-2 border-stroke bg-hardpink shadow-box' : '',
       )}
     >

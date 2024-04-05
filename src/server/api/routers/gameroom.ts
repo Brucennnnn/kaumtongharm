@@ -8,7 +8,7 @@ export const gameRoomRouter = createTRPCRouter({
         roomName: z.string().min(1),
         maxPlayers: z.number().min(1),
         rounds: z.number().min(1),
-        description: z.string().min(1),
+        description: z.string().optional(),
       }),
     )
     .mutation(async ({ ctx, input }) => {

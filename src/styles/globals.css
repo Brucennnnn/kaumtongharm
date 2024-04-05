@@ -40,6 +40,19 @@
     @apply overflow-scroll scrollbar-hide;
   }
 }
+@layer utilities {
+  .yellow {
+    @apply bg-yellow-default hover:bg-yellow-hover focus:bg-yellow-click;
+  }
+
+  .red {
+    @apply bg-red-default hover:bg-red-hover focus:bg-red-click;
+  }
+
+  .secondary {
+    @apply bg-secondary-default hover:bg-secondary-hover focus:bg-secondary-click;
+  }
+}
 input:-webkit-autofill,
 input:-webkit-autofill:hover,
 input:-webkit-autofill:focus,

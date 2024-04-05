@@ -7,17 +7,17 @@ import { z } from 'zod';
 import { Textarea } from '@ktm/components/ui/textarea';
 
 import { Button } from '@ktm/components/ui/button';
-import { Form, FormControl, FormField, FormItem } from '@ktm/components/ui/form';
+import { Form, FormControl, FormField, FormItem, FormMessage } from '@ktm/components/ui/form';
 import { Input } from '@ktm/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { toast } from '@ktm/components/ui/use-toast';
 import ProfileCard from './ProfileCard';
 
 const formSchema = z.object({
-  roomName: z.string().min(1),
-  maxPlayers: z.coerce.number().min(3),
-  rounds: z.coerce.number().min(1),
-  description: z.string().min(1).max(128),
+  roomName: z.string().min(1).max(20),
+  maxPlayers: z.coerce.number().min(3).max(20),
+  rounds: z.coerce.number().min(1).max(20),
+  description: z.string().max(128),
 });
 
 export default function RightSideCreateGame() {
@@ -26,7 +26,7 @@ export default function RightSideCreateGame() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       roomName: '',
-      maxPlayers: 1,
+      maxPlayers: 3,
       rounds: 1,
       description: '',
     },
@@ -58,7 +58,7 @@ export default function RightSideCreateGame() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="h-fit w-full space-y-2 rounded-2xl border-2 border-stroke bg-main p-3 shadow-card"
+          className="h-fit w-full space-y-2 rounded-2xl  bg-main p-3 shadow-card"
         >
           <FormField
             control={form.control}
@@ -77,6 +77,7 @@ export default function RightSideCreateGame() {
                     </FormControl>
                   </div>
                 </FormControl>
+                <FormMessage className="text-error" />
               </FormItem>
             )}
           />
@@ -97,6 +98,7 @@ export default function RightSideCreateGame() {
                     </FormControl>
                   </div>
                 </FormControl>
+                <FormMessage className="text-error" />
               </FormItem>
             )}
           />
@@ -117,6 +119,8 @@ export default function RightSideCreateGame() {
                     </FormControl>
                   </div>
                 </FormControl>
+
+                <FormMessage className="text-error" />
               </FormItem>
             )}
           />
@@ -136,20 +140,20 @@ export default function RightSideCreateGame() {
                     </FormControl>
                   </div>
                 </FormControl>
+                <FormMessage className="text-error" />
               </FormItem>
             )}
           />
           <div className="flex w-full justify-end p-1">
             <Button
               type="submit"
-              className="w-[102px] rounded-md border-2 border-stroke bg-pending p-3 text-base font-bold text-stroke shadow-button"
+              className="w-[102px] secondary rounded-md border-2 border-stroke bg-pending p-3 text-base font-bold text-stroke shadow-button"
             >
               Create
             </Button>
           </div>
         </form>
       </Form>
-      <ProfileCard name={data?.username ?? ''} />
     </div>
   );
 }
