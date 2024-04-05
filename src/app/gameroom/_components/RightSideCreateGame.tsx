@@ -58,7 +58,7 @@ export default function RightSideCreateGame() {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="h-fit w-full space-y-2 rounded-2xl border-2 border-stroke bg-main p-3 shadow-card"
+          className="h-fit w-full space-y-2 rounded-2xl  bg-main p-3 shadow-card"
         >
           <FormField
             control={form.control}

@@ -30,8 +30,8 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
     // router.push(`gameroom/1`);
   };
   return (
-    <div className="flex h-full w-full flex-col justify-between">
-      <div className="flex h-80 min-h-fit w-full flex-col gap-y-3 rounded-2xl border-2 border-stroke bg-main p-3 shadow-card">
+    <div className="flex min-h-[300px] w-full flex-col justify-between h-fit">
+      <div className="flex h-full min-h-fit w-full flex-col gap-y-3 rounded-2xl  bg-main p-3 shadow-card">
         <div className="flex h-fit w-full flex-col gap-y-2">
           <div className="line-clamp-1 h-fit w-fit max-w-full items-center rounded-md bg-background px-2 py-1 text-2xl font-bold leading-10 text-stroke">
             {room.roomName}
@@ -45,7 +45,7 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
             </div>
           </div>
         </div>
-        <div className="line-clamp-4 h-full w-full rounded-[10px] bg-background p-3 py-1 text-lg font-bold text-stroke">
+        <div className="line-clamp-4 h-full lg:h-fit min-h-[100px] w-full rounded-[10px] bg-background p-3 py-1 text-lg font-bold text-stroke">
           {room.description}
         </div>
         <div className="flex h-10 w-full flex-row-reverse">

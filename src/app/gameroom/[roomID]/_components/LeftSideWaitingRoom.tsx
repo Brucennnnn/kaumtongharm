@@ -56,7 +56,7 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
 
   if (isSuccess && !data) return <></>;
   return (
-    <div className="flex  w-full flex-col gap-3 min-h-full flex-1">
+    <div className="flex  w-full flex-col gap-3 min-h-full ">
       <div className="flex w-full justify-between  ">
         <div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
           {props.gameRoom.roomName}
@@ -72,7 +72,7 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
         </div>
       )}
 
-      <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2 ">
+      <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2 max-h-[200px]  lg:max-h-full lg:h-full scroll">
         {props.gameRoom.chat?.User.map((e) => {
           return <NameCard key={e.id} isMe={e.id === data?.id} name={e.username} isAlive={true} />;
         })}

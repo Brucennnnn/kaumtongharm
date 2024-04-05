@@ -36,7 +36,11 @@ export default function Page({ params }: { params: { roomID: string } }) {
             <div>NoUserResult</div>
           )
         }
-        rightside={<ChatContainer roomsChannel={params.roomID} gameRoom={data} />}
+        rightside={
+          <div className="flex w-full min-h-full">
+            <ChatContainer roomsChannel={params.roomID} gameRoom={data} />
+          </div>
+        }
         me={me.data}
       ></GameWrapper>
     </div>

@@ -3,7 +3,7 @@ export interface gameRoom {
   roomName: string;
   maxPlayers: number;
   rounds: number;
-  description: string;
+  description?: string;
   chatId: number;
   roundTime: number;
   isBegin: boolean;

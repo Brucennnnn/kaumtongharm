@@ -31,7 +31,7 @@ export default function NameCard({
       <div className="flex flex-row gap-2">
         <div className={cn('h4 font-bold ', isAlive ? 'text-stroke' : 'text-white')}>{name}</div>
         <div className="h4 flex flex-row gap-2 font-bold text-error">{displaypoint}</div>
-        <div>{word}</div>
+        <div className="h4 flex flex-row gap-2 font-bold text-secondary-click w-fit">{word}</div>
       </div>
     </div>
   );

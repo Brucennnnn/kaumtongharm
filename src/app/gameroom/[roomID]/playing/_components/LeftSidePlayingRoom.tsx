@@ -19,7 +19,7 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
   const { isSuccess, data } = api.auth.me.useQuery();
   let chatChannel: Channel | null = null;
   const pusher = usePusher();
-  const deadTime = props.recentRound.result.startedAt.valueOf() + 90000;
+  const deadTime = props.recentRound.result.startedAt.valueOf() + 9000;
   const isEnd = new Date().valueOf() >= deadTime;
   const utils = api.useUtils();
   const router = useRouter();
@@ -98,7 +98,7 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
   });
   if (isSuccess && !data) return <></>;
   return (
-    <div className="flex  w-full flex-col gap-3 min-h-full">
+    <div className="flex h-full w-full flex-col gap-3 min-h-full">
       <div className="flex w-full justify-between  ">
         <div className="flex items-center justify-center rounded-md bg-background p-2 font-bold text-stroke">
           {props.gameRoom.roomName}
@@ -113,7 +113,7 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
         </div>
       )}
 
-      <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2 min:h-full">
+      <div className=" w-full flex-1 flex-col space-y-2 rounded-md bg-background p-2 max-h-[200px]  lg:max-h-full lg:h-full scroll">
         {props.recentRound.result.UserResult.map((e) => {
           if (!isEnd) {
             if (e.user.id !== data?.id) {
@@ -141,7 +141,9 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
               />
             );
           }
-          return <NameCard key={e.id} isMe name={e.user.username} isAlive={true} />;
+          return (
+            <NameCard key={e.id} isMe name={e.user.username} isAlive={true} point={e.point} word={e.kuamTongHarm} />
+          );
         })}
       </div>
 

@@ -46,7 +46,7 @@ export default function GameRoomList(props: gameRoomListProps) {
           }}
         />
       </div>
-      <div className="scroll flex w-full grow flex-col gap-y-3 rounded-lg bg-background p-3">
+      <div className="scroll flex w-full grow flex-col gap-y-3 rounded-lg bg-background p-3 max-h-[150px] lg:max-h-full">
         {allGameRoom.map((item, index) => {
           return (
             <GameRoomBox
