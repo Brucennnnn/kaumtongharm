@@ -54,7 +54,7 @@ model GameRoom {
   user        User         @relation(fields: [hostId], references: [id])
   maxPlayers  Int
   rounds      Int
-  description String
+  description String?
   roundTime   Int          @default(240)
   isBegin     Boolean      @default(false)
   createdAt   DateTime     @default(now())

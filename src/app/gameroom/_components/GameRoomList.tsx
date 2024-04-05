@@ -21,10 +21,10 @@ type allGameRoom = NonNullable<RouterOutputs['gameRoom']['getGameRoomsByFilter']
 export default function GameRoomList(props: gameRoomListProps) {
   const { allGameRoom, setSelectedRoom, selectedroom, setSearchString } = props;
   return (
-    <div className="flex w-full grow flex-col gap-3">
+    <div className="flex  w-full grow flex-col gap-3">
       <div className="flex w-full justify-end">
         <Button
-          className="text-md rounded-md border-2 border-stroke bg-pending font-bold shadow-button"
+          className="text-md rounded-md border-2 border-stroke yellow font-bold shadow-button"
           onClick={() => {
             setSelectedRoom(null);
           }}

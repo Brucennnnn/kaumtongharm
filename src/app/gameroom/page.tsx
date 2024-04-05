@@ -6,7 +6,7 @@ import CardWrapper from './_components/GameWrapper';
 import RightSideCreateGame from './_components/RightSideCreateGame';
 import GameRoomDetails from './_components/GameRoomDetails';
 import { api } from '@ktm/trpc/react';
-import LogoutButton from '../_components/LogoutButton';
+import { useRouter } from 'next/navigation';
 
 export default function Page() {
   const [searchString, setSearchString] = useState('');
@@ -15,9 +15,19 @@ export default function Page() {
   const { isSuccess, data } = api.gameRoom.getGameRoomsByFilter.useQuery({
     // searchQuery: searchString,
   });
-  if (!data) return <></>;
+
+  const router = useRouter();
+  const me = api.auth.me.useQuery();
+
+  useEffect(() => {
+    if (me.isSuccess && !me.data) {
+      router.push('/login');
+    }
+  }, [me.isSuccess, me.data]);
+  if (!data || !me.data) return <></>;
+
   return (
-    <div className="flex h-screen min-h-fit items-center justify-center bg-bgImage bg-cover bg-center p-4">
+    <div className="flex  min-h-screen items-center justify-center bg-bgImage bg-cover bg-center p-4 ">
       <CardWrapper
         leftside={
           <GameRoomList
@@ -27,9 +37,9 @@ export default function Page() {
             allGameRoom={data}
           />
         }
+        me={me.data}
         rightside={selectedRoom ? <GameRoomDetails room={selectedRoom} /> : <RightSideCreateGame />}
       />
-      <LogoutButton />
     </div>
   );
 }

@@ -10,6 +10,8 @@ import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { api } from '@ktm/trpc/react';
+import { faSliders } from '@fortawesome/free-solid-svg-icons';
+import LogoutButton from '@ktm/app/_components/LogoutButton';
 const formSchema = z.object({
   username: z.string().min(4).max(12),
 });
@@ -34,15 +36,16 @@ export default function ProfileCard({ name }: { name: string }) {
 
   return (
     <>
-      <div className="flex h-fit w-full justify-between rounded-md border-2 border-stroke bg-main p-2 shadow-box">
-        <div className="p-1 text-xl font-bold text-stroke">{name}</div>
-        <div className="py-2">
+      <div className="flex h-fit lg:max-w-[360px] justify-between items-center rounded-md border-2 w-full border-stroke bg-main p-2 shadow-box ">
+        <div className="p-1 text-xl font-bold text-stroke flex items-center h-fit">{name}</div>
+        <div className=" space-x-2 flex flex-row">
           <Button
-            className="h-fit rounded-md bg-secondary py-1 px-2 text-xs font-bold shadow-button"
+            className=" rounded-full p-3 border border-stroke bg-secondary-default  text-lg font-bold text-stroke shadow-button m-0 hover:bg-secondary-hover focus:bg-secondary-click"
             onClick={() => setOpen(true)}
           >
-            Edit Profile
+            <FontAwesomeIcon icon={faSliders} className=" self-center text-2xl text-stroke" width="16" />
           </Button>
+          <LogoutButton />
         </div>
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
@@ -76,14 +79,14 @@ export default function ProfileCard({ name }: { name: string }) {
               />
               <div className="flex w-full justify-center gap-4 py-1">
                 <Button
-                  className="w-fit min-w-[90px] rounded-md  bg-secondary p-3 text-md font-bold text-stroke shadow-button"
+                  className="w-fit min-w-[90px] rounded-md  bg-secondary-default hover:bg-secondary-hover focus:bg-secondary-click p-3 text-md font-bold text-stroke shadow-button"
                   onClick={() => setOpen(false)}
                 >
                   Cancel
                 </Button>
                 <Button
                   type="submit"
-                  className="w-fit min-w-[90px] rounded-md  bg-pending p-3 text-md font-bold text-stroke shadow-button"
+                  className="w-fit min-w-[90px] rounded-md  bg-yellow-default hover:bg-yellow-hover focus:bg-yellow-click p-3 text-md font-bold text-stroke shadow-button"
                 >
                   Confirm
                 </Button>

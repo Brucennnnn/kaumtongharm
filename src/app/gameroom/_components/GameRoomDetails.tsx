@@ -51,7 +51,7 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
         <div className="flex h-10 w-full flex-row-reverse">
           <Button
             className={cn(
-              'h-full w-[120px] rounded-md border border-stroke bg-secondary text-base font-bold shadow-button',
+              'h-full w-[120px] secondary rounded-md border border-stroke bg-secondary text-base font-bold shadow-button',
               room.currentPlayers >= room.maxPlayers ? 'cursor-not-allowed' : '',
             )}
             onClick={handleJoin}
@@ -60,7 +60,6 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
           </Button>
         </div>
       </div>
-      <ProfileCard name={data?.username ?? ''} />
     </div>
   );
 }
