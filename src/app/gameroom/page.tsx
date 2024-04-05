@@ -31,10 +31,10 @@ export default function Page() {
       <CardWrapper
         leftside={
           <GameRoomList
-            setSearchString={setSearchString}
+            // setSearchString={setSearchString}
             selectedroom={selectedRoom}
             setSelectedRoom={setSelectedRoom}
-            allGameRoom={data}
+            // allGameRoom={data}
           />
         }
         me={me.data}
