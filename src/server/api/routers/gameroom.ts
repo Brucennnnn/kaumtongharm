@@ -33,6 +33,7 @@ export const gameRoomRouter = createTRPCRouter({
         });
         return gameRoom;
       });
+      await Promise.all([ctx.pusher.trigger(`gamelist`, 'add-room', 'join')]);
       return gameRoom;
     }),
   getAllGameRoom: publicProcedure.query(async ({ ctx }) => {

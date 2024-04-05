@@ -12,6 +12,8 @@ import { Form } from '@ktm/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { usePusher } from '@ktm/app/_context/PusherContext';
+import { useEffect } from 'react';
 
 interface gameRoomListProps {
   selectedroom: gameRoom | null;
@@ -64,6 +66,17 @@ export default function GameRoomList(props: gameRoomListProps) {
       );
     });
   };
+  const utils = api.useUtils();
+  const pusher = usePusher();
+  const chatChannel = pusher.subscribe(`gamelist`);
+  useEffect(() => {
+    chatChannel.bind('add-room', async () => {
+      await utils.gameRoom.getGameRoomsByFilter.invalidate();
+    });
+    return () => {
+      chatChannel.unbind_all();
+    };
+  }, [utils, chatChannel]);
 
   const { handleSubmit, setValue } = methods;
   const formSubmit = (searchQuery: { searchQuery: string }) => {

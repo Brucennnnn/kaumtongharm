@@ -12,7 +12,7 @@ model Chat {
   id         Int          @id @default(autoincrement())
   Message    Message[]
   gameRoomId Int          @unique
-  gameRoom   GameRoom     @relation(fields: [gameRoomId], references: [id])
+  gameRoom   GameRoom     @relation(fields: [gameRoomId], references: [id], onDelete: Cascade)
   UserResult UserResult[]
   User       User[]
   UserVote   UserVote[]
@@ -23,10 +23,10 @@ model User {
   username       String       @unique
   hashedPassword String
   messages       Message[]
+  chatId         Int?
   chat           Chat?        @relation(fields: [chatId], references: [id])
   UserResult     UserResult[]
   Session        Session[]
-  chatId         Int?
   GameRoom       GameRoom[]
 }
 
@@ -67,7 +67,7 @@ model Round {
   id         Int          @id @default(autoincrement())
   startedAt  DateTime     @default(now())
   gameRoomId Int
-  game       GameRoom     @relation(fields: [gameRoomId], references: [id])
+  game       GameRoom     @relation(fields: [gameRoomId], references: [id], onDelete: Cascade)
   UserResult UserResult[]
   UserVote   UserVote[]
 }
@@ -79,11 +79,11 @@ model UserResult {
   status       String   @default("alive")
   user         User     @relation(fields: [userId], references: [id])
   chatId       Int
-  chat         Chat     @relation(fields: [chatId], references: [id])
+  chat         Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
   gameRoomId   Int
-  game         GameRoom @relation(fields: [gameRoomId], references: [id])
+  game         GameRoom @relation(fields: [gameRoomId], references: [id], onDelete: Cascade)
   roundId      Int
-  round        Round    @relation(fields: [roundId], references: [id])
+  round        Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
   point        Int      @default(1)
 }
 
@@ -91,9 +91,9 @@ model UserVote {
   voterId   String
   voteToId  String
   roundId   Int
-  round     Round    @relation(fields: [roundId], references: [id])
+  round     Round    @relation(fields: [roundId], references: [id], onDelete: Cascade)
   chatId    Int
-  chat      Chat     @relation(fields: [chatId], references: [id])
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 
   @@id([voterId, voteToId, roundId, chatId])

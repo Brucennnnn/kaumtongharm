@@ -9,7 +9,6 @@ import { api } from '@ktm/trpc/react';
 import { useRouter } from 'next/navigation';
 
 export default function Page() {
-  const [searchString, setSearchString] = useState('');
   const [selectedRoom, setSelectedRoom] = useState<gameRoom | null>(null);
 
   const { isSuccess, data } = api.gameRoom.getGameRoomsByFilter.useQuery({

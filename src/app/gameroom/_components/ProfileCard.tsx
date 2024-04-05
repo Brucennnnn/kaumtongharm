@@ -61,7 +61,7 @@ export default function ProfileCard({ name, roomId }: { name: string; roomId?: n
           >
             <FontAwesomeIcon icon={faSliders} className=" self-center text-2xl text-stroke" width="16" />
           </Button>
-          <LogoutButton />
+          <LogoutButton handleExit={handleExitButton} />
         </div>
       </div>
       <Dialog open={open} onOpenChange={setOpen}>

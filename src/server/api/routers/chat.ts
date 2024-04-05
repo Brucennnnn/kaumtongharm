@@ -43,13 +43,27 @@ export const chatRouter = createTRPCRouter({
       return user;
     }),
   exitChat: userProcedure.input(z.object({ roomId: z.number() })).mutation(async ({ ctx, input }) => {
-    await ctx.db.user.update({
-      data: {
-        chatId: null,
-      },
-      where: {
-        id: ctx.session.userId,
-      },
+    await ctx.db.$transaction(async (tx) => {
+      const host = await tx.gameRoom.findFirst({
+        where: {
+          id: input.roomId,
+        },
+      });
+      if (host?.hostId === ctx.session.userId) {
+        await tx.gameRoom.delete({
+          where: {
+            id: input.roomId,
+          },
+        });
+      }
+      await tx.user.update({
+        data: {
+          chatId: null,
+        },
+        where: {
+          id: ctx.session.userId,
+        },
+      });
     });
     await Promise.all([ctx.pusher.trigger(`gameroom-${input.roomId}`, 'waiting-room', 'exit')]);
   }),
