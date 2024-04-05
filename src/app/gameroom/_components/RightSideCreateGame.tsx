@@ -7,11 +7,12 @@ import { z } from 'zod';
 import { Textarea } from '@ktm/components/ui/textarea';
 
 import { Button } from '@ktm/components/ui/button';
+import { useEffect } from 'react';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@ktm/components/ui/form';
 import { Input } from '@ktm/components/ui/input';
 import { useRouter } from 'next/navigation';
 import { toast } from '@ktm/components/ui/use-toast';
-import ProfileCard from './ProfileCard';
+import * as React from 'react';
 
 const formSchema = z.object({
   roomName: z.string().min(1).max(20),
@@ -21,6 +22,13 @@ const formSchema = z.object({
 });
 
 export default function RightSideCreateGame() {
+  function filterNumbers(inputString: string): string {
+    console.log('coming input', inputString);
+    const numbers: string[] = inputString.match(/\d/g) ?? [];
+    const filteredNumbers: string = numbers.join('');
+    console.log(filteredNumbers);
+    return filteredNumbers;
+  }
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -31,6 +39,9 @@ export default function RightSideCreateGame() {
       description: '',
     },
   });
+  useEffect(() => {
+    console.log(form.getValues('maxPlayers'));
+  }, [form]);
 
   const createGameRoom = api.gameRoom.createGameRoom.useMutation();
   const { data } = api.auth.me.useQuery();
@@ -92,8 +103,10 @@ export default function RightSideCreateGame() {
                     <FormControl className="flex-1">
                       <Input
                         type="number"
+                        min="0"
                         className="w-full rounded-md border-none bg-background p-0 text-base text-stroke focus-visible:ring-0 focus-visible:ring-offset-0"
                         {...field}
+                        value={filterNumbers(form.getValues('maxPlayers').toString())}
                       />
                     </FormControl>
                   </div>
@@ -113,8 +126,11 @@ export default function RightSideCreateGame() {
                     <FormControl className="flex-1">
                       <Input
                         type="number"
+                        step="1"
+                        min="0"
                         className="w-full rounded-md border-none bg-background p-0 text-base text-stroke focus-visible:ring-0 focus-visible:ring-offset-0"
                         {...field}
+                        value={filterNumbers(form.getValues('rounds').toString())}
                       />
                     </FormControl>
                   </div>
