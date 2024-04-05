@@ -7,7 +7,6 @@ import { z } from 'zod';
 import { Textarea } from '@ktm/components/ui/textarea';
 
 import { Button } from '@ktm/components/ui/button';
-import { useEffect } from 'react';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@ktm/components/ui/form';
 import { Input } from '@ktm/components/ui/input';
 import { useRouter } from 'next/navigation';
@@ -23,10 +22,8 @@ const formSchema = z.object({
 
 export default function RightSideCreateGame() {
   function filterNumbers(inputString: string): string {
-    console.log('coming input', inputString);
     const numbers: string[] = inputString.match(/\d/g) ?? [];
     const filteredNumbers: string = numbers.join('');
-    console.log(filteredNumbers);
     return filteredNumbers;
   }
   const router = useRouter();
@@ -39,9 +36,6 @@ export default function RightSideCreateGame() {
       description: '',
     },
   });
-  useEffect(() => {
-    console.log(form.getValues('maxPlayers'));
-  }, [form]);
 
   const createGameRoom = api.gameRoom.createGameRoom.useMutation();
   const { data } = api.auth.me.useQuery();
