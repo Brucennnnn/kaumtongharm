@@ -39,7 +39,7 @@ export default function ProfileCard({ name, roomId }: { name: string; roomId?: n
   const exitChat = api.chat.exitChat.useMutation();
   async function handleExitButton() {
     if (roomId) {
-      await exitChat.mutateAsync({ roomId: roomId });
+      await exitChat.mutateAsync({ roomId: roomId, username: name });
     }
     router.push('/gameroom');
   }

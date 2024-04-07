@@ -27,11 +27,12 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
   const pusher = usePusher();
   chatChannel = pusher.subscribe(`gameroom-${props.gameRoom.id}`);
   useEffect(() => {
-    chatChannel.bind('start-round', async (data: string) => {
+    chatChannel.bind('start-round', async () => {
       router.push(`/gameroom/${props.gameRoom.id}/playing`);
     });
     chatChannel.bind('waiting-room', async (data: string) => {
       await utils.gameRoom.getGameRoom.invalidate();
+      console.log(data);
     });
     return () => {
       chatChannel.unbind_all();
@@ -39,13 +40,19 @@ export default function LeftSideWaitingRoom(props: { gameRoom: GameRoom }) {
   }, [utils, chatChannel]);
 
   async function handleExitButton() {
-    await exitChat.mutateAsync({ roomId: props.gameRoom.id });
+    await exitChat.mutateAsync({
+      roomId: props.gameRoom.id,
+      username: data?.username ?? 'Unknown',
+    });
     router.push('/gameroom');
   }
 
   useEffect(() => {
     const beforeUnload = (event: BeforeUnloadEvent) => {
-      exitChat.mutate({ roomId: props.gameRoom.id });
+      exitChat.mutate({
+        roomId: props.gameRoom.id,
+        username: data?.username ?? 'Unknown',
+      });
       event.preventDefault();
     };
     window.addEventListener('beforeunload', beforeUnload);

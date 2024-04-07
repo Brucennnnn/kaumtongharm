@@ -22,6 +22,7 @@ export default function GameRoomDetails(props: GameRoomDetailsProps) {
     }
     await joinGameRoom.mutateAsync({
       roomId: props.room.id,
+      username: data?.username ?? 'Unknown',
     });
     router.push(`gameroom/${props.room.id}`);
     // joinChat.mutate({

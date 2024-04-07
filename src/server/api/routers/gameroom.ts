@@ -186,35 +186,39 @@ export const gameRoomRouter = createTRPCRouter({
     });
     return res;
   }),
-  joinGameRoom: userProcedure.input(z.object({ roomId: z.number() })).mutation(async ({ input, ctx }) => {
-    const result = await ctx.db.$transaction(async (tx) => {
-      const gameRoom = await tx.gameRoom.findFirst({
-        where: {
-          id: input.roomId,
-        },
-        include: {
-          chat: true,
-        },
-      });
-      if (!gameRoom || !gameRoom.chat) throw new Error('room Id is wrong');
-      return await tx.user.update({
-        where: {
-          id: ctx.session.userId,
-        },
-        data: {
-          chatId: gameRoom.chat.id,
-        },
-        include: {
-          chat: {
-            include: {
-              gameRoom: true,
+  joinGameRoom: userProcedure
+    .input(z.object({ roomId: z.number(), username: z.string() }))
+    .mutation(async ({ input, ctx }) => {
+      const result = await ctx.db.$transaction(async (tx) => {
+        const gameRoom = await tx.gameRoom.findFirst({
+          where: {
+            id: input.roomId,
+          },
+          include: {
+            chat: true,
+          },
+        });
+        if (!gameRoom || !gameRoom.chat) throw new Error('room Id is wrong');
+        return await tx.user.update({
+          where: {
+            id: ctx.session.userId,
+          },
+          data: {
+            chatId: gameRoom.chat.id,
+          },
+          include: {
+            chat: {
+              include: {
+                gameRoom: true,
+              },
             },
           },
-        },
+        });
       });
-    });
 
-    await Promise.all([ctx.pusher.trigger(`gameroom-${input.roomId}`, 'waiting-room', 'join')]);
-    return result;
-  }),
+      await Promise.all([
+        ctx.pusher.trigger(`gameroom-${input.roomId}`, 'waiting-room', `${input.username} join room`),
+      ]);
+      return result;
+    }),
 });
