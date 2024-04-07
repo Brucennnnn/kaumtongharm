@@ -3,6 +3,7 @@ import { cn } from '@ktm/lib/utils';
 import { Button } from '@ktm/components/ui/button';
 import { useState } from 'react';
 import { api } from '@ktm/trpc/react';
+import { socket } from '@ktm/action/socket';
 export default function PlayerCard({
   isAlive,
   name,
@@ -10,6 +11,7 @@ export default function PlayerCard({
   roundId,
   userId,
   point,
+  fromUser,
   word,
 }: {
   isAlive: boolean;
@@ -18,6 +20,7 @@ export default function PlayerCard({
   roundId: number;
   name: string;
   point: number;
+  fromUser: string;
   word: string;
 }) {
   const [isHovered, setIsHovered] = useState(false);
@@ -29,6 +32,11 @@ export default function PlayerCard({
       chatId: chatId,
       roundId: roundId,
       toUser: userId,
+    });
+    socket.emit('announcement-message', {
+      channel: `announcement-channel-${chatId}`,
+      type: 'vote',
+      message: `${name} voted by ${fromUser}`,
     });
     await utils.gameRoom.getRecentRound.invalidate();
   }

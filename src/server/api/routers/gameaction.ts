@@ -72,6 +72,8 @@ export const gameActionRouter = createTRPCRouter({
       await Promise.all([
         ctx.pusher.trigger(`gameroom-${userVote.gameRoomId}`, 'playing-room', {
           status: 'refresh',
+          userDeath: input.toUser,
+          userVote: userVote.UserVote[0]?.voterId,
         }),
       ]);
       return userVote;

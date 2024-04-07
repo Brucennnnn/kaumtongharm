@@ -42,29 +42,33 @@ export const chatRouter = createTRPCRouter({
       await Promise.all([ctx.pusher.trigger(`gameroom-${user.chat?.gameRoomId}`, 'waiting-room', 'refresh')]);
       return user;
     }),
-  exitChat: userProcedure.input(z.object({ roomId: z.number() })).mutation(async ({ ctx, input }) => {
-    await ctx.db.$transaction(async (tx) => {
-      const host = await tx.gameRoom.findFirst({
-        where: {
-          id: input.roomId,
-        },
-      });
-      if (host?.hostId === ctx.session.userId) {
-        await tx.gameRoom.delete({
+  exitChat: userProcedure
+    .input(z.object({ roomId: z.number(), username: z.string() }))
+    .mutation(async ({ ctx, input }) => {
+      await ctx.db.$transaction(async (tx) => {
+        const host = await tx.gameRoom.findFirst({
           where: {
             id: input.roomId,
           },
         });
-      }
-      await tx.user.update({
-        data: {
-          chatId: null,
-        },
-        where: {
-          id: ctx.session.userId,
-        },
+        if (host?.hostId === ctx.session.userId) {
+          await tx.gameRoom.delete({
+            where: {
+              id: input.roomId,
+            },
+          });
+        }
+        await tx.user.update({
+          data: {
+            chatId: null,
+          },
+          where: {
+            id: ctx.session.userId,
+          },
+        });
       });
-    });
-    await Promise.all([ctx.pusher.trigger(`gameroom-${input.roomId}`, 'waiting-room', 'exit')]);
-  }),
+      await Promise.all([
+        ctx.pusher.trigger(`gameroom-${input.roomId}`, 'waiting-room', `${input.username} exit room`),
+      ]);
+    }),
 });

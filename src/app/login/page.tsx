@@ -2,7 +2,6 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@ktm/components/ui/tabs';
 import LoginTab from './_components/LoginTab';
 import SignUpTab from './_components/SignUpTab';
-import LogoutButton from '../_components/LogoutButton';
 import { api } from '@ktm/trpc/react';
 import { useRouter } from 'next/navigation';
 import { useEffect } from 'react';

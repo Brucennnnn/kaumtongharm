@@ -38,7 +38,6 @@ export default function RightSideCreateGame() {
   });
 
   const createGameRoom = api.gameRoom.createGameRoom.useMutation();
-  const { data } = api.auth.me.useQuery();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {

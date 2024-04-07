@@ -12,11 +12,15 @@ import { faPaperPlane } from '@fortawesome/free-solid-svg-icons';
 import { type RouterOutputs, api } from '@ktm/trpc/react';
 import { redirect } from 'next/navigation';
 import { toast } from '@ktm/components/ui/use-toast';
+import { cn } from '@ktm/lib/utils';
+import { usePusher } from '@ktm/app/_context/PusherContext';
 
 type ChatMessage = {
   username: string;
   message: string;
   isPrivate?: boolean;
+  isAnnouncement?: boolean;
+  type?: string;
 };
 
 type MessageType = {
@@ -66,6 +70,29 @@ export function ChatContainer(props: ChatProps) {
     },
   });
 
+  const pusher = usePusher();
+  const chatChannel = pusher.subscribe(`gameroom-${props.gameRoom.id}`);
+
+  useEffect(() => {
+    if (isSuccess) {
+      chatChannel.bind('waiting-room', (data: string) => {
+        setChats((prevState) => [
+          ...prevState,
+          {
+            username: 'System',
+            isAnnouncement: true,
+            type: 'round',
+            message: data,
+          },
+        ]);
+      });
+    }
+    scrollingBottom();
+    return () => {
+      chatChannel.unbind_all();
+    };
+  }, [isSuccess, chatChannel]);
+
   useEffect(() => {
     socket.on(`private-channel-${roomsChannel}`, (message: MessagePrivateType) => {
       if (data?.id === message.senderId || data?.id === message.receiverId)
@@ -81,9 +108,21 @@ export function ChatContainer(props: ChatProps) {
     socket.on(`public-channel-${roomsChannel}`, (message: MessageType) => {
       setChats((prevState) => [...prevState, { username: message.sender ?? 'Unknown', message: message.message }]);
     });
+    socket.on(`announcement-channel-${roomsChannel}`, (message: { type: string; message: string }) => {
+      setChats((prevState) => [
+        ...prevState,
+        {
+          username: 'system',
+          isAnnouncement: true,
+          type: message.type ?? 'Unknown',
+          message: message.message,
+        },
+      ]);
+    });
     return () => {
       socket.off(`private-channel-${roomsChannel}`);
       socket.off(`public-channel-${roomsChannel}`);
+      socket.off(`announcement-channel-${roomsChannel}`);
     };
   }, [data, roomsChannel]);
 
@@ -139,13 +178,27 @@ export function ChatContainer(props: ChatProps) {
 
   return (
     <div className="flex w-full flex-col h-full justify-between gap-2">
-      <div className="flex h-full flex-col gap-2 overflow-y-hidden">
+      <div className="flex h-full flex-col gap-2 overflow-y-scroll scrollbar-hide">
         {chats.map((chat, index) => {
           if (chat.isPrivate) {
             return (
-              <div key={index} className="flex flex-col gap-1 rounded-xl bg-secondary p-2">
+              <div key={index} className="flex flex-col gap-1 rounded-xl bg-secondary-default p-2">
                 <h5 className="text-xl font-bold text-stroke">{`${chat.username} (private) :`}</h5>
                 <p className="pl-1 text-base font-bold text-error">{chat.message}</p>
+              </div>
+            );
+          } else if (chat.isAnnouncement) {
+            return (
+              <div
+                key={index}
+                className={cn(
+                  'flex rounded-xl p-2 items-center justify-center text-[#fff]',
+                  chat.type === 'vote' && 'bg-pending',
+                  chat.type === 'eliminate' && 'bg-[#F25F4C]',
+                  chat.type === 'round' && 'bg-[#FF8906]',
+                )}
+              >
+                <p className="text-base font-bold">{chat.message}</p>
               </div>
             );
           }

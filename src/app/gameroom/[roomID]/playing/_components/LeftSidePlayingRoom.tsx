@@ -11,6 +11,7 @@ import { Dayjs } from '@ktm/utils/dayjs';
 import GoNextButton from './GoNextButton';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@ktm/components/ui/use-toast';
+import { socket } from '@ktm/action/socket';
 
 type RecentRound = NonNullable<RouterOutputs['gameRoom']['getRecentRound']>;
 type GameRoom = NonNullable<RouterOutputs['gameRoom']['getGameRoom']>;
@@ -55,15 +56,28 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
     });
   }
   useEffect(() => {
-    chatChannel.bind('start-round', async (data: string) => {
+    chatChannel.bind('start-round', async () => {
       await utils.gameRoom.getRecentRound.invalidate();
+      socket.emit('announcement-message', {
+        channel: `announcement-channel-${props.gameRoom.id}`,
+        type: 'round',
+        message: `Rounded ${props.gameRoom.rounds} started!!!`,
+      });
     });
-    chatChannel.bind('playing-room', async (data: { status: string }) => {
-      if (data.status === 'end-game') {
+    chatChannel.bind('playing-room', async (data2: { status: string; userDeath: string; userVote: string }) => {
+      if (data2.status === 'end-game') {
         router.push(`/gameroom/${props.gameRoom.id}`);
       }
-      if (data.status === 'refresh') {
+      if (data2.status === 'refresh') {
         await utils.gameRoom.getRecentRound.invalidate();
+        const userName = stringObject[data2.userVote];
+        if (data2.userDeath === data?.id && userName) {
+          socket.emit('announcement-message', {
+            channel: `announcement-channel-${props.gameRoom.id}`,
+            type: 'eliminate',
+            message: `${data?.username} eleminated by ${userName}`,
+          });
+        }
       }
     });
 
@@ -74,7 +88,10 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
 
   useEffect(() => {
     const beforeUnload = (event: BeforeUnloadEvent) => {
-      exitChat.mutate({ roomId: props.gameRoom.id });
+      exitChat.mutate({
+        roomId: props.gameRoom.id,
+        username: data?.username ?? 'Unknown',
+      });
       event.preventDefault();
     };
     window.addEventListener('beforeunload', beforeUnload);
@@ -122,6 +139,7 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
                   userId={e.user.id}
                   chatId={e.chatId}
                   roundId={e.roundId}
+                  fromUser={data?.username ?? ''}
                   key={e.id}
                   name={e.user.username}
                   isAlive={e.status === 'alive'}

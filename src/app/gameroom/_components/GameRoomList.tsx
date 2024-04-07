@@ -81,7 +81,6 @@ export default function GameRoomList(props: gameRoomListProps) {
   const { handleSubmit, setValue } = methods;
   const formSubmit = (searchQuery: { searchQuery: string }) => {
     setSearchString(searchQuery.searchQuery);
-    console.log(searchQuery.searchQuery);
   };
   return (
     <div className="flex  w-full grow flex-col gap-3">

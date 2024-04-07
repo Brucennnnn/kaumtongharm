@@ -1,6 +1,6 @@
 'use client';
 import { logout } from '@ktm/action/auth';
-import { faRightFromBracket, faRightToBracket } from '@fortawesome/free-solid-svg-icons';
+import { faRightToBracket } from '@fortawesome/free-solid-svg-icons';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { Button } from '@ktm/components/ui/button';
 interface LogoutButtonProps {
