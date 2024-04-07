@@ -1,7 +1,7 @@
 'use client';
-import { useEffect, useState } from 'react';
-import { Dayjs } from '@ktm/utils/dayjs';
+
 import { cn } from '@ktm/lib/utils';
+
 export default function Timer({ deadline, className }: { deadline: string; className?: string }) {
   return (
     <div

@@ -7,7 +7,6 @@ import { Button } from '@ktm/components/ui/button';
 import { Form, FormControl, FormField, FormItem, FormMessage } from '@ktm/components/ui/form';
 import { Input } from '@ktm/components/ui/input';
 import { signup } from '@ktm/action/auth';
-import { redirect } from 'next/navigation';
 
 const formSchema = z.object({
   username: z.string().min(4).max(12),

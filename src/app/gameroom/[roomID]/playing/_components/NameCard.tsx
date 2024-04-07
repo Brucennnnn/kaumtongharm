@@ -1,5 +1,5 @@
 import { cn } from '@ktm/lib/utils';
-import { Button } from '@ktm/components/ui/button';
+
 export default function NameCard({
   isMe,
   name,

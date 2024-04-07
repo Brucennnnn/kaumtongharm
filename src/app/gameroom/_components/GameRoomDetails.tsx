@@ -4,7 +4,6 @@ import { type gameRoom } from '../interfaces';
 import { cn } from '@ktm/lib/utils';
 import { useRouter } from 'next/navigation';
 import { api } from '@ktm/trpc/react';
-import ProfileCard from './ProfileCard';
 
 interface GameRoomDetailsProps {
   room: gameRoom;

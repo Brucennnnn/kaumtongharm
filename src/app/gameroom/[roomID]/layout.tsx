@@ -8,7 +8,7 @@ export default function GameRoomLayout({
   children: React.ReactNode;
   params: { roomID: string };
 }) {
-  const { isSuccess, data } = api.auth.me.useQuery(undefined, {});
+  const { data } = api.auth.me.useQuery(undefined, {});
   // const joinChat = api.gameRoom.joinGameRoom.useMutation();
   // useEffect(() => {
   // 	if (isSuccess) {

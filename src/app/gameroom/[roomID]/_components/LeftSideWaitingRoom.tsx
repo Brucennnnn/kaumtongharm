@@ -4,7 +4,7 @@ import { type RouterOutputs } from '@ktm/trpc/react';
 import { api } from '@ktm/trpc/react';
 import { usePusher } from '@ktm/app/_context/PusherContext';
 import { type Channel } from 'pusher-js';
-import { useEffect, useState } from 'react';
+import { useEffect } from 'react';
 import { Button } from '@ktm/components/ui/button';
 
 import { useRouter } from 'next/navigation';

@@ -88,7 +88,10 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
 
   useEffect(() => {
     const beforeUnload = (event: BeforeUnloadEvent) => {
-      exitChat.mutate({ roomId: props.gameRoom.id });
+      exitChat.mutate({
+        roomId: props.gameRoom.id,
+        username: data?.username ?? 'Unknown',
+      });
       event.preventDefault();
     };
     window.addEventListener('beforeunload', beforeUnload);
