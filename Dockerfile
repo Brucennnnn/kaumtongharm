@@ -16,6 +16,6 @@ COPY . .
 
 RUN npx prisma generate 
 
-RUN SKIP_ENV_VALIDATION=true npm run build
+RUN npm run build
 
 CMD ["npm", "start"]
