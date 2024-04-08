@@ -16,7 +16,6 @@ export const env = createEnv({
     DATABASE_AUTH: z.string(),
     PUSHER_SECRET: z.string(),
     PUSHER_APP_ID: z.string(),
-    SOCKET_API: z.string(),
   },
 
   /**
@@ -27,6 +26,7 @@ export const env = createEnv({
   client: {
     // NEXT_PUBLIC_CLIENTVAR: z.string(),
     NEXT_PUBLIC_PUSHER_KEY: z.string(),
+    NEXT_PUBLIC_SOCKET_API: z.string(),
   },
 
   /**
@@ -38,9 +38,9 @@ export const env = createEnv({
     DATABASE_URL: process.env.DATABASE_URL,
     IS_PROD: process.env.IS_PROD,
     DATABASE_AUTH: process.env.DATABASE_AUTH,
-    NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
     PUSHER_SECRET: process.env.PUSHER_SECRET,
-    SOCKET_API: process.env.SOCKET_API,
+    NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
+    NEXT_PUBLIC_SOCKET_API: process.env.SOCKET_API,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
