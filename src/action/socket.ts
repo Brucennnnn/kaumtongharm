@@ -1,5 +1,5 @@
+'use client';
 import { env } from '@ktm/env';
-('use client');
 
 import { io } from 'socket.io-client';
 
