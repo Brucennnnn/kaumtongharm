@@ -3,6 +3,7 @@ FROM node:20-alpine AS dep
 WORKDIR /app
 COPY package*.json  ./
 
+ENV SKIP_ENV_VALIDATION=true
 RUN npm install
 
 FROM node:20-alpine
