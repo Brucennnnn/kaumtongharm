@@ -13,4 +13,7 @@ COPY --from=dep /app/node_modules /app/node_modules
 
 COPY . .
 
+
+RUN npm run build
+
 CMD ["npm", "start"]
