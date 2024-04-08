@@ -40,7 +40,7 @@ export const env = createEnv({
     DATABASE_AUTH: process.env.DATABASE_AUTH,
     PUSHER_SECRET: process.env.PUSHER_SECRET,
     NEXT_PUBLIC_PUSHER_KEY: process.env.NEXT_PUBLIC_PUSHER_KEY,
-    NEXT_PUBLIC_SOCKET_API: process.env.SOCKET_API,
+    NEXT_PUBLIC_SOCKET_API: process.env.NEXT_PUBLIC_SOCKET_API,
     // NEXT_PUBLIC_CLIENTVAR: process.env.NEXT_PUBLIC_CLIENTVAR,
   },
   /**
