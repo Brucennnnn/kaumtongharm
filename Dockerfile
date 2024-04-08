@@ -1,11 +1,11 @@
-FROM node:20-alpine AS dep
+FROM node:20 AS dep
 
 WORKDIR /app
 COPY package*.json  ./
 
 RUN npm install
 
-FROM node:20-alpine
+FROM node:20
 
 WORKDIR /app
 
