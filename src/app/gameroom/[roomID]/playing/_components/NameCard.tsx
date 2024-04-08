@@ -1,5 +1,4 @@
 import { cn } from '@ktm/lib/utils';
-
 export default function NameCard({
   isMe,
   name,

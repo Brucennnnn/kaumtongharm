@@ -1,5 +1,4 @@
 'use client';
-
 import { cn } from '@ktm/lib/utils';
 
 export default function Timer({ deadline, className }: { deadline: string; className?: string }) {

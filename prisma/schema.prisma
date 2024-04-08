@@ -42,8 +42,8 @@ model Message {
   message   String
   sender    String
   chatId    Int
-  chat      Chat     @relation(fields: [chatId], references: [id])
-  user      User     @relation(fields: [sender], references: [id])
+  chat      Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
+  user      User     @relation(fields: [sender], references: [id], onDelete: Cascade)
   createdAt DateTime @default(now())
 }
 
@@ -51,7 +51,7 @@ model GameRoom {
   id          Int          @id @default(autoincrement())
   roomName    String
   hostId      String
-  user        User         @relation(fields: [hostId], references: [id])
+  user        User         @relation(fields: [hostId], references: [id], onDelete: Cascade)
   maxPlayers  Int
   rounds      Int
   description String?
@@ -77,7 +77,7 @@ model UserResult {
   userId       String
   kuamTongHarm String
   status       String   @default("alive")
-  user         User     @relation(fields: [userId], references: [id])
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
   chatId       Int
   chat         Chat     @relation(fields: [chatId], references: [id], onDelete: Cascade)
   gameRoomId   Int
