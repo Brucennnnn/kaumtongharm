@@ -12,15 +12,43 @@ import GoNextButton from './GoNextButton';
 import { useRouter } from 'next/navigation';
 import { useToast } from '@ktm/components/ui/use-toast';
 import { socket } from '@ktm/action/socket';
+import { Button } from '@ktm/components/ui/button';
+import { usePopUpStore } from '@ktm/app/stores/popup';
+import { Dialog, DialogContent } from '@ktm/components/ui/dialog';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm } from 'react-hook-form';
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from '@ktm/components/ui/form';
+import { Input } from '@ktm/components/ui/input';
+import { z } from 'zod';
+const FormSchema = z.object({
+  word: z.string(),
+});
 
 type RecentRound = NonNullable<RouterOutputs['gameRoom']['getRecentRound']>;
 type GameRoom = NonNullable<RouterOutputs['gameRoom']['getGameRoom']>;
 
 export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; gameRoom: GameRoom }) {
+  const form = useForm<z.infer<typeof FormSchema>>({
+    resolver: zodResolver(FormSchema),
+    defaultValues: {
+      word: '',
+    },
+  });
   const { isSuccess, data } = api.auth.me.useQuery();
+  const [dialog, setIsDialog] = useState(false);
   let chatChannel: Channel | null = null;
   const pusher = usePusher();
   const deadTime = props.recentRound.result.startedAt.valueOf() + 9000;
+
+  const { open, setOpen } = usePopUpStore();
   const isEnd = new Date().valueOf() >= deadTime;
   const utils = api.useUtils();
   const router = useRouter();
@@ -31,6 +59,7 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
   const stringObject: Record<string, string> = Object.fromEntries(
     props.recentRound.result.UserResult.map((e) => [e.user.id, e.user.username]),
   );
+
   async function handleEndGame() {
     const result = await endGame.mutateAsync({
       roomId: props.gameRoom.id,
@@ -99,21 +128,38 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
       window.removeEventListener('beforeunload', beforeUnload);
     };
   });
+  useEffect(() => {
+    if (dialog) {
+      const timer = setTimeout(() => {
+        setIsDialog(false);
+      }, 10000); // 10 seconds
+
+      return () => clearTimeout(timer);
+    }
+  }, [dialog]);
 
   const [timeLeft, setTimeLeft] = useState('04:00');
   useEffect(() => {
     const timeDiff = deadTime - Date.now();
     const interval = setInterval(() => {
-      if (timeDiff > 0) {
-        setTimeLeft(Dayjs(timeDiff).format('mm:ss'));
-      } else {
-        setTimeLeft('00:00');
-      }
+      setTimeLeft(Dayjs(timeDiff).format('mm:ss'));
     }, 1000);
-
+    if (timeDiff <= 0) {
+      clearInterval(interval);
+      setTimeLeft('00:00');
+      setIsDialog(true);
+    }
     return () => clearInterval(interval);
-  });
+  }, [timeLeft, deadTime]);
+
   if (isSuccess && !data) return <></>;
+
+  function onSubmit(inp: z.infer<typeof FormSchema>) {
+    if (!data) return;
+    // if (inp.word === answerWord) {
+    //   console.log(true);
+    // }
+  }
   return (
     <div className="flex h-full w-full flex-col gap-3 min-h-full">
       <div className="flex w-full justify-between  ">
@@ -165,6 +211,13 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
         })}
       </div>
 
+      <Button
+        onClick={() => setOpen(true)}
+        className="flex lg:hidden w-full rounded-md border-2 border-stroke yellow p-3 text-base font-bold text-stroke shadow-button"
+      >
+        Chat
+      </Button>
+
       {isEnd ? (
         <GoNextButton
           isNext={props.recentRound.isNext}
@@ -175,6 +228,25 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
       ) : (
         <Timer deadline={timeLeft} />
       )}
+      <Dialog open={dialog} onOpenChange={setIsDialog}>
+        <DialogContent>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className="w-2/3 space-y-6">
+              <FormField
+                control={form.control}
+                name="word"
+                render={({ field }) => (
+                  <FormItem>
+                    <Input placeholder="shadcn" {...field} />
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <Button type="submit">Submit</Button>
+            </form>
+          </Form>
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

@@ -178,7 +178,7 @@ export function ChatContainer(props: ChatProps) {
 
   return (
     <div className="flex w-full flex-col h-full justify-between gap-2">
-      <div className="flex h-full flex-col gap-2 overflow-y-scroll scrollbar-hide">
+      <div className="flex h-full flex-col gap-2 overflow-y-scroll scrollbar-hide max-h-[20vh] lg:max-h-full">
         {chats.map((chat, index) => {
           if (chat.isPrivate) {
             return (

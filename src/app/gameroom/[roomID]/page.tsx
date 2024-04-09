@@ -3,13 +3,18 @@ import { api } from '@ktm/trpc/react';
 import GameWrapper from '@ktm/app/gameroom/_components/GameWrapper';
 import LeftSideWaitingRoom from './_components/LeftSideWaitingRoom';
 import { ChatContainer } from './_components/ChatContainer';
+import { useRouter } from 'next/navigation';
 
 export default function Chat({ params }: { params: { roomID: string } }) {
   const user = api.auth.me.useQuery(undefined, {});
 
-  const { data } = api.gameRoom.getGameRoom.useQuery({
+  const { data, isSuccess } = api.gameRoom.getGameRoom.useQuery({
     roomId: parseInt(params.roomID),
   });
+  const router = useRouter();
+  if (isSuccess && !data) {
+    router.push('/gameroom');
+  }
 
   if (!data || (user.isSuccess && !user.data) || !user.isSuccess || !user.data) return <></>;
 

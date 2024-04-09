@@ -17,11 +17,14 @@ export default function Page({ params }: { params: { roomID: string } }) {
     if (me.isSuccess && !me.data) {
       router.push('/login');
     }
-  }, [me.isSuccess, me.data]);
+  }, [me.isSuccess, me.data, router]);
 
   const round = api.gameRoom.getRecentRound.useQuery({
     roomId: parseInt(params.roomID),
   });
+  if (isSuccess && !data) {
+    router.push('/gameroom');
+  }
   if ((isSuccess && !data) || !isSuccess || !data || !me.data) return <></>;
   if (data.isBegin && ((round.isSuccess && !round.data) || !round.isSuccess || !round.data?.result.UserResult)) {
     return <></>;

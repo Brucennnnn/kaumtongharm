@@ -13,6 +13,7 @@ import { api } from '@ktm/trpc/react';
 import { faGamepad, faSliders } from '@fortawesome/free-solid-svg-icons';
 import LogoutButton from '@ktm/app/_components/LogoutButton';
 import { useRouter } from 'next/navigation';
+
 const formSchema = z.object({
   username: z.string().min(4).max(12),
 });
@@ -65,11 +66,11 @@ export default function ProfileCard({ name, roomId }: { name: string; roomId?: n
         </div>
       </div>
       <Dialog open={open} onOpenChange={setOpen}>
-        <DialogContent className="h-fit w-[417px] rounded-xl bg-main p-0 shadow-box">
+        <DialogContent className="flex h-fit w-[418px]  rounded-xl bg-main p-0 shadow-box">
           <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 space-y-2">
-              <div className="flex w-full flex-row gap-3">
-                <FontAwesomeIcon icon={faCircleUser} className="h-fit text-error" width="30" />
+            <form onSubmit={form.handleSubmit(onSubmit)} className="p-4 space-y-2 h-fit w-full">
+              <div className="flex w-full flex-row gap-3 h-fit">
+                <FontAwesomeIcon icon={faCircleUser} className=" text-error h-8 w-8" width="30" />
                 <div className="text-2xl font-bold text-error">Edit Profile</div>
               </div>
               <FormField

@@ -13,6 +13,18 @@ export const gameRoomRouter = createTRPCRouter({
     )
     .mutation(async ({ ctx, input }) => {
       const gameRoom = await ctx.db.$transaction(async (tx) => {
+        const userGameRoom = await tx.gameRoom.findFirst({
+          where: {
+            hostId: ctx.session.userId,
+          },
+        });
+        if (userGameRoom) {
+          await tx.gameRoom.delete({
+            where: {
+              id: userGameRoom.id,
+            },
+          });
+        }
         const gameRoom = await tx.gameRoom.create({
           data: {
             roomName: input.roomName,
@@ -199,6 +211,18 @@ export const gameRoomRouter = createTRPCRouter({
           },
         });
         if (!gameRoom || !gameRoom.chat) throw new Error('room Id is wrong');
+        const userGameRoom = await tx.gameRoom.findFirst({
+          where: {
+            hostId: ctx.session.userId,
+          },
+        });
+        if (userGameRoom && userGameRoom.id !== input.roomId) {
+          await tx.gameRoom.delete({
+            where: {
+              id: userGameRoom.id,
+            },
+          });
+        }
         return await tx.user.update({
           where: {
             id: ctx.session.userId,

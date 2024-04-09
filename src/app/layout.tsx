@@ -3,7 +3,6 @@ import { config } from '@fortawesome/fontawesome-svg-core';
 import { Inter } from 'next/font/google';
 import { TRPCReactProvider } from '@ktm/trpc/react';
 import { Toaster } from '@ktm/components/ui/toaster';
-import { SpeedInsights } from '@vercel/speed-insights/next';
 
 config.autoAddCss = false;
 const inter = Inter({
@@ -23,7 +22,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
       <body className={`font-sans ${inter.variable}`}>
         <TRPCReactProvider>{children}</TRPCReactProvider>
         <Toaster />
-        <SpeedInsights />
       </body>
     </html>
   );

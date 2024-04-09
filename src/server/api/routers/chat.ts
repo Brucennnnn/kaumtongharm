@@ -51,13 +51,6 @@ export const chatRouter = createTRPCRouter({
             id: input.roomId,
           },
         });
-        if (host?.hostId === ctx.session.userId) {
-          await tx.gameRoom.delete({
-            where: {
-              id: input.roomId,
-            },
-          });
-        }
         await tx.user.update({
           data: {
             chatId: null,

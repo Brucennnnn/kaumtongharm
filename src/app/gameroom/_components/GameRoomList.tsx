@@ -14,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { usePusher } from '@ktm/app/_context/PusherContext';
 import { useEffect } from 'react';
+import { usePopUpStore } from '@ktm/app/stores/popup';
 
 interface gameRoomListProps {
   selectedroom: gameRoom | null;
@@ -36,6 +37,7 @@ export default function GameRoomList(props: gameRoomListProps) {
     defaultValues,
   });
 
+  const { open, setOpen } = usePopUpStore();
   const [searchString, setSearchString] = useState('');
   const allRooms = () => {
     const { data } = api.gameRoom.getGameRoomsByFilter.useQuery({
@@ -61,7 +63,10 @@ export default function GameRoomList(props: gameRoomListProps) {
             } as gameRoom
           }
           selectedroom={selectedroom}
-          setSelectedRoom={setSelectedRoom}
+          setSelectedRoom={(room: gameRoom | null) => {
+            setSelectedRoom(room);
+            setOpen(true);
+          }}
         />
       );
     });
@@ -89,6 +94,7 @@ export default function GameRoomList(props: gameRoomListProps) {
           className="text-md rounded-md border-2 border-stroke yellow font-bold shadow-button"
           onClick={() => {
             setSelectedRoom(null);
+            setOpen(true);
           }}
         >
           Create Game
@@ -113,9 +119,7 @@ export default function GameRoomList(props: gameRoomListProps) {
           </div>
         </form>
       </Form>
-      <div className="scroll flex w-full grow flex-col gap-y-3 rounded-lg bg-background p-3 max-h-[150px] lg:max-h-full">
-        {allRooms()}
-      </div>
+      <div className="scroll flex w-full grow flex-col gap-y-3 rounded-lg bg-background p-3  ">{allRooms()}</div>
     </div>
   );
 }
