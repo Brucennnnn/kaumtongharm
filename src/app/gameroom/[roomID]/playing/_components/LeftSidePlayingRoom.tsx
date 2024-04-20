@@ -58,11 +58,6 @@ export default function LeftSidePlayingRoom(props: { recentRound: RecentRound; g
   useEffect(() => {
     chatChannel.bind('start-round', async () => {
       await utils.gameRoom.getRecentRound.invalidate();
-      socket.emit('announcement-message', {
-        channel: `announcement-channel-${props.gameRoom.id}`,
-        type: 'round',
-        message: `Rounded ${props.gameRoom.rounds} started!!!`,
-      });
     });
     chatChannel.bind('playing-room', async (data2: { status: string; userDeath: string; userVote: string }) => {
       if (data2.status === 'end-game') {
